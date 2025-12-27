@@ -29,10 +29,15 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-					<div className="absolute right-0 p-5">
-						<ModeToggle />
+					<div className="min-h-screen bg-gray-50 pb-24 text-gray-900 dark:bg-gray-950 dark:text-white">
+						{/* Main Content Area */}
+						<main className="mx-auto min-h-screen max-w-md">
+							<div className="absolute right-0 p-5">
+								<ModeToggle />
+							</div>
+							{children}
+						</main>
 					</div>
-					{children}
 				</ThemeProvider>
 			</body>
 		</html>

@@ -20,9 +20,8 @@ export function AppLayout({ children }: AppLayout2Props) {
 	];
 
 	return (
-		<div className="min-h-screen bg-gray-50 pb-24 text-gray-900 dark:bg-gray-950 dark:text-white">
-			{/* Main Content Area */}
-			<main className="mx-auto min-h-screen max-w-md">{children}</main>
+		<>
+			{children}
 
 			{/* Persistent Bottom Navigation */}
 			<nav className="safe-area-bottom border-gray-200dark:border-gray-800 back drop-blur-md fixed right-0 bottom-0 left-0 z-50 border-t bg-white dark:bg-gray-900/80">
@@ -45,6 +44,6 @@ export function AppLayout({ children }: AppLayout2Props) {
 					})}
 				</div>
 			</nav>
-		</div>
+		</>
 	);
 }
