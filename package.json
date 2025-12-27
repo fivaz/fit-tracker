@@ -10,7 +10,9 @@
 		"tsc": "tsc --noEmit --watch",
 		"format": "prettier --write . && eslint --fix .",
 		"storybook": "storybook dev -p 6006",
-		"create": "plop --plopfile templates/plopfile.mjs"
+		"create": "plop --plopfile templates/plopfile.mjs",
+		"add_migration": "prisma migrate dev",
+		"generate_types": "prisma generate"
 	},
 	"dependencies": {
 		"@prisma/adapter-pg": "^7.2.0",
