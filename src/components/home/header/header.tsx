@@ -7,12 +7,14 @@ type HeaderProps = {};
 
 export function Header({}: HeaderProps) {
 	return (
-		<div className="pt-2 pb-4">
-			<div className="mb-1 flex items-center gap-2">
-				<Dumbbell className="h-6 w-6 text-blue-500" />
-				<h1 className="text-xl font-bold">FitTracker</h1>
+		<div className="flex items-center justify-between pt-2 pb-4">
+			<div>
+				<div className="mb-1 flex items-center gap-2">
+					<Dumbbell className="h-6 w-6 text-blue-500" />
+					<h1 className="text-xl font-semibold">FitTracker</h1>
+				</div>
+				<p className="text-sm text-gray-600 dark:text-gray-400">Track your fitness journey</p>
 			</div>
-			<p className="text-sm text-gray-400">Track your fitness journey</p>
 		</div>
 	);
 }
