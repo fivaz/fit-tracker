@@ -1,18 +1,26 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getUser } from "@/lib/auth/utils.actions";
+import { ROUTES } from "@/lib/consts";
 
 export async function createProgram(formData: FormData) {
 	"use server";
+
+	const user = await getUser();
+
+	if (!user) {
+		redirect(ROUTES.LOGIN);
+	}
 
 	const name = formData.get("name")?.toString();
 
 	if (!name) throw new Error("Name is required");
 
 	await prisma.program.create({
-		data: { name },
+		data: { name, userId: user.id },
 	});
 
-	redirect("/programs");
+	redirect(ROUTES.PROGRAMS);
 }
 
 export function ProgramForm() {
@@ -28,15 +36,6 @@ export function ProgramForm() {
 					name="name"
 					placeholder="e.g., Push Day"
 					required
-					className="w-full rounded-xl border px-4 py-3 text-gray-900 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-				/>
-			</div>
-
-			<div>
-				<label className="block text-sm text-gray-600 dark:text-gray-400">Description</label>
-				<textarea
-					name="description"
-					placeholder="Add notes about this program..."
 					className="w-full rounded-xl border px-4 py-3 text-gray-900 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
 				/>
 			</div>
