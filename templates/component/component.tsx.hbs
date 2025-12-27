@@ -1,13 +1,5 @@
-import type { ReactNode } from 'react'
+type {{name}}Props = {};
 
-type {{name}}Props = {
-label?: string
-}
-
-export function {{name}}({ label = '{{name}} component' }: {{name}}Props) {
-return (
-<div data-testid="{{kebabCase name}}">
-    {label}
-</div>
-)
+export function {{name}}({ }: {{name}}Props) {
+    return (<div>{{name}}</div>);
 }

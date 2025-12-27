@@ -1,17 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { {{name}} } from './{{kebabCase name}}'
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-const meta: Meta<typeof {{name}}> = {
-    title: 'Components/{{name}}',
-    component: {{name}}
-}
+import { {{name}} } from "./{{kebabCase name}}";
 
-export default meta
+const meta = {
+component: {{name}},
+} satisfies Meta<typeof {{name}}>;
 
-type Story = StoryObj<typeof {{name}}>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Primary: Story = {
     args: {
-        label: '{{name}} component'
-    }
-}
+    },
+};
+
+export const Secondary: Story = {
+    args: {
+    },
+};
