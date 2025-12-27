@@ -6,4 +6,5 @@ const nextConfig: NextConfig = {
 	reactCompiler: true,
 };
 
-export default withRspack(nextConfig);
+export default nextConfig;
+// export default withRspack(nextConfig);
