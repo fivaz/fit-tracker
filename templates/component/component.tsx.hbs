@@ -1,0 +1,13 @@
+import type { ReactNode } from 'react'
+
+type {{name}}Props = {
+label?: string
+}
+
+export function {{name}}({ label = '{{name}} component' }: {{name}}Props) {
+return (
+<div data-testid="{{kebabCase name}}">
+    {label}
+</div>
+)
+}
