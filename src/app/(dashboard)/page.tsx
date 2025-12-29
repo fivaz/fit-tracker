@@ -1,6 +1,6 @@
 import { Header } from "@/components/home/header/header";
-import { StartWorkout } from "@/components/home/start-workout/start-workout";
 import { QuickActions } from "@/components/home/quick-actions/quick-actions";
+import { StartWorkout } from "@/components/home/start-workout/start-workout";
 
 export default function Home() {
 	// Mock Data

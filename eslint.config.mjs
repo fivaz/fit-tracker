@@ -10,11 +10,9 @@ const eslintConfig = defineConfig(
 		...nextVitals,
 		...nextTs,
 		...storybook.configs["flat/recommended"],
-
 		globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 	],
 	{
-		// Add the plugins to the config
 		plugins: {
 			"unused-imports": unusedImports,
 			"simple-import-sort": simpleImportSort,
@@ -23,9 +21,9 @@ const eslintConfig = defineConfig(
 			"@typescript-eslint/no-empty-object-type": "warn",
 
 			// --- Unused Imports Logic ---
-			"no-unused-vars": "off", // Must turn off base rule
-			"@typescript-eslint/no-unused-vars": "off", // Must turn off TS rule
-			"unused-imports/no-unused-imports": "error", // Auto-remove unused imports
+			"no-unused-vars": "off",
+			"@typescript-eslint/no-unused-vars": "off",
+			"unused-imports/no-unused-imports": "error",
 			"unused-imports/no-unused-vars": [
 				"warn",
 				{
@@ -36,8 +34,26 @@ const eslintConfig = defineConfig(
 				},
 			],
 
-			// --- Import Sorting Logic ---
-			"simple-import-sort/imports": "error",
+			// --- Custom Import Sorting ---
+			"simple-import-sort/imports": [
+				"error",
+				{
+					groups: [
+						// 1. Packages: react and next related packages come first
+						["^react", "^next"],
+						// 2. Other external packages
+						["^@?\\w"],
+						// 3. Internal aliases (using your @/ prefix)
+						["^@/"],
+						// 4. Side effect imports (e.g. import "./styles.css")
+						["^\\u0000"],
+						// 5. Parent imports, then other relative imports
+						["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+						// 6. Style imports
+						["^.+\\.s?css$"],
+					],
+				},
+			],
 			"simple-import-sort/exports": "error",
 		},
 	},

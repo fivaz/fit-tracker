@@ -3,7 +3,8 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Folder, Dumbbell, TrendingUp } from "lucide-react";
+
+import { Dumbbell, Folder, Home, TrendingUp } from "lucide-react";
 
 type AppLayout2Props = {
 	children: ReactNode;

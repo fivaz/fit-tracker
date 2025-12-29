@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import { AppLayout } from "@/components/app-layout/app-layout";
 
 type DashboardLayoutType = {

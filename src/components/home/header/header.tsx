@@ -1,7 +1,8 @@
 "use client";
 
-import { Dumbbell, Play } from "lucide-react";
 import React from "react";
+
+import { Dumbbell } from "lucide-react";
 
 type HeaderProps = {};
 

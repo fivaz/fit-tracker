@@ -1,9 +1,10 @@
 "use server";
 
-import { adminAuth } from "@/lib/auth/firebase-admin";
 import { cookies } from "next/headers";
-import { COOKIE_SESSION, COOKIE_USER } from "@/lib/consts";
+
 import { User } from "@/generated/prisma/client";
+import { adminAuth } from "@/lib/auth/firebase-admin";
+import { COOKIE_SESSION, COOKIE_USER } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 
 export async function getUser(): Promise<User | null> {

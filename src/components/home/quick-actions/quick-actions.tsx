@@ -1,7 +1,8 @@
 "use client";
 
-import { Dumbbell, Folder, TrendingUp } from "lucide-react";
 import Link from "next/link";
+
+import { Dumbbell, Folder, TrendingUp } from "lucide-react";
 
 type QuickActionsProps = {};
 

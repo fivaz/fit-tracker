@@ -1,4 +1,4 @@
-import { Dumbbell, NotebookTabsIcon } from "lucide-react";
+import { NotebookTabsIcon } from "lucide-react";
 
 export function ProgramEmptyState() {
 	return (

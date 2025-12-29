@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
+
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "@/lib/auth/firebase";
+import { Loader2Icon, TriangleAlertIcon } from "lucide-react";
+
 import { GoogleIcon } from "@/components/google-icon/google-icon";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { ROUTES } from "@/lib/consts";
+import { auth } from "@/lib/auth/firebase";
 import { loginServer } from "@/lib/auth/utils.actions";
-import { Loader2Icon, TriangleAlertIcon } from "lucide-react";
+import { ROUTES } from "@/lib/consts";
 
 export default function LoginPage() {
 	const [error, setError] = useState("");

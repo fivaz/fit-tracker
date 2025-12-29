@@ -1,6 +1,8 @@
-import { motion } from "motion/react";
 import { X } from "lucide-react";
+import { motion } from "motion/react";
+
 import { Program } from "@/generated/prisma/client";
+
 import { saveProgram } from "./action";
 
 type ProgramFormProps = {

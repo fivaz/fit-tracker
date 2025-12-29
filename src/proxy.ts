@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { COOKIE_SESSION, ROUTES } from "@/lib/consts";
+import { NextResponse } from "next/server";
+
 import { adminAuth } from "@/lib/auth/firebase-admin";
+import { COOKIE_SESSION, ROUTES } from "@/lib/consts";
 
 const PUBLIC_PATHS = [ROUTES.LOGIN, ROUTES.REGISTER];
 

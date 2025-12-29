@@ -1,10 +1,11 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
+
+import { Program } from "@/generated/prisma/client";
 import { getUser } from "@/lib/auth/utils.actions";
 import { ROUTES } from "@/lib/consts";
-import { redirect } from "next/navigation";
-import { Program } from "@/generated/prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export async function getPrograms(): Promise<Program[]> {
 	const user = await getUser();

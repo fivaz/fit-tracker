@@ -1,12 +1,14 @@
 "use client";
-import { Program } from "@/generated/prisma/client";
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
-import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+
+import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+
 import { deleteProgramAction } from "@/app/(dashboard)/programs/program-form-button/program-form/action"; // Adjust path
+import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { Program } from "@/generated/prisma/client";
 
 type ProgramRowProps = {
 	program: Program;

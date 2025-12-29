@@ -1,8 +1,9 @@
 "use client";
 
-import { Play, TrendingUp } from "lucide-react";
 import React from "react";
 import Link from "next/link";
+
+import { Play } from "lucide-react";
 
 type StartWorkoutProps = {};
 
