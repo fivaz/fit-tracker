@@ -12,26 +12,24 @@ export default function Home() {
 	const workoutSessions = [{ completed: true }, { completed: true }];
 
 	return (
-		<div className="mx-auto max-w-md">
-			<div className="space-y-4 p-4">
-				<Header />
+		<div className="space-y-4 p-4">
+			<Header />
 
-				<StartWorkout />
+			<StartWorkout />
 
-				{/* Stats Grid */}
-				<div className="grid grid-cols-2 gap-3">
-					<div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-						<div className="mb-1 text-2xl">{workoutSessions.filter((s) => s.completed).length}</div>
-						<div className="text-sm text-gray-600 dark:text-gray-400">Workouts</div>
-					</div>
-					<div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-						<div className="mb-1 text-2xl">{exercises.length}</div>
-						<div className="text-gray-600 dark:text-gray-400">Exercises</div>
-					</div>
+			{/* Stats Grid */}
+			<div className="grid grid-cols-2 gap-3">
+				<div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+					<div className="mb-1 text-2xl">{workoutSessions.filter((s) => s.completed).length}</div>
+					<div className="text-sm text-gray-600 dark:text-gray-400">Workouts</div>
 				</div>
-
-				<QuickActions />
+				<div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+					<div className="mb-1 text-2xl">{exercises.length}</div>
+					<div className="text-gray-600 dark:text-gray-400">Exercises</div>
+				</div>
 			</div>
+
+			<QuickActions />
 		</div>
 	);
 }

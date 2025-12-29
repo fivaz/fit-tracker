@@ -37,14 +37,12 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white">
+					<div className="bg-background min-h-svh">
 						{/* Main Content Area */}
-						<main className="">
-							<div className="absolute right-0 p-5">
-								<ModeToggle />
-							</div>
-							{children}
-						</main>
+						<div className="absolute right-0 p-5">
+							<ModeToggle />
+						</div>
+						{children}
 					</div>
 					<Toaster />
 				</ThemeProvider>
