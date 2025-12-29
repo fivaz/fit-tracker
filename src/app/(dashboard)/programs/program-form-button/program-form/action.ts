@@ -3,6 +3,25 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/auth/utils.actions";
 import { ROUTES } from "@/lib/consts";
+import { redirect } from "next/navigation";
+import { Program } from "@/generated/prisma/client";
+
+export async function getPrograms(): Promise<Program[]> {
+	const user = await getUser();
+
+	if (!user) {
+		redirect(ROUTES.LOGIN);
+	}
+
+	return prisma.program.findMany({
+		where: {
+			userId: user.id,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
+}
 
 export async function saveProgram(formData: FormData) {
 	const user = await getUser();
@@ -27,4 +46,18 @@ export async function saveProgram(formData: FormData) {
 	}
 
 	revalidatePath(ROUTES.PROGRAMS);
+}
+
+export async function deleteProgramAction(id: string) {
+	const user = await getUser();
+	if (!user) throw new Error("Unauthorized");
+
+	await prisma.program.update({
+		where: { id, userId: user.id },
+		data: {
+			deletedAt: new Date(),
+		},
+	});
+
+	revalidatePath("/programs");
 }
