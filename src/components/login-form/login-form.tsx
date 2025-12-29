@@ -23,7 +23,7 @@ import { authClient } from "@/lib/auth-client";
 import { ROUTES } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 
-export default function LoginForm({ className, ...props }: ComponentProps<"div">) {
+export function LoginForm({ className, ...props }: ComponentProps<"div">) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [rememberMe, setRememberMe] = useState(true);
@@ -151,7 +151,7 @@ export default function LoginForm({ className, ...props }: ComponentProps<"div">
 								<Loader2 className="size-4 animate-spin" />
 							) : (
 								<>
-									<GithubIcon className="size-6" />
+									<GithubIcon className="size-5" />
 									GitHub
 								</>
 							)}
@@ -166,7 +166,7 @@ export default function LoginForm({ className, ...props }: ComponentProps<"div">
 								<Loader2 className="size-4 animate-spin" />
 							) : (
 								<>
-									<GoogleIcon className="mr-0.5 size-5" />
+									<GoogleIcon className="size-5" />
 									Google
 								</>
 							)}
