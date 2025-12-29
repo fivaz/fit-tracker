@@ -1,32 +1,34 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { Program } from "@/generated/prisma/client";
-import { getUser } from "@/lib/auth/utils.actions";
+import { auth } from "@/lib/auth";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
+import { getUserId } from "@/lib/utils-server";
 
 export async function getPrograms(): Promise<Program[]> {
-	const user = await getUser();
+	try {
+		const userId = await getUserId();
 
-	if (!user) {
+		return prisma.program.findMany({
+			where: {
+				userId,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		});
+	} catch (e) {
+		console.log(e);
 		redirect(ROUTES.LOGIN);
 	}
-
-	return prisma.program.findMany({
-		where: {
-			userId: user.id,
-		},
-		orderBy: {
-			createdAt: "desc",
-		},
-	});
 }
 
 export async function saveProgram(formData: FormData) {
-	const user = await getUser();
-	if (!user) throw new Error("Unauthorized");
+	const userId = await getUserId();
 
 	const id = formData.get("id")?.toString();
 	const name = formData.get("name")?.toString();
@@ -36,13 +38,13 @@ export async function saveProgram(formData: FormData) {
 	if (id) {
 		// Update Logic
 		await prisma.program.update({
-			where: { id, userId: user.id },
+			where: { id, userId },
 			data: { name },
 		});
 	} else {
 		// Create Logic
 		await prisma.program.create({
-			data: { name, userId: user.id },
+			data: { name, userId },
 		});
 	}
 
@@ -50,11 +52,10 @@ export async function saveProgram(formData: FormData) {
 }
 
 export async function deleteProgramAction(id: string) {
-	const user = await getUser();
-	if (!user) throw new Error("Unauthorized");
+	const userId = await getUserId();
 
 	await prisma.program.update({
-		where: { id, userId: user.id },
+		where: { id, userId },
 		data: {
 			deletedAt: new Date(),
 		},
