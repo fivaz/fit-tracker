@@ -1,5 +1,5 @@
 import { AlertTriangle } from "lucide-react";
-import { AnimatePresence,motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 interface ConfirmDialogProps {
 	isOpen: boolean;

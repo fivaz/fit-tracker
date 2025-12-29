@@ -19,6 +19,7 @@ export async function proxy(req: NextRequest) {
 		await adminAuth.verifySessionCookie(token, true);
 		return NextResponse.next();
 	} catch (error) {
+		console.log(error);
 		return NextResponse.redirect(new URL(ROUTES.LOGIN, req.url));
 	}
 }
