@@ -35,7 +35,9 @@ export function AppLayout({ children }: AppLayout2Props) {
 								key={item.id}
 								href={item.href}
 								className={`flex flex-col items-center gap-1 px-4 transition-all active:scale-90 ${
-									isActive ? "text-blue-500" : "text-gray-600 hover:text-gray-200 dark:text-gray-400"
+									isActive
+										? "text-blue-500"
+										: "text-gray-600 hover:text-gray-200 dark:text-gray-400"
 								}`}
 							>
 								<item.icon className={`h-6 w-6 ${isActive ? "fill-blue-500/10" : ""}`} />

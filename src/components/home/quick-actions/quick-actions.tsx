@@ -36,7 +36,9 @@ export function QuickActions({}: QuickActionsProps) {
 						</div>
 						<div className="text-left">
 							<div className="font-medium">Manage Programs</div>
-							<div className="text-sm text-gray-600 dark:text-gray-400">{programs.length} programs</div>
+							<div className="text-sm text-gray-600 dark:text-gray-400">
+								{programs.length} programs
+							</div>
 						</div>
 					</div>
 				</Link>
@@ -51,7 +53,9 @@ export function QuickActions({}: QuickActionsProps) {
 						</div>
 						<div className="text-left">
 							<div className="font-medium">Exercise Library</div>
-							<div className="text-sm text-gray-600 dark:text-gray-400">{exercises.length} exercises</div>
+							<div className="text-sm text-gray-600 dark:text-gray-400">
+								{exercises.length} exercises
+							</div>
 						</div>
 					</div>
 				</Link>
