@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Loader2, X } from "lucide-react";
@@ -202,9 +203,15 @@ export default function SignUp() {
 			</CardContent>
 
 			<CardFooter>
-				<div className="flex w-full justify-center border-t py-4">
-					<p className="text-muted-foreground text-center text-xs">
-						Secured by <span className="font-medium text-orange-400">better-auth</span>.
+				<div className="flex w-full flex-col items-center gap-2 border-t pt-6">
+					<p className="text-muted-foreground text-sm">
+						Already have an account?{" "}
+						<Link
+							href={ROUTES.LOGIN}
+							className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+						>
+							Sign in
+						</Link>
 					</p>
 				</div>
 			</CardFooter>
