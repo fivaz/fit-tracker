@@ -33,14 +33,13 @@ export default async function ProgramPage() {
 		<div className="space-y-4 p-4">
 			{/* Header */}
 			<div className="pt-2 pb-2">
-				<h2 className="mb-1 text-xl">Workout Programs</h2>
-				<p className="text-sm text-gray-600 dark:text-gray-400">{programs.length} programs</p>
+				<h2 className="mb-1 text-xl font-semibold text-gray-900 dark:text-white">Workout Programs</h2>
+				<p className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+					{programs.length} programs
+				</p>
 			</div>
-			{/* Add Button */}
-			<ProgramFormButton>
-				<ProgramForm />
-			</ProgramFormButton>
-			<ProgramManager programs={programs} />;
+			<ProgramFormButton />
+			{/*<ProgramManager programs={programs} />*/}
 		</div>
 	);
 }
