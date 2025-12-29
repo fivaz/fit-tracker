@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { adminAuth } from "@/lib/auth-2/firebase-admin";
+import { adminAuth } from "@/lib/auth/firebase-admin";
 import { COOKIE_SESSION, ROUTES } from "@/lib/consts";
 
 const PUBLIC_PATHS = [ROUTES.LOGIN, ROUTES.REGISTER];
@@ -44,16 +44,15 @@ export async function proxy(req: NextRequest) {
 	}
 }
 
-// 5. Exclude /api/ from the matcher entirely
 export const config = {
 	matcher: [
 		/*
-		 * Match all request paths except for the ones starting with:
-		 * - api (API routes)
-		 * - _next/static (static files)
-		 * - _next/image (image optimization files)
-		 * - favicon.ico (favicon file)
+		 * We exclude specific folders and files from the middleware:
+		 * - api: All your backend routes
+		 * - .well-known: Chrome devtools and other manifest files
+		 * - _next/static & _next/image: Next.js internal assets
+		 * - favicon.ico, sw.js, manifest.json: Common root-level static files
 		 */
-		"/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json).*)",
+		"/((?!api|.well-known|_next/static|_next/image|favicon.ico|sw.js|manifest.json).*)",
 	],
 };

@@ -1,3 +1,5 @@
+import "./globals.css";
+
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -6,7 +8,6 @@ import { ModeToggle } from "@/components/mode-toggle/mode-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-import "./globals.css";
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],

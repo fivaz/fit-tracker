@@ -39,18 +39,18 @@ const eslintConfig = defineConfig(
 				"error",
 				{
 					groups: [
-						// 1. Packages: react and next related packages come first
-						["^react", "^next"],
-						// 2. Other external packages
-						["^@?\\w"],
-						// 3. Internal aliases (using your @/ prefix)
-						["^@/"],
-						// 4. Side effect imports (e.g. import "./styles.css")
-						["^\\u0000"],
-						// 5. Parent imports, then other relative imports
-						["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
-						// 6. Style imports
+						// 1. Style imports (Moved to top as requested)
 						["^.+\\.s?css$"],
+						// 2. Packages: react and next related packages
+						["^react", "^next"],
+						// 3. Other external packages
+						["^@?\\w"],
+						// 4. Internal aliases (@/)
+						["^@/"],
+						// 5. Side effect imports
+						["^\\u0000"],
+						// 6. Parent and relative imports
+						["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
 					],
 				},
 			],
