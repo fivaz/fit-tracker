@@ -1,18 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { GoogleIcon } from "./google-icon";
+import { LoginForm } from "./login-form";
 
 const meta = {
-	component: GoogleIcon,
-} satisfies Meta<typeof GoogleIcon>;
+component: LoginForm,
+} satisfies Meta<typeof LoginForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-	args: {},
+    args: {
+    },
 };
 
 export const Secondary: Story = {
-	args: {},
+    args: {
+    },
 };

@@ -183,7 +183,7 @@ export default function SignUp() {
 									onClick={handleRemoveImage}
 									className="shrink-0"
 								>
-									<X className="h-4 w-4" />
+									<X className="size-4" />
 								</Button>
 							)}
 						</div>
@@ -193,7 +193,7 @@ export default function SignUp() {
 				<Button onClick={handleSubmit} disabled={loading} className="w-full">
 					{loading ? (
 						<>
-							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							<Loader2 className="mr-2 size-4 animate-spin" />
 							Creating account...
 						</>
 					) : (

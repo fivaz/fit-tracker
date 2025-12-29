@@ -39,7 +39,7 @@ export default function RootLayout({
 				>
 					<div className="min-h-screen bg-gray-50 pb-24 text-gray-900 dark:bg-gray-950 dark:text-white">
 						{/* Main Content Area */}
-						<main className="mx-auto min-h-screen max-w-md">
+						<main className="mx-auto max-w-md">
 							<div className="absolute right-0 p-5">
 								<ModeToggle />
 							</div>

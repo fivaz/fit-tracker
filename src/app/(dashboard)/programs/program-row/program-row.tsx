@@ -50,22 +50,22 @@ export function ProgramRow({ program }: ProgramRowProps) {
 									onClick={() => setIsEditing(true)}
 									className="rounded-lg p-2 text-blue-400 transition-colors hover:bg-blue-500/10"
 								>
-									<Pencil className="h-4 w-4" />
+									<Pencil className="size-4" />
 								</button>
 								<button
 									onClick={() => setShowDeleteDialog(true)}
 									className="rounded-lg p-2 text-red-400 transition-colors hover:bg-red-500/10"
 								>
-									<Trash2 className="h-4 w-4" />
+									<Trash2 className="size-4" />
 								</button>
 							</div>
 						</div>
 
 						<Link href={`/program/${program.id}`}>
 							<button className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500/10 px-4 py-3 text-blue-400 transition-colors hover:bg-blue-500/20 active:scale-98">
-								<Dumbbell className="h-4 w-4" />
+								<Dumbbell className="size-4" />
 								Manage Exercises
-								<ChevronRight className="h-4 w-4" />
+								<ChevronRight className="size-4" />
 							</button>
 						</Link>
 					</motion.div>
