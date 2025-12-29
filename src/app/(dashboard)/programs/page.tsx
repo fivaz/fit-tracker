@@ -2,7 +2,6 @@ import { ProgramManager } from "./program-manager/program-manager";
 import { Program } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ProgramFormButton } from "@/app/(dashboard)/programs/program-form-button/program-form-button";
-import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
 import { getUser } from "@/lib/auth/utils.actions";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/lib/consts";
@@ -39,7 +38,7 @@ export default async function ProgramPage() {
 				</p>
 			</div>
 			<ProgramFormButton />
-			{/*<ProgramManager programs={programs} />*/}
+			<ProgramManager programs={programs} />
 		</div>
 	);
 }
