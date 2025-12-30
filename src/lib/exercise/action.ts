@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { v4 as uuidv4 } from "uuid";
 
-import { Exercise } from "@/generated/prisma/client";
+import { Exercise, MuscleGroup } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";
@@ -67,14 +67,14 @@ export async function saveExercise(formData: FormData) {
 	const id = formData.get("id")?.toString();
 	const programId = formData.get("programId")?.toString();
 	const name = formData.get("name")?.toString();
-	const muscle = formData.get("muscle")?.toString();
+	const muscles = formData.getAll("muscles") as MuscleGroup[];
 	const imageFile = formData.get("image") as File | null;
 
 	if (!name) {
 		throw new Error("Please provide a name for the exercise.");
 	}
 
-	if (!muscle) {
+	if (!muscles || muscles.length === 0) {
 		throw new Error("Please provide a muscle for the exercise.");
 	}
 
@@ -82,7 +82,7 @@ export async function saveExercise(formData: FormData) {
 
 	const exerciseData = {
 		name,
-		muscle,
+		muscles,
 		userId,
 		...(imageUrl && { image: imageUrl }),
 	};

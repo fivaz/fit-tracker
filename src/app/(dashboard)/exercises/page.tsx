@@ -1,9 +1,9 @@
 import { AnimatePresence } from "motion/react";
 
-import { getExercises } from "@/components/exercise/action";
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
+import { getExercises } from "@/lib/exercise/action";
 
 export default async function ExercisesPage() {
 	const exercises = await getExercises();

@@ -45,11 +45,26 @@ model Program {
   @@index([deletedAt])
 }
 
+enum MuscleGroup {
+  chest
+  back
+  shoulders
+  biceps
+  triceps
+  quads
+  hamstrings
+  glutes
+  calves
+  abs
+  forearms
+  traps
+}
+
 model Exercise {
-  id     String  @id @default(uuid())
-  name   String
-  image  String?
-  muscle String
+  id      String        @id @default(uuid())
+  name    String
+  image   String?
+  muscles MuscleGroup[]
 
   // Changed to use the junction table
   programs ProgramHasExercise[]

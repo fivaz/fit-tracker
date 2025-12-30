@@ -30,7 +30,7 @@ export const mockProgram: Program & { exercises: [] } = {
 export const mockExercise: Exercise = {
 	id: "e1",
 	name: "Bench Press",
-	muscle: "Chest",
+	muscles: ["chest"],
 	userId: "u1",
 	createdAt: new Date(),
 	updatedAt: new Date(),

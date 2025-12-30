@@ -6,11 +6,11 @@ import { Dumbbell, Pencil, Trash2 } from "lucide-react"; // Added Dumbbell as fa
 import { AnimatePresence, motion } from "motion/react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
-import { deleteExerciseAction } from "@/components/exercise/action";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Exercise } from "@/generated/prisma/client";
+import { deleteExerciseAction } from "@/lib/exercise/action";
 
 type ExerciseRowProps = {
 	exercise: Exercise;
@@ -67,8 +67,9 @@ export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 								{/* --- Title Section --- */}
 								<div className="min-w-0 flex-1">
 									<h2 className="truncate font-semibold">{exercise.name}</h2>
-									<p className="text-muted-foreground text-xs tracking-wider uppercase">
-										{exercise.muscle}
+									<p className="text-muted-foreground text-xs tracking-wider capitalize">
+										{exercise.muscles.slice(0, 3).join(", ")}
+										{exercise.muscles.length > 3 && ` +${exercise.muscles.length - 3}`}
 									</p>
 								</div>
 

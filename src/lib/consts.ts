@@ -8,19 +8,16 @@ export const ROUTES = {
 };
 
 export const MAJOR_MUSCLE_GROUPS = [
-	"Chest",
-	"Back",
-	"Shoulders",
-	"Biceps",
-	"Triceps",
-	"Quads",
-	"Hamstrings",
-	"Glutes",
-	"Calves",
-	"Abs",
-	"Forearms",
-	"Traps",
+	"chest",
+	"back",
+	"shoulders",
+	"biceps",
+	"triceps",
+	"quads",
+	"hamstrings",
+	"glutes",
+	"calves",
+	"abs",
+	"forearms",
+	"traps",
 ] as const;
-
-// This creates a TypeScript type: "Chest" | "Back" | "Shoulders" ...
-export type MuscleGroup = (typeof MAJOR_MUSCLE_GROUPS)[number];

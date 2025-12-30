@@ -4,23 +4,15 @@ import Image from "next/image";
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
 
+import { MuscleSelect } from "@/components/muscle-select/muscle-select";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Exercise } from "@/generated/prisma/client";
-import { MAJOR_MUSCLE_GROUPS } from "@/lib/consts";
-
-import { saveExercise } from "../../action";
+import { saveExercise } from "@/lib/exercise/action";
 
 type ExerciseFormProps = {
 	exercise: Partial<Exercise>;
@@ -89,19 +81,7 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 							</Field>
 
 							<Field>
-								<FieldLabel htmlFor="muscle">Muscle Group</FieldLabel>
-								<Select name="muscle" defaultValue={exercise.muscle}>
-									<SelectTrigger id="muscle">
-										<SelectValue placeholder="Select a muscle" />
-									</SelectTrigger>
-									<SelectContent>
-										{MAJOR_MUSCLE_GROUPS.map((m) => (
-											<SelectItem key={m} value={m}>
-												{m}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
+								<MuscleSelect name="muscles" defaultValue={exercise.muscles} />
 							</Field>
 
 							<Field>
