@@ -16,7 +16,7 @@ const programs = [
 
 export function StartWorkout({}: StartWorkoutProps) {
 	return (
-		<div className="rounded-2xl bg-linear-to-br from-blue-600 to-blue-700 p-5 shadow-lg">
+		<div className="rounded-2xl bg-linear-to-br from-orange-600 to-orange-700 p-5 shadow-lg">
 			<div className="mb-3 flex items-center gap-2">
 				<Play className="size-5 text-white" />
 				<h2 className="text-lg text-white">Start Workout</h2>
@@ -30,14 +30,14 @@ export function StartWorkout({}: StartWorkoutProps) {
 						>
 							<div>
 								<div className="font-medium">{program.name}</div>
-								<div className="text-sm text-blue-100">{program.exercises.length} exercises</div>
+								<div className="text-sm text-orange-100">{program.exercises.length} exercises</div>
 							</div>
 							<Play className="size-5" />
 						</button>
 					))}
 					{programs.length > 3 && (
 						<Link href="/programs">
-							<div className="w-full p-3 text-center text-sm text-blue-200 transition-colors hover:text-white">
+							<div className="w-full p-3 text-center text-sm text-orange-200 transition-colors hover:text-white">
 								View all programs →
 							</div>
 						</Link>
@@ -45,7 +45,7 @@ export function StartWorkout({}: StartWorkoutProps) {
 				</div>
 			) : (
 				<div className="py-6 text-center">
-					<p className="mb-3 text-sm text-blue-100">No programs yet</p>
+					<p className="mb-3 text-sm text-orange-100">No programs yet</p>
 					<Link
 						href="/programs"
 						className="rounded-lg bg-white/20 px-4 py-2 text-sm text-white transition-colors hover:bg-white/30"

@@ -31,8 +31,8 @@ export function QuickActions({}: QuickActionsProps) {
 			<div className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-4 transition-all hover:scale-[0.99] hover:bg-gray-50 active:scale-98 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800">
 				<Link href="/programs">
 					<div className="flex items-center gap-3">
-						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10">
-							<Folder className="size-5 text-blue-500" />
+						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10">
+							<Folder className="size-5 text-orange-500" />
 						</div>
 						<div className="text-left">
 							<div className="font-medium">Manage Programs</div>
