@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Exercise } from "@/generated/prisma/client";
 
 type ExerciseFormButtonProps = {
-	programId: string;
+	programId?: string;
 };
 
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {

@@ -29,19 +29,12 @@ export const getExerciseById = cache(async (id: string) => {
 	}
 });
 
-export async function getExercises(programId: string): Promise<Exercise[]> {
+export async function getExercises(): Promise<Exercise[]> {
 	const userId = await getUserId();
 
-	// Find exercises linked to the program via the join table
-	const phe = await prisma.programHasExercise.findMany({
-		where: { programId },
-		include: { exercise: true },
-		orderBy: { order: "asc" },
+	return prisma.exercise.findMany({
+		where: { userId, deletedAt: null },
 	});
-
-	return phe
-		.map((p) => p.exercise)
-		.filter((e) => e && e.userId === userId && e.deletedAt === null) as Exercise[];
 }
 
 async function uploadImage(imageFile: File | null, userId: string) {
@@ -77,8 +70,8 @@ export async function saveExercise(formData: FormData) {
 	const muscle = formData.get("muscle")?.toString();
 	const imageFile = formData.get("image") as File | null;
 
-	if (!name || !muscle || !programId) {
-		throw new Error("Name, muscle or program are required");
+	if (!name || !muscle) {
+		throw new Error("Name and muscle are required");
 	}
 
 	const imageUrl = await uploadImage(imageFile, userId);
@@ -99,16 +92,25 @@ export async function saveExercise(formData: FormData) {
 		await prisma.exercise.create({
 			data: {
 				...exerciseData,
-				programs: {
-					create: {
-						programId,
+				// Only create the junction record if programId exists
+				...(programId && {
+					programs: {
+						create: {
+							programId,
+							order: 0,
+						},
 					},
-				},
+				}),
 			},
 		});
 	}
 
-	revalidatePath(`${ROUTES.PROGRAMS}/${programId}`);
+	// Conditionally revalidate the program path only if a programId was provided
+	if (programId) {
+		revalidatePath(`${ROUTES.PROGRAMS}/${programId}`);
+	}
+
+	revalidatePath(ROUTES.EXERCISES);
 }
 
 export async function deleteExerciseAction(id: string) {

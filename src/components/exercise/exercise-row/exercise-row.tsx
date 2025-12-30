@@ -14,7 +14,7 @@ import { Exercise } from "@/generated/prisma/client";
 
 type ExerciseRowProps = {
 	exercise: Exercise;
-	programId: string;
+	programId?: string;
 };
 
 export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
