@@ -14,20 +14,36 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(uuid())
-  email         String     @unique
-  name          String
-  programs      Program[]
-  emailVerified Boolean    @default(false)
-  image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  exercises     Exercise[]
-  setLogs       SetLog[]
+  id              String           @id @default(uuid())
+  email           String           @unique
+  name            String
+  programs        Program[]
+  emailVerified   Boolean          @default(false)
+  image           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  exercises       Exercise[]
+  setLogs         SetLog[]
+  activeSessionId String?
+  workoutSessions WorkoutSession[]
 
   @@map("user")
+}
+
+model WorkoutSession {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  programId String
+  program   Program @relation(fields: [programId], references: [id])
+
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
 }
 
 model Program {
@@ -38,9 +54,10 @@ model Program {
 
   exercises ProgramHasExercise[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+  workoutSessions WorkoutSession[]
 
   @@index([deletedAt])
 }

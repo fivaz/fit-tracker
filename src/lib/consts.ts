@@ -3,6 +3,7 @@ export const ROUTES = {
 	PROGRAMS: "/programs",
 	EXERCISES: "/exercises",
 	PROGRESS: "/PROGRESS",
+	WORKOUT: "/workout",
 	LOGIN: "/login",
 	REGISTER: "/register",
 };
