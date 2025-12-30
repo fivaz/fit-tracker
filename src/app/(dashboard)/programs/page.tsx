@@ -5,14 +5,14 @@ import { ProgramEmptyState } from "@/components/program/program-empty-state/prog
 import { ProgramFormButton } from "@/components/program/program-form-button/program-form-button";
 import { ProgramRow } from "@/components/program/program-row/program-row";
 
-export default async function ProgramPage() {
+export default async function ProgramsPage() {
 	const programs = await getPrograms();
 
 	return (
 		<div className="space-y-4 p-4">
 			<div className="pt-2 pb-2">
-				<h2 className="mb-1 text-xl text-gray-900 dark:text-white">Workout Programs</h2>
-				<p className="text-sm text-gray-600 dark:text-gray-400">{programs.length} programs</p>
+				<h1 className="mb-1 text-xl tracking-tight">Workout Programs</h1>
+				<p className="text-primary text-sm">{programs.length} programs</p>
 			</div>
 
 			<ProgramFormButton />

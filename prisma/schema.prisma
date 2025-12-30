@@ -14,30 +14,77 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
+  id            String     @id @default(uuid())
+  email         String     @unique
   name          String
   programs      Program[]
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   sessions      Session[]
   accounts      Account[]
+  exercises     Exercise[]
+  setLogs       SetLog[]
 
   @@map("user")
 }
 
 model Program {
-  id        String    @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  exercises Exercise[]
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   @@index([deletedAt])
+}
+
+model Exercise {
+  id     String  @id @default(uuid())
+  name   String
+  image  String? // URL to the exercise demonstration image
+  muscle String // e.g., "Chest", "Quads", "Biceps"
+  order  Int     @default(0)
+
+  programId String
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  // Relation to the logs/evolution data
+  sets SetLog[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([programId])
+}
+
+model SetLog {
+  id     String @id @default(uuid())
+  weight Float // The weight lifted
+  reps   Int // Number of reps performed
+
+  // Timing fields
+  createdAt DateTime  @default(now())
+  endedAt   DateTime? // Nullable until the user hits "Stop"
+  deletedAt DateTime?
+
+  // Metadata
+  isPersonalRecord Boolean @default(false)
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Session {

@@ -7,9 +7,14 @@ import { AnimatePresence } from "motion/react";
 
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
+import { Program } from "@/generated/prisma/client";
 
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
+
+	const program: Partial<Program> = {
+		name: "Chest",
+	};
 
 	return (
 		<div>
@@ -19,7 +24,7 @@ export function ProgramFormButton() {
 				</Button>
 			) : (
 				<AnimatePresence>
-					<ProgramForm onClose={() => setOpen(false)} />
+					<ProgramForm program={program} onClose={() => setOpen(false)} />
 				</AnimatePresence>
 			)}
 		</div>

@@ -1,11 +1,34 @@
 "use server";
+import { cache } from "react";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/utils-server";
+
+export const getProgramById = cache(async (id: string) => {
+	try {
+		const userId = await getUserId();
+
+		const program = await prisma.program.findUnique({
+			where: { id, userId },
+			// // You can include relations here if needed
+			// include: {
+			// 	exercises: true,
+			// },
+		});
+
+		if (!program) {
+			return null;
+		}
+
+		return program;
+	} catch (error) {
+		console.error("Error fetching program:", error);
+		return null;
+	}
+});
 
 export async function getPrograms(): Promise<Program[]> {
 	const userId = await getUserId();

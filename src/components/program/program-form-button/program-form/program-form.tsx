@@ -17,11 +17,12 @@ import { Program } from "@/generated/prisma/client";
 import { saveProgram } from "../../action";
 
 type ProgramFormProps = {
-	program?: Program; // If present, we are editing
+	program: Partial<Program>;
 	onClose: () => void;
 };
 
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
+	const isCreate = !program?.id;
 	return (
 		<motion.form
 			initial={{ opacity: 0, height: 0, scale: 0.95 }}
@@ -35,7 +36,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		>
 			<Card>
 				<CardHeader className="">
-					<CardTitle>{program ? "Edit Program" : "New Program"}</CardTitle>
+					<CardTitle>{isCreate ? "Edit Program" : "New Program"}</CardTitle>
 					<CardAction>
 						<Button type="button" onClick={onClose} variant="outline" size="icon">
 							<X className="size-5" />
@@ -43,7 +44,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 					</CardAction>
 				</CardHeader>
 
-				{program && <input type="hidden" name="id" value={program.id} />}
+				{isCreate && <input type="hidden" name="id" value={program.id} />}
 
 				<CardContent>
 					<div className="flex flex-col gap-6">
@@ -53,7 +54,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 								id="name"
 								type="text"
 								name="name"
-								defaultValue={program?.name}
+								defaultValue={program.name}
 								placeholder="e.g., Push Day"
 								required
 							/>
@@ -63,7 +64,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 
 				<CardFooter className="flex-col gap-2">
 					<Button type="submit" className="w-full">
-						{program ? "Save Changes" : "Create Program"}
+						{isCreate ? "Save Changes" : "Create Program"}
 					</Button>
 					<Button type="button" variant="outline" onClick={onClose} className="w-full">
 						Cancel
