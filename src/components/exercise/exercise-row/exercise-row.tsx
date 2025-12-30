@@ -1,18 +1,15 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Dumbbell, Pencil, Trash2 } from "lucide-react"; // Added Dumbbell as fallback
 import { AnimatePresence, motion } from "motion/react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { deleteExerciseAction } from "@/components/exercise/action";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardAction,
-	CardHeader,
-} from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardHeader } from "@/components/ui/card";
 import { Exercise } from "@/generated/prisma/client";
 
 type ExerciseRowProps = {
@@ -50,10 +47,33 @@ export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, x: -100 }}
 					>
-						<Card>
-							<CardHeader className="flex items-center justify-between">
-								<h2>{exercise.name}</h2>
-								<CardAction className="space-x-2">
+						<Card className="py-5">
+							<CardHeader className="flex flex-row items-center gap-4 px-5">
+								{/* --- Image Section --- */}
+								<div className="bg-muted flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border">
+									{exercise.image ? (
+										<Image
+											src={exercise.image}
+											alt={exercise.name}
+											height={56}
+											width={56}
+											className="size-full object-cover"
+										/>
+									) : (
+										<Dumbbell className="text-muted-foreground size-6" />
+									)}
+								</div>
+
+								{/* --- Title Section --- */}
+								<div className="min-w-0 flex-1">
+									<h2 className="truncate font-semibold">{exercise.name}</h2>
+									<p className="text-muted-foreground text-xs tracking-wider uppercase">
+										{exercise.muscle}
+									</p>
+								</div>
+
+								{/* --- Actions Section --- */}
+								<div className="space-x-2">
 									<Button
 										variant="outline"
 										onClick={() => setIsEditing(true)}
@@ -70,7 +90,7 @@ export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 									>
 										<Trash2 className="size-4" />
 									</Button>
-								</CardAction>
+								</div>
 							</CardHeader>
 						</Card>
 					</motion.div>

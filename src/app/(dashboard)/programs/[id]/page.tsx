@@ -44,7 +44,7 @@ export default async function ProgramPage({ params }: PageProps) {
 
 			<ExerciseFormButton programId={program.id} />
 
-			<div className="space-y-2">
+			<div className="space-y-4">
 				<AnimatePresence mode="popLayout">
 					{program.exercises.map((aux) => (
 						<ExerciseRow key={aux.exerciseId} exercise={aux.exercise} programId={program.id} />
