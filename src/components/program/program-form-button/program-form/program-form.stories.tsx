@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
+import { mockProgram } from "@/seed/mock-data";
+
 import { ProgramForm } from "./program-form";
 
 const meta = {
@@ -10,9 +12,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-	args: {},
+	args: { program: mockProgram, onClose: () => {} },
 };
 
 export const Secondary: Story = {
-	args: {},
+	args: { program: mockProgram, onClose: () => {} },
 };

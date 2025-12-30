@@ -5,16 +5,9 @@ import Link from "next/link";
 
 import { Play } from "lucide-react";
 
-type StartWorkoutProps = {};
+import { programs } from "@/seed/mock-data";
 
-const programs = [
-	{ id: "1", name: "Push Day", exercises: [1, 2, 3] },
-	{ id: "2", name: "Pull Day", exercises: [1, 2] },
-	{ id: "3", name: "Leg Day", exercises: [1, 2, 3, 4] },
-	{ id: "4", name: "Full Body", exercises: [1, 2, 3, 4, 5] },
-];
-
-export function StartWorkout({}: StartWorkoutProps) {
+export function StartWorkout() {
 	return (
 		<div className="rounded-2xl bg-linear-to-br from-orange-600 to-orange-700 p-5 shadow-lg">
 			<div className="mb-3 flex items-center gap-2">

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
+import { mockExercise } from "@/seed/mock-data";
+
 import { ExerciseRow } from "./exercise-row";
 
 const meta = {
@@ -10,9 +12,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-	args: {},
+	args: { exercise: mockExercise },
 };
 
 export const Secondary: Story = {
-	args: {},
+	args: { exercise: mockExercise },
 };
