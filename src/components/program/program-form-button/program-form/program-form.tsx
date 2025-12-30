@@ -1,6 +1,10 @@
-import { X } from "lucide-react";
+import { useState } from "react";
+
+import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
 
+import { saveExercise } from "@/components/exercise/action";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -10,6 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Program } from "@/generated/prisma/client";
@@ -22,21 +27,35 @@ type ProgramFormProps = {
 };
 
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
-	const isEdit = program.id;
+	const [error, setError] = useState<string | null>(null);
+	const [isPending, setIsPending] = useState(false);
+	const isEdit = !!program.id;
+
+	const handleSubmit = async (formData: FormData) => {
+		setError(null);
+		setIsPending(true);
+
+		try {
+			await saveProgram(formData);
+			onClose();
+		} catch (err: unknown) {
+			setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+		} finally {
+			setIsPending(false);
+		}
+	};
+
 	return (
 		<motion.form
 			initial={{ opacity: 0, height: 0, scale: 0.95 }}
 			animate={{ opacity: 1, height: "auto", scale: 1 }}
 			exit={{ opacity: 0, height: 0, scale: 0.95 }}
 			transition={{ duration: 0.2 }}
-			action={async (formData) => {
-				await saveProgram(formData);
-				onClose();
-			}}
+			action={handleSubmit}
 		>
 			<Card>
-				<CardHeader className="">
-					<CardTitle>{isEdit ? "Edit Program" : "New Program"}</CardTitle>
+				<CardHeader className="flex items-center justify-between px-5">
+					<h2>{isEdit ? "Edit Program" : "New Program"}</h2>
 					<CardAction>
 						<Button type="button" onClick={onClose} variant="outline" size="icon">
 							<X className="size-5" />
@@ -47,26 +66,41 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 				{isEdit && <input type="hidden" name="id" value={program.id} />}
 
 				<CardContent>
-					<div className="flex flex-col gap-6">
-						<div className="grid gap-2">
-							<Label htmlFor="name">Program Name</Label>
-							<Input
-								id="name"
-								type="text"
-								name="name"
-								defaultValue={program.name}
-								placeholder="e.g., Push Day"
-								required
-							/>
-						</div>
-					</div>
+					<FieldGroup>
+						<FieldSet>
+							{error && (
+								<Alert className="text-destructive bg-destructive/10">
+									<AlertCircle className="size-4" />
+									<AlertTitle>{error}</AlertTitle>
+								</Alert>
+							)}
+
+							<Field>
+								<FieldLabel htmlFor="name">Program Name</FieldLabel>
+								<Input
+									id="name"
+									type="text"
+									name="name"
+									defaultValue={program.name}
+									placeholder="e.g., Push Day"
+									required
+								/>
+							</Field>
+						</FieldSet>
+					</FieldGroup>
 				</CardContent>
 
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full">
-						{isEdit ? "Save Changes" : "Create Program"}
+					<Button type="submit" className="w-full" disabled={isPending}>
+						{isPending ? "Saving..." : isEdit ? "Save Changes" : "Create Program"}
 					</Button>
-					<Button type="button" variant="outline" onClick={onClose} className="w-full">
+					<Button
+						type="button"
+						variant="outline"
+						onClick={onClose}
+						className="w-full"
+						disabled={isPending}
+					>
 						Cancel
 					</Button>
 				</CardFooter>

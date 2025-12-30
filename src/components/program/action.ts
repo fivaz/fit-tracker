@@ -13,14 +13,13 @@ export const getProgramById = cache(async (id: string) => {
 
 		const program = await prisma.program.findUnique({
 			where: { id, userId },
-			// // You can include relations here if needed
 			include: {
 				exercises: {
 					where: {
-						exercise: { deletedAt: null }, // Filter out soft-deleted exercises
+						exercise: { deletedAt: null },
 					},
 					include: {
-						exercise: true, // 2. MANDATORY: Fetch the actual exercise details
+						exercise: true,
 					},
 				},
 			},
@@ -63,16 +62,16 @@ export async function saveProgram(formData: FormData) {
 	const id = formData.get("id")?.toString();
 	const name = formData.get("name")?.toString();
 
-	if (!name) throw new Error("Name is required");
+	if (!name) {
+		throw new Error("Please provide a name for the program.");
+	}
 
 	if (id) {
-		// Update Logic
 		await prisma.program.update({
 			where: { id, userId },
 			data: { name },
 		});
 	} else {
-		// Create Logic
 		await prisma.program.create({
 			data: { name, userId },
 		});

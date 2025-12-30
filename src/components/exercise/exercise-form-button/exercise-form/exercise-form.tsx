@@ -1,6 +1,10 @@
-import { X } from "lucide-react";
+import { useState } from "react";
+import Image from "next/image";
+
+import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
 
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -31,7 +35,23 @@ type ExerciseFormProps = {
 };
 
 export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps) {
-	const isEdit = exercise.id;
+	const [error, setError] = useState<string | null>(null);
+	const [isPending, setIsPending] = useState(false);
+	const isEdit = !!exercise.id;
+
+	const handleSubmit = async (formData: FormData) => {
+		setError(null);
+		setIsPending(true);
+
+		try {
+			await saveExercise(formData);
+			onClose();
+		} catch (err: unknown) {
+			setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+		} finally {
+			setIsPending(false);
+		}
+	};
 
 	return (
 		<motion.form
@@ -39,14 +59,11 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 			animate={{ opacity: 1, height: "auto", scale: 1 }}
 			exit={{ opacity: 0, height: 0, scale: 0.95 }}
 			transition={{ duration: 0.2 }}
-			action={async (formData) => {
-				await saveExercise(formData);
-				onClose();
-			}}
+			action={handleSubmit}
 		>
 			<Card>
-				<CardHeader>
-					<CardTitle>{isEdit ? "Edit Exercise" : "New Exercise"}</CardTitle>
+				<CardHeader className="flex items-center justify-between px-5">
+					<h2>{isEdit ? "Edit Exercise" : "New Exercise"}</h2>
 					<CardAction>
 						<Button type="button" onClick={onClose} variant="outline" size="icon">
 							<X className="size-5" />
@@ -60,13 +77,19 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 				<CardContent>
 					<FieldGroup>
 						<FieldSet>
+							{error && (
+								<Alert className="text-destructive bg-destructive/10">
+									<AlertCircle className="size-4" />
+									<AlertTitle>{error}</AlertTitle>
+								</Alert>
+							)}
+
 							<Field>
 								<FieldLabel htmlFor="name">Exercise Name</FieldLabel>
 								<Input
 									id="name"
 									name="name"
 									defaultValue={exercise.name}
-									required
 									placeholder="e.g., Bench Press"
 								/>
 							</Field>
@@ -91,7 +114,7 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 								<FieldLabel htmlFor="image">Exercise Image</FieldLabel>
 								<div className="flex items-center gap-4">
 									{exercise.image && (
-										<img
+										<Image
 											src={exercise.image}
 											className="size-12 rounded-lg object-cover"
 											alt="Preview"
@@ -111,10 +134,16 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 				</CardContent>
 
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full">
-						{isEdit ? "Save Changes" : "Create Exercise"}
+					<Button type="submit" className="w-full" disabled={isPending}>
+						{isPending ? "Saving..." : isEdit ? "Save Changes" : "Create Exercise"}
 					</Button>
-					<Button type="button" variant="outline" onClick={onClose} className="w-full">
+					<Button
+						type="button"
+						variant="outline"
+						onClick={onClose}
+						className="w-full"
+						disabled={isPending}
+					>
 						Cancel
 					</Button>
 				</CardFooter>

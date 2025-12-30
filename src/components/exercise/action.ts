@@ -70,8 +70,12 @@ export async function saveExercise(formData: FormData) {
 	const muscle = formData.get("muscle")?.toString();
 	const imageFile = formData.get("image") as File | null;
 
-	if (!name || !muscle) {
-		throw new Error("Name and muscle are required");
+	if (!name) {
+		throw new Error("Please provide a name for the exercise.");
+	}
+
+	if (!muscle) {
+		throw new Error("Please provide a muscle for the exercise.");
 	}
 
 	const imageUrl = await uploadImage(imageFile, userId);
