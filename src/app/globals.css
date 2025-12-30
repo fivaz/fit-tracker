@@ -155,6 +155,12 @@
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground font-semibold;
+	}
+
+	/* Ensure inputs and buttons inherit it correctly if they don't by default */
+	input, button, textarea, select {
+		font-family: inherit;
+		font-weight: inherit;
 	}
 }

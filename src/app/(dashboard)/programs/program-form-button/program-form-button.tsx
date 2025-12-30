@@ -17,7 +17,7 @@ export function ProgramFormButton() {
 					onClick={() => setOpen(true)}
 					className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 p-4 text-white hover:bg-blue-700"
 				>
-					<Plus className="h-5 w-5" /> New Program
+					<Plus className="size-5" /> New Program
 				</button>
 			) : (
 				<AnimatePresence>

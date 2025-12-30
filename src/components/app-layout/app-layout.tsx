@@ -41,7 +41,7 @@ export function AppLayout({ children }: AppLayout2Props) {
 								}`}
 							>
 								<item.icon className={`h-6 w-6 ${isActive ? "fill-blue-500/10" : ""}`} />
-								<span className="text-xs font-semibold">{item.label}</span>
+								<span className="text-xs">{item.label}</span>
 							</Link>
 						);
 					})}

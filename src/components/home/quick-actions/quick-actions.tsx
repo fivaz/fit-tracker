@@ -17,7 +17,7 @@ export function QuickActions({}: QuickActionsProps) {
 				<Link href="/src/app/(dashboard)/progress">
 					<div className="flex items-center gap-3">
 						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">
-							<TrendingUp className="h-5 w-5 text-green-500" />
+							<TrendingUp className="size-5 text-green-500" />
 						</div>
 						<div className="text-left">
 							<div className="font-medium">View Progress</div>
@@ -32,7 +32,7 @@ export function QuickActions({}: QuickActionsProps) {
 				<Link href="/programs">
 					<div className="flex items-center gap-3">
 						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10">
-							<Folder className="h-5 w-5 text-blue-500" />
+							<Folder className="size-5 text-blue-500" />
 						</div>
 						<div className="text-left">
 							<div className="font-medium">Manage Programs</div>
@@ -49,7 +49,7 @@ export function QuickActions({}: QuickActionsProps) {
 				<Link href="/src/app/(dashboard)/exercises">
 					<div className="flex items-center gap-3">
 						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500/10">
-							<Dumbbell className="h-5 w-5 text-purple-500" />
+							<Dumbbell className="size-5 text-purple-500" />
 						</div>
 						<div className="text-left">
 							<div className="font-medium">Exercise Library</div>

@@ -18,7 +18,7 @@ export function StartWorkout({}: StartWorkoutProps) {
 	return (
 		<div className="rounded-2xl bg-linear-to-br from-blue-600 to-blue-700 p-5 shadow-lg">
 			<div className="mb-3 flex items-center gap-2">
-				<Play className="h-5 w-5 text-white" />
+				<Play className="size-5 text-white" />
 				<h2 className="text-lg text-white">Start Workout</h2>
 			</div>
 			{programs.length > 0 ? (
@@ -32,7 +32,7 @@ export function StartWorkout({}: StartWorkoutProps) {
 								<div className="font-medium">{program.name}</div>
 								<div className="text-sm text-blue-100">{program.exercises.length} exercises</div>
 							</div>
-							<Play className="h-5 w-5" />
+							<Play className="size-5" />
 						</button>
 					))}
 					{programs.length > 3 && (

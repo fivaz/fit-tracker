@@ -34,7 +34,7 @@ export function ConfirmDialog({ isOpen, title, message, onConfirm, onCancel }: C
 						>
 							<div className="mb-4 flex items-start gap-4">
 								<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/10">
-									<AlertTriangle className="h-5 w-5 text-red-500" />
+									<AlertTriangle className="size-5 text-red-500" />
 								</div>
 
 								<div className="min-w-0 flex-1">
