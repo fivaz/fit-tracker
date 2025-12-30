@@ -30,9 +30,10 @@ import { saveExercise } from "../../action";
 type ExerciseFormProps = {
 	exercise: Partial<Exercise>;
 	onClose: () => void;
+	programId?: string;
 };
 
-export function ExerciseForm({ exercise, onClose }: ExerciseFormProps) {
+export function ExerciseForm({ programId, exercise, onClose }: ExerciseFormProps) {
 	const isEdit = exercise.id;
 
 	return (
@@ -57,7 +58,7 @@ export function ExerciseForm({ exercise, onClose }: ExerciseFormProps) {
 				</CardHeader>
 
 				{isEdit && <input type="hidden" name="id" value={exercise.id} />}
-				<input type="hidden" name="programId" value={exercise.programId} />
+				<input type="hidden" name="programId" value={programId} />
 
 				<CardContent>
 					<FieldGroup>

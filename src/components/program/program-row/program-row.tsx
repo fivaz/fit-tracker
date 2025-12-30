@@ -21,7 +21,7 @@ import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 
 type ProgramRowProps = {
-	program: Program;
+	program: Program & { exercises: { exerciseId: string }[] };
 };
 
 export function ProgramRow({ program }: ProgramRowProps) {
@@ -52,7 +52,9 @@ export function ProgramRow({ program }: ProgramRowProps) {
 						<Card>
 							<CardHeader>
 								<CardTitle>{program.name}</CardTitle>
-								<CardDescription>1 exercise</CardDescription>
+								<CardDescription>
+									{program.exercises.length} exercise{program.exercises.length > 0 && "s"}
+								</CardDescription>
 								<CardAction className="space-x-2">
 									<Button
 										variant="outline"

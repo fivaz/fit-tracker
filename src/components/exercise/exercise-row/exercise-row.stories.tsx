@@ -12,9 +12,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-	args: { exercise: mockExercise },
+	args: { exercise: mockExercise, programId: "1" },
 };
 
 export const Secondary: Story = {
-	args: { exercise: mockExercise },
+	args: { exercise: mockExercise, programId: "1" },
 };

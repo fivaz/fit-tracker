@@ -15,7 +15,7 @@ export const getExerciseById = cache(async (id: string) => {
 		const userId = await getUserId();
 
 		const exercise = await prisma.exercise.findUnique({
-			where: { id, userId },
+			where: { id, userId, deletedAt: null },
 		});
 
 		if (!exercise) {
@@ -34,7 +34,6 @@ export async function getExercises(programId: string): Promise<Exercise[]> {
 
 	return prisma.exercise.findMany({
 		where: {
-			programId,
 			userId,
 		},
 		orderBy: {
@@ -61,6 +60,30 @@ function getPublicImageUrl(bucket: string, path: string): string {
 	return data.publicUrl;
 }
 
+async function uploadImage(imageFile: File | null, userId: string) {
+	if (!imageFile || !(imageFile.size > 0)) {
+		return null;
+	}
+
+	// Validate file type
+	if (!imageFile.type.startsWith("image/")) {
+		throw new Error("Only image files are allowed");
+	}
+
+	// Validate file size (max 5MB)
+	const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+	if (imageFile.size > MAX_IMAGE_SIZE) {
+		throw new Error("Image must be smaller than 5MB");
+	}
+
+	const fileExtension = imageFile.name.split(".").pop();
+	const imagePath = `${userId}/${uuidv4()}.${fileExtension}`;
+
+	await uploadFileToSupabase(imageFile, "exercise-images", imagePath);
+
+	return getPublicImageUrl("exercise-images", imagePath);
+}
+
 export async function saveExercise(formData: FormData) {
 	const userId = await getUserId();
 
@@ -74,33 +97,12 @@ export async function saveExercise(formData: FormData) {
 		throw new Error("Name, muscle or program are required");
 	}
 
-	let imageUrl: string | undefined;
-
-	if (imageFile && imageFile.size > 0) {
-		// Validate file type
-		if (!imageFile.type.startsWith("image/")) {
-			throw new Error("Only image files are allowed");
-		}
-
-		// Validate file size (max 5MB)
-		const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-		if (imageFile.size > MAX_IMAGE_SIZE) {
-			throw new Error("Image must be smaller than 5MB");
-		}
-
-		const fileExtension = imageFile.name.split(".").pop();
-		const imagePath = `${userId}/${uuidv4()}.${fileExtension}`;
-
-		await uploadFileToSupabase(imageFile, "exercise-images", imagePath);
-
-		imageUrl = getPublicImageUrl("exercise-images", imagePath);
-	}
+	const imageUrl = await uploadImage(imageFile, userId);
 
 	const exerciseData = {
 		name,
 		muscle,
 		userId,
-		programId,
 		...(imageUrl && { image: imageUrl }),
 	};
 
@@ -111,7 +113,14 @@ export async function saveExercise(formData: FormData) {
 		});
 	} else {
 		await prisma.exercise.create({
-			data: exerciseData,
+			data: {
+				...exerciseData,
+				programs: {
+					create: {
+						programId,
+					},
+				},
+			},
 		});
 	}
 

@@ -9,13 +9,14 @@ export const programs = [
 	{ id: "4", name: "Full Body", exercises: [1, 2, 3, 4, 5] },
 ];
 
-export const mockProgram: Program = {
+export const mockProgram: Program & { exercises: [] } = {
 	id: "p1",
 	name: "Push Day",
 	userId: "u1",
 	createdAt: new Date(),
 	updatedAt: new Date(),
 	deletedAt: null,
+	exercises: [],
 	// The Prisma generated Program type includes relation fields which we can omit by casting
 };
 

@@ -20,7 +20,6 @@ export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const emptyExercise: Partial<Exercise> = {
 		name: "Bench Press",
 		muscle: "Chest",
-		programId: programId,
 	};
 
 	return (
@@ -31,7 +30,11 @@ export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 				</Button>
 			) : (
 				<AnimatePresence mode="wait">
-					<ExerciseForm exercise={emptyExercise} onClose={() => setOpen(false)} />
+					<ExerciseForm
+						programId={programId}
+						exercise={emptyExercise}
+						onClose={() => setOpen(false)}
+					/>
 				</AnimatePresence>
 			)}
 		</div>

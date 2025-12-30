@@ -28,8 +28,6 @@ export default async function ProgramPage({ params }: PageProps) {
 		notFound();
 	}
 
-	const exercises = await getExercises(id);
-
 	return (
 		<div className="space-y-4 p-4">
 			<header className="flex space-x-2">
@@ -41,7 +39,7 @@ export default async function ProgramPage({ params }: PageProps) {
 				<div>
 					<h1 className="mb-1 text-xl tracking-tight">{program.name}</h1>
 					<p className="text-primary text-sm font-normal">
-						{exercises.length} exercise{exercises.length > 0 && "s"}
+						{program.exercises.length} exercise{program.exercises.length > 0 && "s"}
 					</p>
 				</div>
 			</header>
@@ -51,13 +49,13 @@ export default async function ProgramPage({ params }: PageProps) {
 
 			<div className="space-y-2">
 				<AnimatePresence mode="popLayout">
-					{exercises.map((exercise) => (
-						<ExerciseRow key={exercise.id} exercise={exercise} />
+					{program.exercises.map((aux) => (
+						<ExerciseRow key={aux.exerciseId} exercise={aux.exercise} programId={program.id} />
 					))}
 				</AnimatePresence>
 			</div>
 
-			{exercises.length === 0 && <ExerciseEmptyState />}
+			{program.exercises.length === 0 && <ExerciseEmptyState />}
 		</div>
 	);
 }

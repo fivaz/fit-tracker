@@ -14,9 +14,16 @@ export const getProgramById = cache(async (id: string) => {
 		const program = await prisma.program.findUnique({
 			where: { id, userId },
 			// // You can include relations here if needed
-			// include: {
-			// 	exercises: true,
-			// },
+			include: {
+				exercises: {
+					where: {
+						exercise: { deletedAt: null }, // Filter out soft-deleted exercises
+					},
+					include: {
+						exercise: true, // 2. MANDATORY: Fetch the actual exercise details
+					},
+				},
+			},
 		});
 
 		if (!program) {
@@ -30,16 +37,23 @@ export const getProgramById = cache(async (id: string) => {
 	}
 });
 
-export async function getPrograms(): Promise<Program[]> {
+export async function getPrograms(): Promise<
+	Array<Program & { exercises: { exerciseId: string }[] }>
+> {
 	const userId = await getUserId();
 
 	return prisma.program.findMany({
-		where: {
-			userId,
+		where: { userId },
+		include: {
+			exercises: {
+				where: {
+					exercise: { deletedAt: null }, // Filter out soft-deleted exercises
+				},
+				// We only need the ID to count, keeps the payload small
+				select: { exerciseId: true },
+			},
 		},
-		orderBy: {
-			createdAt: "desc",
-		},
+		orderBy: { createdAt: "desc" },
 	});
 }
 

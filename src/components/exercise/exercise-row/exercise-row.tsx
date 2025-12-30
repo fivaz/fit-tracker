@@ -22,9 +22,10 @@ import { ROUTES } from "@/lib/consts";
 
 type ExerciseRowProps = {
 	exercise: Exercise;
+	programId: string;
 };
 
-export function ExerciseRow({ exercise }: ExerciseRowProps) {
+export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -41,7 +42,12 @@ export function ExerciseRow({ exercise }: ExerciseRowProps) {
 		<div className="relative">
 			<AnimatePresence mode="wait">
 				{isEditing ? (
-					<ExerciseForm key="edit-form" exercise={exercise} onClose={() => setIsEditing(false)} />
+					<ExerciseForm
+						key="edit-form"
+						programId={programId}
+						exercise={exercise}
+						onClose={() => setIsEditing(false)}
+					/>
 				) : (
 					<motion.div
 						key="display-row"
