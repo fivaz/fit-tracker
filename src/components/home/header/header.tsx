@@ -4,9 +4,7 @@ import React from "react";
 
 import { Dumbbell } from "lucide-react";
 
-type HeaderProps = {};
-
-export function Header({}: HeaderProps) {
+export function Header() {
 	return (
 		<div className="flex items-center justify-between pt-2 pb-4">
 			<div>

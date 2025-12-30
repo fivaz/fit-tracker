@@ -6,13 +6,7 @@ import { motion } from "motion/react";
 
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardAction,
-	CardContent,
-	CardFooter,
-	CardHeader,
-} from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -115,6 +109,8 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 								<div className="flex items-center gap-4">
 									{exercise.image && (
 										<Image
+											width={48}
+											height={48}
 											src={exercise.image}
 											className="size-12 rounded-lg object-cover"
 											alt="Preview"
