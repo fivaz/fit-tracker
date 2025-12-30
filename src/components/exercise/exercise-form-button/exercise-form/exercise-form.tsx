@@ -5,6 +5,7 @@ import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
 
 import { MuscleSelect } from "@/components/muscle-select/muscle-select";
+import { ProgramSelect } from "@/components/program-select/program-select";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -15,7 +16,7 @@ import { Exercise } from "@/generated/prisma/client";
 import { saveExercise } from "@/lib/exercise/action";
 
 type ExerciseFormProps = {
-	exercise: Partial<Exercise>;
+	exercise: Partial<Exercise> & { programs?: { programId: string }[] };
 	onClose: () => void;
 	programId?: string;
 };
@@ -24,6 +25,9 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, setIsPending] = useState(false);
 	const isEdit = !!exercise.id;
+
+	const initialProgramIds =
+		exercise.programs?.map((p) => p.programId) || (programId ? [programId] : []);
 
 	const handleSubmit = async (formData: FormData) => {
 		setError(null);
@@ -58,7 +62,6 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 				</CardHeader>
 
 				{isEdit && <input type="hidden" name="id" value={exercise.id} />}
-				{programId && <input type="hidden" name="programId" value={programId} />}
 
 				<CardContent>
 					<FieldGroup>
@@ -82,6 +85,10 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 
 							<Field>
 								<MuscleSelect name="muscles" defaultValue={exercise.muscles} />
+							</Field>
+
+							<Field>
+								<ProgramSelect name="programIds" defaultValue={initialProgramIds} />
 							</Field>
 
 							<Field>

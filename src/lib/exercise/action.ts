@@ -29,11 +29,21 @@ export const getExerciseById = cache(async (id: string) => {
 	}
 });
 
-export async function getExercises(): Promise<Exercise[]> {
+export async function getExercises() {
 	const userId = await getUserId();
 
 	return prisma.exercise.findMany({
-		where: { userId, deletedAt: null },
+		where: {
+			userId,
+			deletedAt: null,
+		},
+		include: {
+			programs: {
+				select: {
+					programId: true,
+				},
+			},
+		},
 	});
 }
 
@@ -65,9 +75,9 @@ export async function saveExercise(formData: FormData) {
 	const userId = await getUserId();
 
 	const id = formData.get("id")?.toString();
-	const programId = formData.get("programId")?.toString();
 	const name = formData.get("name")?.toString();
 	const muscles = formData.getAll("muscles") as MuscleGroup[];
+	const programIds = formData.getAll("programIds") as string[];
 	const imageFile = formData.get("image") as File | null;
 
 	if (!name) {
@@ -80,7 +90,7 @@ export async function saveExercise(formData: FormData) {
 
 	const imageUrl = await uploadImage(imageFile, userId);
 
-	const exerciseData = {
+	const data = {
 		name,
 		muscles,
 		userId,
@@ -88,31 +98,39 @@ export async function saveExercise(formData: FormData) {
 	};
 
 	if (id) {
-		await prisma.exercise.update({
-			where: { id, userId },
-			data: exerciseData,
+		// UPDATE LOGIC
+		await prisma.$transaction(async (tx) => {
+			await tx.exercise.update({
+				where: { id, userId },
+				data: {
+					...data,
+					// Syncing programs: Clear old ones and add new selection
+					programs: {
+						deleteMany: {}, // Remove all previous program associations
+						create: programIds.map((pId) => ({
+							programId: pId,
+						})),
+					},
+				},
+			});
 		});
 	} else {
+		// CREATE LOGIC
 		await prisma.exercise.create({
 			data: {
-				...exerciseData,
-				// Only create the junction record if programId exists
-				...(programId && {
-					programs: {
-						create: {
-							programId,
-							order: 0,
-						},
-					},
-				}),
+				...data,
+				programs: {
+					create: programIds.map((pId) => ({
+						programId: pId,
+					})),
+				},
 			},
 		});
 	}
 
-	// Conditionally revalidate the program path only if a programId was provided
-	if (programId) {
-		revalidatePath(`${ROUTES.PROGRAMS}/${programId}`);
-	}
+	programIds.forEach((id) => {
+		revalidatePath(`${ROUTES.PROGRAMS}/${id}`);
+	});
 
 	revalidatePath(ROUTES.EXERCISES);
 }

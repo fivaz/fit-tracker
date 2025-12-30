@@ -13,7 +13,7 @@ import { Exercise } from "@/generated/prisma/client";
 import { deleteExerciseAction } from "@/lib/exercise/action";
 
 type ExerciseRowProps = {
-	exercise: Exercise;
+	exercise: Exercise & { programs?: { programId: string }[] };
 	programId?: string;
 };
 
