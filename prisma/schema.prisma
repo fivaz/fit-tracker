@@ -31,11 +31,12 @@ model User {
 }
 
 model Program {
-  id        String     @id @default(uuid())
-  name      String
-  userId    String
-  user      User       @relation(fields: [userId], references: [id])
-  exercises Exercise[]
+  id     String @id @default(uuid())
+  name   String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  exercises ProgramHasExercise[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -47,15 +48,12 @@ model Program {
 model Exercise {
   id     String  @id @default(uuid())
   name   String
-  image  String? // URL to the exercise demonstration image
-  muscle String // e.g., "Chest", "Quads", "Biceps"
-  order  Int     @default(0)
+  image  String?
+  muscle String
 
-  programId String
-  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
-
-  // Relation to the logs/evolution data
-  sets SetLog[]
+  // Changed to use the junction table
+  programs ProgramHasExercise[]
+  sets     SetLog[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -63,8 +61,18 @@ model Exercise {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+}
 
-  @@index([programId])
+model ProgramHasExercise {
+  programId String
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  order Int @default(0) // Order is now specific to the program!
+
+  @@id([programId, exerciseId]) // Composite primary key
 }
 
 model SetLog {
