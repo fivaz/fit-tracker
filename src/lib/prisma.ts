@@ -14,13 +14,10 @@ const basePrisma = new PrismaClient({ adapter });
 // 2. Create the extended client
 const prisma = basePrisma.$extends({
 	query: {
-		program: {
+		// This catches all models dynamically
+		$allModels: {
 			async findMany({ args, query }) {
 				// Automatically filter out soft-deleted programs
-				args.where = { ...args.where, deletedAt: null };
-				return query(args);
-			},
-			async findFirst({ args, query }) {
 				args.where = { ...args.where, deletedAt: null };
 				return query(args);
 			},

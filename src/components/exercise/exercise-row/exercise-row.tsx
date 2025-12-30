@@ -6,7 +6,7 @@ import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
-import { deleteExerciseAction } from "@/components/exercise/action"; // Adjust path
+import { deleteExerciseAction } from "@/components/exercise/action";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,9 +50,8 @@ export function ExerciseRow({ exercise }: ExerciseRowProps) {
 						exit={{ opacity: 0, x: -100 }}
 					>
 						<Card>
-							<CardHeader>
-								<CardTitle>{exercise.name}</CardTitle>
-								<CardDescription>1 exercise</CardDescription>
+							<CardHeader className="flex items-center justify-between">
+								<h2>{exercise.name}</h2>
 								<CardAction className="space-x-2">
 									<Button
 										variant="outline"
@@ -72,22 +71,11 @@ export function ExerciseRow({ exercise }: ExerciseRowProps) {
 									</Button>
 								</CardAction>
 							</CardHeader>
-
-							<CardContent>
-								<Link href={`${ROUTES.EXERCISES}/${exercise.id}`}>
-									<Button className="w-full" variant="secondary">
-										<Dumbbell className="size-4" />
-										Manage Exercises
-										<ChevronRight className="size-4" />
-									</Button>
-								</Link>
-							</CardContent>
 						</Card>
 					</motion.div>
 				)}
 			</AnimatePresence>
 
-			{/* Delete Confirmation Dialog */}
 			<ConfirmDialog
 				isOpen={showDeleteDialog}
 				title="Delete Exercise"

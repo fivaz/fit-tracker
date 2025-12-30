@@ -22,7 +22,7 @@ type ProgramFormProps = {
 };
 
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
-	const isCreate = !program?.id;
+	const isEdit = program.id;
 	return (
 		<motion.form
 			initial={{ opacity: 0, height: 0, scale: 0.95 }}
@@ -36,7 +36,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		>
 			<Card>
 				<CardHeader className="">
-					<CardTitle>{isCreate ? "Edit Program" : "New Program"}</CardTitle>
+					<CardTitle>{isEdit ? "Edit Program" : "New Program"}</CardTitle>
 					<CardAction>
 						<Button type="button" onClick={onClose} variant="outline" size="icon">
 							<X className="size-5" />
@@ -44,7 +44,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 					</CardAction>
 				</CardHeader>
 
-				{isCreate && <input type="hidden" name="id" value={program.id} />}
+				{isEdit && <input type="hidden" name="id" value={program.id} />}
 
 				<CardContent>
 					<div className="flex flex-col gap-6">
@@ -64,7 +64,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 
 				<CardFooter className="flex-col gap-2">
 					<Button type="submit" className="w-full">
-						{isCreate ? "Save Changes" : "Create Program"}
+						{isEdit ? "Save Changes" : "Create Program"}
 					</Button>
 					<Button type="button" variant="outline" onClick={onClose} className="w-full">
 						Cancel

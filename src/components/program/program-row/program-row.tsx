@@ -6,7 +6,7 @@ import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
-import { deleteProgramAction } from "@/components/program/action"; // Adjust path
+import { deleteProgramAction } from "@/components/program/action";
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -87,7 +87,6 @@ export function ProgramRow({ program }: ProgramRowProps) {
 				)}
 			</AnimatePresence>
 
-			{/* Delete Confirmation Dialog */}
 			<ConfirmDialog
 				isOpen={showDeleteDialog}
 				title="Delete Program"

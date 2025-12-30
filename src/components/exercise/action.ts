@@ -29,11 +29,12 @@ export const getExerciseById = cache(async (id: string) => {
 	}
 });
 
-export async function getExercises(): Promise<Exercise[]> {
+export async function getExercises(programId: string): Promise<Exercise[]> {
 	const userId = await getUserId();
 
 	return prisma.exercise.findMany({
 		where: {
+			programId,
 			userId,
 		},
 		orderBy: {

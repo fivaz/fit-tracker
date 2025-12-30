@@ -2,9 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ChevronLeft } from "lucide-react";
+import { AnimatePresence } from "motion/react";
 
+import { getExercises } from "@/components/exercise/action";
+import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
-import { getProgramById } from "@/components/program/action";
+import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
+import { getProgramById, getPrograms } from "@/components/program/action";
+import { ProgramEmptyState } from "@/components/program/program-empty-state/program-empty-state";
+import { ProgramRow } from "@/components/program/program-row/program-row";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/lib/consts";
@@ -21,6 +27,9 @@ export default async function ProgramPage({ params }: PageProps) {
 	if (!program) {
 		notFound();
 	}
+
+	const exercises = await getExercises(id);
+
 	return (
 		<div className="space-y-4 p-4">
 			<header className="flex space-x-2">
@@ -31,12 +40,24 @@ export default async function ProgramPage({ params }: PageProps) {
 				</Button>
 				<div>
 					<h1 className="mb-1 text-xl tracking-tight">{program.name}</h1>
-					<p className="text-primary text-sm font-normal">0 exercises</p>
+					<p className="text-primary text-sm font-normal">
+						{exercises.length} exercise{exercises.length > 0 && "s"}
+					</p>
 				</div>
 			</header>
 			<Separator />
 
 			<ExerciseFormButton programId={program.id} />
+
+			<div className="space-y-2">
+				<AnimatePresence mode="popLayout">
+					{exercises.map((exercise) => (
+						<ExerciseRow key={exercise.id} exercise={exercise} />
+					))}
+				</AnimatePresence>
+			</div>
+
+			{exercises.length === 0 && <ExerciseEmptyState />}
 		</div>
 	);
 }

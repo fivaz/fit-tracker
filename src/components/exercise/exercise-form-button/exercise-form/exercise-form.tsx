@@ -33,7 +33,7 @@ type ExerciseFormProps = {
 };
 
 export function ExerciseForm({ exercise, onClose }: ExerciseFormProps) {
-	const isCreate = !exercise?.id;
+	const isEdit = exercise.id;
 
 	return (
 		<motion.form
@@ -48,7 +48,7 @@ export function ExerciseForm({ exercise, onClose }: ExerciseFormProps) {
 		>
 			<Card>
 				<CardHeader>
-					<CardTitle>{isCreate ? "Edit Exercise" : "New Exercise"}</CardTitle>
+					<CardTitle>{isEdit ? "Edit Exercise" : "New Exercise"}</CardTitle>
 					<CardAction>
 						<Button type="button" onClick={onClose} variant="outline" size="icon">
 							<X className="size-5" />
@@ -56,7 +56,7 @@ export function ExerciseForm({ exercise, onClose }: ExerciseFormProps) {
 					</CardAction>
 				</CardHeader>
 
-				{isCreate && <input type="hidden" name="id" value={exercise.id} />}
+				{isEdit && <input type="hidden" name="id" value={exercise.id} />}
 				<input type="hidden" name="programId" value={exercise.programId} />
 
 				<CardContent>
@@ -114,7 +114,7 @@ export function ExerciseForm({ exercise, onClose }: ExerciseFormProps) {
 
 				<CardFooter className="flex-col gap-2">
 					<Button type="submit" className="w-full">
-						{isCreate ? "Save Changes" : "Create Exercise"}
+						{isEdit ? "Save Changes" : "Create Exercise"}
 					</Button>
 					<Button type="button" variant="outline" onClick={onClose} className="w-full">
 						Cancel
