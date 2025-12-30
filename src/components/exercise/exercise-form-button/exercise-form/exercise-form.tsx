@@ -12,7 +12,6 @@ import {
 	CardContent,
 	CardFooter,
 	CardHeader,
-	CardTitle,
 } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -23,6 +22,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { Exercise } from "@/generated/prisma/client";
 import { MAJOR_MUSCLE_GROUPS } from "@/lib/consts";
 
@@ -135,7 +135,8 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 
 				<CardFooter className="flex-col gap-2">
 					<Button type="submit" className="w-full" disabled={isPending}>
-						{isPending ? "Saving..." : isEdit ? "Save Changes" : "Create Exercise"}
+						{isPending && <Spinner />}
+						{isEdit ? "Save Changes" : "Create Exercise"}
 					</Button>
 					<Button
 						type="button"

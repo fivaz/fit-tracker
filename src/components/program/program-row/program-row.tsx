@@ -76,13 +76,17 @@ export function ProgramRow({ program }: ProgramRowProps) {
 							</CardHeader>
 
 							<CardContent>
-								<Link href={`${ROUTES.PROGRAMS}/${program.id}`}>
-									<Button className="w-full" variant="secondary">
+								<Button
+									asChild
+									className="text-chart-2 hover:text-chart-3 w-full"
+									variant="outline"
+								>
+									<Link href={`${ROUTES.PROGRAMS}/${program.id}`}>
 										<Dumbbell className="size-4" />
 										Manage Exercises
 										<ChevronRight className="size-4" />
-									</Button>
-								</Link>
+									</Link>
+								</Button>
 							</CardContent>
 						</Card>
 					</motion.div>

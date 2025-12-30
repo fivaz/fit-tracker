@@ -22,7 +22,7 @@ export function AppLayout({ children }: AppLayout2Props) {
 
 	return (
 		<>
-			<main className="mx-auto max-w-md">{children}</main>
+			<main className="mx-auto max-w-md pb-18">{children}</main>
 
 			{/* Persistent Bottom Navigation */}
 			<nav className="safe-area-bottom border-gray-200dark:border-gray-800 back drop-blur-md fixed right-0 bottom-0 left-0 z-50 border-t bg-white dark:bg-gray-900/80">

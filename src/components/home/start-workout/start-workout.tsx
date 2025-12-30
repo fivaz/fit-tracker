@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { Play } from "lucide-react";
 
-import { programs } from "@/seed/mock-data";
+import { mockPrograms } from "@/seed/mock-data";
 
 export function StartWorkout() {
 	return (
@@ -14,9 +14,9 @@ export function StartWorkout() {
 				<Play className="size-5 text-white" />
 				<h2 className="text-lg text-white">Start Workout</h2>
 			</div>
-			{programs.length > 0 ? (
+			{mockPrograms.length > 0 ? (
 				<div className="space-y-2">
-					{programs.slice(0, 3).map((program) => (
+					{mockPrograms.slice(0, 3).map((program) => (
 						<button
 							key={program.id}
 							className="flex w-full items-center justify-between rounded-xl bg-white/10 p-4 text-left text-white backdrop-blur-sm transition-all hover:bg-white/20 active:scale-95"
@@ -28,7 +28,7 @@ export function StartWorkout() {
 							<Play className="size-5" />
 						</button>
 					))}
-					{programs.length > 3 && (
+					{mockPrograms.length > 3 && (
 						<Link href="/programs">
 							<div className="w-full p-3 text-center text-sm text-orange-200 transition-colors hover:text-white">
 								View all programs →

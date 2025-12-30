@@ -3,7 +3,6 @@ import { useState } from "react";
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
 
-import { saveExercise } from "@/components/exercise/action";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,11 +11,10 @@ import {
 	CardContent,
 	CardFooter,
 	CardHeader,
-	CardTitle,
 } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { Program } from "@/generated/prisma/client";
 
 import { saveProgram } from "../../action";
@@ -92,7 +90,8 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 
 				<CardFooter className="flex-col gap-2">
 					<Button type="submit" className="w-full" disabled={isPending}>
-						{isPending ? "Saving..." : isEdit ? "Save Changes" : "Create Program"}
+						{isPending && <Spinner />}
+						{isEdit ? "Save Changes" : "Create Program"}
 					</Button>
 					<Button
 						type="button"

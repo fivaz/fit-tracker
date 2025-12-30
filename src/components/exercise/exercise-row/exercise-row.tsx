@@ -9,7 +9,7 @@ import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { deleteExerciseAction } from "@/components/exercise/action";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Exercise } from "@/generated/prisma/client";
 
 type ExerciseRowProps = {
