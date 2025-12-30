@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Program } from "@/generated/prisma/client";
 
-import { saveProgram } from "./action";
+import { saveProgram } from "../../action";
 
 type ProgramFormProps = {
 	program?: Program; // If present, we are editing

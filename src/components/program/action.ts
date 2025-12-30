@@ -8,21 +8,16 @@ import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/utils-server";
 
 export async function getPrograms(): Promise<Program[]> {
-	try {
-		const userId = await getUserId();
+	const userId = await getUserId();
 
-		return prisma.program.findMany({
-			where: {
-				userId,
-			},
-			orderBy: {
-				createdAt: "desc",
-			},
-		});
-	} catch (e) {
-		console.log(e);
-		redirect(ROUTES.LOGIN);
-	}
+	return prisma.program.findMany({
+		where: {
+			userId,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
 }
 
 export async function saveProgram(formData: FormData) {
@@ -59,5 +54,5 @@ export async function deleteProgramAction(id: string) {
 		},
 	});
 
-	revalidatePath("/programs");
+	revalidatePath(ROUTES.PROGRAMS);
 }

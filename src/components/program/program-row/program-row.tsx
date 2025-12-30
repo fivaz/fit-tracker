@@ -5,9 +5,9 @@ import Link from "next/link";
 import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
-import { deleteProgramAction } from "@/app/(dashboard)/programs/program-form-button/program-form/action"; // Adjust path
-import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
+import { deleteProgramAction } from "@/components/program/action"; // Adjust path
+import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -18,6 +18,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Program } from "@/generated/prisma/client";
+import { ROUTES } from "@/lib/consts";
 
 type ProgramRowProps = {
 	program: Program;
@@ -73,7 +74,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 							</CardHeader>
 
 							<CardContent>
-								<Link href={`/program/${program.id}`}>
+								<Link href={`${ROUTES.PROGRAMS}/${program.id}`}>
 									<Button className="w-full" variant="secondary">
 										<Dumbbell className="size-4" />
 										Manage Exercises

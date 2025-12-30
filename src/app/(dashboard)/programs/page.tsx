@@ -1,9 +1,9 @@
 import { AnimatePresence } from "motion/react";
 
-import { ProgramEmptyState } from "@/app/(dashboard)/programs/program-empty-state/program-empty-state";
-import { getPrograms } from "@/app/(dashboard)/programs/program-form-button/program-form/action";
-import { ProgramFormButton } from "@/app/(dashboard)/programs/program-form-button/program-form-button";
-import { ProgramRow } from "@/app/(dashboard)/programs/program-row/program-row";
+import { getPrograms } from "@/components/program/action";
+import { ProgramEmptyState } from "@/components/program/program-empty-state/program-empty-state";
+import { ProgramFormButton } from "@/components/program/program-form-button/program-form-button";
+import { ProgramRow } from "@/components/program/program-row/program-row";
 
 export default async function ProgramPage() {
 	const programs = await getPrograms();

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 
-import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
+import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
 
 export function ProgramFormButton() {
