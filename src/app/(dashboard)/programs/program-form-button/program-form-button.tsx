@@ -6,19 +6,17 @@ import { Plus } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 
 import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
+import { Button } from "@/components/ui/button";
 
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
 
 	return (
-		<div className="mb-4">
+		<div>
 			{!open ? (
-				<button
-					onClick={() => setOpen(true)}
-					className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 p-4 text-white hover:bg-blue-700"
-				>
+				<Button onClick={() => setOpen(true)} className="w-full">
 					<Plus className="size-5" /> New Program
-				</button>
+				</Button>
 			) : (
 				<AnimatePresence>
 					<ProgramForm onClose={() => setOpen(false)} />

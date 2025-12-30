@@ -159,7 +159,10 @@
 	}
 
 	/* Ensure inputs and buttons inherit it correctly if they don't by default */
-	input, button, textarea, select {
+	input,
+	button,
+	textarea,
+	select {
 		font-family: inherit;
 		font-weight: inherit;
 	}

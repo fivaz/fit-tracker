@@ -1,10 +1,8 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { Program } from "@/generated/prisma/client";
-import { auth } from "@/lib/auth";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/utils-server";

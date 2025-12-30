@@ -7,7 +7,16 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { deleteProgramAction } from "@/app/(dashboard)/programs/program-form-button/program-form/action"; // Adjust path
 import { ProgramForm } from "@/app/(dashboard)/programs/program-form-button/program-form/program-form";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Program } from "@/generated/prisma/client";
 
 type ProgramRowProps = {
@@ -38,36 +47,41 @@ export function ProgramRow({ program }: ProgramRowProps) {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, x: -100 }}
-						className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
 					>
-						<div className="mb-3 flex items-start justify-between gap-3">
-							<div className="min-w-0 flex-1">
-								<h3 className="mb-1 font-medium text-gray-900 dark:text-white">{program.name}</h3>
-								<div className="text-sm text-gray-600 dark:text-gray-500">1 exercise</div>
-							</div>
-							<div className="flex shrink-0 gap-1">
-								<button
-									onClick={() => setIsEditing(true)}
-									className="rounded-lg p-2 text-blue-400 transition-colors hover:bg-blue-500/10"
-								>
-									<Pencil className="size-4" />
-								</button>
-								<button
-									onClick={() => setShowDeleteDialog(true)}
-									className="rounded-lg p-2 text-red-400 transition-colors hover:bg-red-500/10"
-								>
-									<Trash2 className="size-4" />
-								</button>
-							</div>
-						</div>
+						<Card>
+							<CardHeader>
+								<CardTitle>{program.name}</CardTitle>
+								<CardDescription>1 exercise</CardDescription>
+								<CardAction className="space-x-2">
+									<Button
+										variant="outline"
+										onClick={() => setIsEditing(true)}
+										className="text-chart-2 hover:text-chart-3"
+										size="icon-sm"
+									>
+										<Pencil className="size-4" />
+									</Button>
+									<Button
+										variant="outline"
+										className="text-destructive hover:text-red-500"
+										size="icon-sm"
+										onClick={() => setShowDeleteDialog(true)}
+									>
+										<Trash2 className="size-4" />
+									</Button>
+								</CardAction>
+							</CardHeader>
 
-						<Link href={`/program/${program.id}`}>
-							<button className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500/10 px-4 py-3 text-blue-400 transition-colors hover:bg-blue-500/20 active:scale-98">
-								<Dumbbell className="size-4" />
-								Manage Exercises
-								<ChevronRight className="size-4" />
-							</button>
-						</Link>
+							<CardContent>
+								<Link href={`/program/${program.id}`}>
+									<Button className="w-full" variant="secondary">
+										<Dumbbell className="size-4" />
+										Manage Exercises
+										<ChevronRight className="size-4" />
+									</Button>
+								</Link>
+							</CardContent>
+						</Card>
 					</motion.div>
 				)}
 			</AnimatePresence>
