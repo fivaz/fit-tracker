@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 
-import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
@@ -12,13 +11,9 @@ import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardAction,
-	CardContent,
-	CardDescription,
 	CardHeader,
-	CardTitle,
 } from "@/components/ui/card";
 import { Exercise } from "@/generated/prisma/client";
-import { ROUTES } from "@/lib/consts";
 
 type ExerciseRowProps = {
 	exercise: Exercise;

@@ -4,13 +4,10 @@ import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 
-import { getExercises } from "@/components/exercise/action";
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { getProgramById, getPrograms } from "@/components/program/action";
-import { ProgramEmptyState } from "@/components/program/program-empty-state/program-empty-state";
-import { ProgramRow } from "@/components/program/program-row/program-row";
+import { getProgramById } from "@/components/program/action";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/lib/consts";

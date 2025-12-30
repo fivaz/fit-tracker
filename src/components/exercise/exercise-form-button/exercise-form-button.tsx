@@ -31,8 +31,8 @@ export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 			) : (
 				<AnimatePresence mode="wait">
 					<ExerciseForm
-						programId={programId}
 						exercise={emptyExercise}
+						programId={programId}
 						onClose={() => setOpen(false)}
 					/>
 				</AnimatePresence>

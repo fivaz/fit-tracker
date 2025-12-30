@@ -12,13 +12,10 @@ import {
 } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
@@ -33,7 +30,7 @@ type ExerciseFormProps = {
 	programId?: string;
 };
 
-export function ExerciseForm({ programId, exercise, onClose }: ExerciseFormProps) {
+export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps) {
 	const isEdit = exercise.id;
 
 	return (
@@ -58,7 +55,7 @@ export function ExerciseForm({ programId, exercise, onClose }: ExerciseFormProps
 				</CardHeader>
 
 				{isEdit && <input type="hidden" name="id" value={exercise.id} />}
-				<input type="hidden" name="programId" value={programId} />
+				{programId && <input type="hidden" name="programId" value={programId} />}
 
 				<CardContent>
 					<FieldGroup>

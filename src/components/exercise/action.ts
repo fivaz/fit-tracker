@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Exercise } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
-import { supabase } from "@/lib/supabase";
+import { getPublicImageUrl, uploadFile } from "@/lib/supabase";
 import { getUserId } from "@/lib/utils-server";
 
 export const getExerciseById = cache(async (id: string) => {
@@ -32,32 +32,16 @@ export const getExerciseById = cache(async (id: string) => {
 export async function getExercises(programId: string): Promise<Exercise[]> {
 	const userId = await getUserId();
 
-	return prisma.exercise.findMany({
-		where: {
-			userId,
-		},
-		orderBy: {
-			createdAt: "desc",
-		},
-	});
-}
-
-async function uploadFileToSupabase(file: File, bucket: string, path: string) {
-	const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
-		cacheControl: "3600",
-		upsert: true,
+	// Find exercises linked to the program via the join table
+	const phe = await prisma.programHasExercise.findMany({
+		where: { programId },
+		include: { exercise: true },
+		orderBy: { order: "asc" },
 	});
 
-	if (error) {
-		throw new Error(`Image upload failed: ${error.message}`);
-	}
-
-	return data;
-}
-
-function getPublicImageUrl(bucket: string, path: string): string {
-	const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-	return data.publicUrl;
+	return phe
+		.map((p) => p.exercise)
+		.filter((e) => e && e.userId === userId && e.deletedAt === null) as Exercise[];
 }
 
 async function uploadImage(imageFile: File | null, userId: string) {
@@ -79,7 +63,7 @@ async function uploadImage(imageFile: File | null, userId: string) {
 	const fileExtension = imageFile.name.split(".").pop();
 	const imagePath = `${userId}/${uuidv4()}.${fileExtension}`;
 
-	await uploadFileToSupabase(imageFile, "exercise-images", imagePath);
+	await uploadFile(imageFile, "exercise-images", imagePath);
 
 	return getPublicImageUrl("exercise-images", imagePath);
 }
@@ -124,7 +108,7 @@ export async function saveExercise(formData: FormData) {
 		});
 	}
 
-	revalidatePath(ROUTES.EXERCISES);
+	revalidatePath(`${ROUTES.PROGRAMS}/${programId}`);
 }
 
 export async function deleteExerciseAction(id: string) {
