@@ -14,6 +14,15 @@ import {
 	YAxis,
 } from "recharts";
 
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+
 type Exercise = {
 	id: string;
 	name: string;
@@ -205,21 +214,25 @@ export function ProgressView({ exercises, sessions }: ProgressViewProps) {
 			<div className="space-y-4 p-4">
 				{/* Exercise Selector */}
 				<div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-					<label className="mb-3 block text-sm font-medium text-gray-600 dark:text-gray-400">
-						Select Exercise
-					</label>
-					<select
-						value={selectedExerciseId}
-						onChange={(e) => setSelectedExerciseId(e.target.value)}
-						className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-					>
-						<option value="">-- Choose an exercise --</option>
-						{exercisesWithData.map((exercise) => (
-							<option key={exercise.id} value={exercise.id}>
-								{exercise.name}
-							</option>
-						))}
-					</select>
+					<div className="space-y-3">
+						<Label className="text-gray-600 dark:text-gray-400">Select Exercise</Label>
+
+						<Select
+							value={selectedExerciseId}
+							onValueChange={(value) => setSelectedExerciseId(value)}
+						>
+							<SelectTrigger className="w-full rounded-xl border-gray-300 bg-gray-50 px-4 py-6 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white">
+								<SelectValue placeholder="Choose an exercise" />
+							</SelectTrigger>
+							<SelectContent>
+								{exercisesWithData.map((exercise) => (
+									<SelectItem key={exercise.id} value={exercise.id}>
+										{exercise.name}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
 				</div>
 
 				{/* Stats and Charts */}
