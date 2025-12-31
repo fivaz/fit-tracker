@@ -26,7 +26,7 @@ export function AppLayout({ children }: AppLayout2Props) {
 			<main className="mx-auto max-w-md pb-18">{children}</main>
 
 			{/* Persistent Bottom Navigation */}
-			<nav className="safe-area-bottom border-gray-200dark:border-gray-800 back drop-blur-md fixed right-0 bottom-0 left-0 z-50 border-t bg-white dark:bg-gray-900/80">
+			<nav className="safe-area-bottom back drop-blur-md fixed right-0 bottom-0 left-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900/80">
 				<div className="mx-auto flex max-w-md items-center justify-around py-3">
 					{navItems.map((item) => {
 						const isActive = pathname === item.href;
