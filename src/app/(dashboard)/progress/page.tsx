@@ -4,7 +4,7 @@ import { getUserId } from "@/lib/utils-server";
 
 export default async function ProgressPage() {
 	const userId = await getUserId();
-	// In your page component
+
 	const sessions = await prisma.workoutSession.findMany({
 		where: { userId },
 		include: { setLogs: true },

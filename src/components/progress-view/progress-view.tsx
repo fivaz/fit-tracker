@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Calendar, ChevronLeft, Dumbbell, TrendingUp } from "lucide-react";
 import {
@@ -72,22 +73,27 @@ function ProgressChart({
 	unit: string;
 }) {
 	return (
-		<div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+		<div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
 			<h3 className="mb-4 flex items-center gap-2 font-semibold">
 				<TrendingUp className="h-5 w-5" style={{ color }} />
 				{title}
 			</h3>
-			<div className="h-64">
-				<ResponsiveContainer width="100%" height="100%">
+			<div style={{ width: "100%", height: "256px" }}>
+				<ResponsiveContainer>
 					<LineChart data={data}>
-						<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-						<XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: "12px" }} />
-						<YAxis stroke="#6b7280" style={{ fontSize: "12px" }} />
+						<CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+						<XAxis
+							dataKey="date"
+							className="fill-gray-600 dark:fill-gray-400"
+							style={{ fontSize: "12px" }}
+						/>
+						<YAxis className="fill-gray-600 dark:fill-gray-400" style={{ fontSize: "12px" }} />
 						<Tooltip
 							contentStyle={{
-								backgroundColor: "#fff",
-								border: "1px solid #e5e7eb",
+								backgroundColor: "var(--tooltip-bg)",
+								border: "1px solid var(--tooltip-border)",
 								borderRadius: "8px",
+								color: "var(--tooltip-text)",
 							}}
 						/>
 						<Line
@@ -117,9 +123,9 @@ function EmptyState({
 }) {
 	return (
 		<div className="py-16 text-center">
-			<Icon className="mx-auto mb-3 h-12 w-12 text-gray-300" />
-			<p className="font-medium text-gray-600">{title}</p>
-			<p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+			<Icon className="mx-auto mb-3 h-12 w-12 text-gray-300 dark:text-gray-700" />
+			<p className="font-medium text-gray-600 dark:text-gray-400">{title}</p>
+			<p className="mt-1 text-sm text-gray-500 dark:text-gray-600">{subtitle}</p>
 		</div>
 	);
 }
@@ -165,6 +171,7 @@ type ProgressViewProps = {
 };
 
 export function ProgressView({ exercises, sessions }: ProgressViewProps) {
+	const router = useRouter();
 	const [selectedExerciseId, setSelectedExerciseId] = useState("");
 
 	const progressData = useExerciseProgress(sessions, selectedExerciseId);
@@ -178,28 +185,33 @@ export function ProgressView({ exercises, sessions }: ProgressViewProps) {
 	const latestData = progressData[progressData.length - 1];
 
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen bg-gray-50 dark:bg-gray-950">
 			{/* Header */}
-			<div className="sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm">
+			<div className="sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950">
 				<div className="flex items-center gap-3 p-4">
-					<button className="rounded-lg p-2 transition-colors hover:bg-gray-100">
+					<button
+						onClick={() => router.back()}
+						className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+					>
 						<ChevronLeft className="h-6 w-6" />
 					</button>
 					<div>
 						<h2 className="text-lg font-semibold">Progress Tracking</h2>
-						<p className="text-sm text-gray-600">View your fitness journey</p>
+						<p className="text-sm text-gray-600 dark:text-gray-400">View your fitness journey</p>
 					</div>
 				</div>
 			</div>
 
 			<div className="space-y-4 p-4">
 				{/* Exercise Selector */}
-				<div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-					<label className="mb-3 block text-sm font-medium text-gray-600">Select Exercise</label>
+				<div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+					<label className="mb-3 block text-sm font-medium text-gray-600 dark:text-gray-400">
+						Select Exercise
+					</label>
 					<select
 						value={selectedExerciseId}
 						onChange={(e) => setSelectedExerciseId(e.target.value)}
-						className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+						className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
 					>
 						<option value="">-- Choose an exercise --</option>
 						{exercisesWithData.map((exercise) => (
