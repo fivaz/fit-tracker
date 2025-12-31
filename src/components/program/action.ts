@@ -42,11 +42,11 @@ export async function getPrograms(): Promise<
 	const userId = await getUserId();
 
 	return prisma.program.findMany({
-		where: { userId },
+		where: { userId, deletedAt: null },
 		include: {
 			exercises: {
 				where: {
-					exercise: { deletedAt: null }, // Filter out soft-deleted exercises
+					exercise: { deletedAt: null },
 				},
 				// We only need the ID to count, keeps the payload small
 				select: { exerciseId: true },
