@@ -4,7 +4,7 @@ import { ChangeEvent, ComponentProps, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Dumbbell, GalleryVerticalEnd, Loader2, X } from "lucide-react";
+import { Dumbbell, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { GithubIcon } from "@/components/icons/github-icon";

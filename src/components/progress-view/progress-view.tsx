@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { ComponentType, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Calendar, ChevronLeft, Dumbbell, TrendingUp } from "lucide-react";
@@ -117,7 +117,7 @@ function EmptyState({
 	title,
 	subtitle,
 }: {
-	icon: any;
+	icon: ComponentType<{ className?: string }>;
 	title: string;
 	subtitle: string;
 }) {
