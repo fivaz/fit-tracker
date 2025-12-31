@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, ReactNode, useRef, useState } from "react";
+import { ChangeEvent, ComponentType, KeyboardEvent, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -51,20 +51,8 @@ function ThemeToggle() {
 
 	return (
 		<div className="bg-muted relative flex rounded-lg p-1">
-			{themes.map(({ value, icon: Icon, label }) => (
-				<button
-					key={value}
-					onClick={() => setTheme(value)}
-					className={`relative z-10 flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-						theme === value ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-					}`}
-				>
-					<Icon className="h-4 w-4" />
-					<span className="hidden sm:inline">{label}</span>
-				</button>
-			))}
 			<motion.div
-				className="bg-background absolute inset-1 rounded-md shadow-sm"
+				className="bg-primary absolute inset-1 rounded-md shadow-sm"
 				layoutId="theme-indicator"
 				transition={{ type: "spring", stiffness: 300, damping: 30 }}
 				style={{
@@ -72,6 +60,20 @@ function ThemeToggle() {
 					width: "calc(33.33% - 8px)",
 				}}
 			/>
+			{themes.map(({ value, icon: Icon, label }) => (
+				<button
+					key={value}
+					onClick={() => setTheme(value)}
+					className={`relative z-10 flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+						theme === value
+							? "text-primary-foreground"
+							: "text-muted-foreground hover:text-foreground"
+					}`}
+				>
+					<Icon className="h-4 w-4" />
+					<span className="hidden sm:inline">{label}</span>
+				</button>
+			))}
 		</div>
 	);
 }
@@ -85,7 +87,7 @@ function EditableField({
 	unit,
 	onSave,
 }: {
-	icon: any;
+	icon: ComponentType<{ className?: string }>;
 	label: string;
 	value: string;
 	fieldName: string;
@@ -109,11 +111,29 @@ function EditableField({
 		setIsExpanded(false);
 	};
 
+	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter" && !isPending) {
+			e.preventDefault();
+			handleSave();
+		}
+		if (e.key === "Escape") {
+			handleCancel();
+		}
+	};
+
+	const toggleExpanded = () => {
+		if (isExpanded) {
+			handleCancel();
+		} else {
+			setIsExpanded(true);
+		}
+	};
+
 	return (
 		<div className="border-b last:border-b-0">
 			<div
 				className="hover:bg-muted/50 flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors"
-				onClick={() => !isExpanded && setIsExpanded(true)}
+				onClick={toggleExpanded}
 			>
 				<div className="bg-muted flex h-8 w-8 items-center justify-center rounded-lg">
 					<Icon className="text-muted-foreground h-4 w-4" />
@@ -144,7 +164,7 @@ function EditableField({
 						transition={{ type: "spring", stiffness: 300, damping: 30 }}
 						className="overflow-hidden"
 					>
-						<div className="space-y-3 px-4 pt-2 pb-4">
+						<div className="space-y-3 px-4 pt-2 pb-4" onClick={(e) => e.stopPropagation()}>
 							<div className="space-y-2">
 								<div className="relative">
 									<Input
@@ -152,6 +172,7 @@ function EditableField({
 										type={type}
 										value={inputValue}
 										onChange={(e) => setInputValue(e.target.value)}
+										onKeyDown={handleKeyDown}
 										className="pr-12"
 										autoFocus
 									/>
@@ -217,7 +238,7 @@ export function SettingsView({ user }: SettingsViewProps) {
 		fileInputRef.current?.click();
 	};
 
-	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
 
