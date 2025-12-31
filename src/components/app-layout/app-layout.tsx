@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Dumbbell, Folder, Home, TrendingUp } from "lucide-react";
+import { Dumbbell, Folder, Home, SettingsIcon, TrendingUp } from "lucide-react";
 
 type AppLayout2Props = {
 	children: ReactNode;
@@ -18,6 +18,7 @@ export function AppLayout({ children }: AppLayout2Props) {
 		{ id: "programs", icon: Folder, label: "Programs", href: "/programs" },
 		{ id: "exercises", icon: Dumbbell, label: "Exercises", href: "/exercises" },
 		{ id: "progress", icon: TrendingUp, label: "Progress", href: "/progress" },
+		{ id: "settings", icon: SettingsIcon, label: "Settings", href: "/settings" },
 	];
 
 	return (
