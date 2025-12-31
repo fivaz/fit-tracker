@@ -1,16 +1,14 @@
-"use client";
 import { ComponentProps } from "react";
 import Link from "next/link";
 
 import { Dumbbell, Folder, TrendingUp } from "lucide-react";
 
+import { getPrograms } from "@/components/program/action";
 import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
+import { getExercises } from "@/lib/exercise/action";
 import { cn } from "@/lib/utils";
 import { mockExercises, mockWorkoutSessions } from "@/seed/mock-data";
-
-const programs = [0, 2];
-const exercises = [0, 2];
 
 export function CardQuickAction({
 	href,
@@ -29,24 +27,11 @@ export function CardQuickAction({
 	);
 }
 
-export function QuickActions() {
+export async function QuickActions() {
+	const [exercises, programs] = await Promise.all([getExercises(), getPrograms()]);
+
 	return (
 		<div className="grid space-y-3">
-			<div className="grid grid-cols-2 gap-3">
-				<CardQuickAction href={ROUTES.PROGRAMS}>
-					<div className="space-y-1">
-						<div className="text-2xl">{mockWorkoutSessions.filter((s) => s.completed).length}</div>
-						<div className="text-muted-foreground">Workouts</div>
-					</div>
-				</CardQuickAction>
-				<CardQuickAction href={ROUTES.EXERCISES}>
-					<div className="space-y-1">
-						<div className="text-2xl">{mockExercises.length}</div>
-						<div className="text-muted-foreground">Exercises</div>
-					</div>
-				</CardQuickAction>
-			</div>
-
 			<CardQuickAction href={ROUTES.PROGRESS}>
 				<div className="flex items-center gap-3">
 					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">

@@ -56,6 +56,38 @@ export async function getPrograms(): Promise<
 	});
 }
 
+export async function getRecentPrograms() {
+	const userId = await getUserId();
+
+	const recentSessions = await prisma.workoutSession.findMany({
+		where: { userId },
+		orderBy: { startedAt: "desc" },
+		distinct: ["programId"],
+		take: 3,
+		include: {
+			program: {
+				include: {
+					exercises: {
+						where: {
+							exercise: {
+								// We only want the junction records
+								// where the actual exercise is NOT deleted
+								deletedAt: null,
+							},
+						},
+						orderBy: { order: "asc" },
+						include: {
+							exercise: true,
+						},
+					},
+				},
+			},
+		},
+	});
+
+	return recentSessions.map((session) => session.program);
+}
+
 export async function saveProgram(formData: FormData) {
 	const userId = await getUserId();
 
