@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Dumbbell, Folder, TrendingUp } from "lucide-react";
 
+import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 import { mockExercises, mockWorkoutSessions } from "@/seed/mock-data";
@@ -17,14 +18,14 @@ export function CardQuickAction({
 	children,
 }: ComponentProps<"div"> & { href: string }) {
 	return (
-		<div
+		<Card
 			className={cn(
-				"rounded-xl border border-gray-200 bg-white p-4 transition-all hover:scale-[0.99] hover:bg-gray-50 active:scale-98 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800",
+				"p-4 shadow-none transition-all hover:scale-[0.99] hover:bg-gray-50 active:scale-98 dark:hover:bg-gray-800",
 				className,
 			)}
 		>
 			<Link href={href}>{children}</Link>
-		</div>
+		</Card>
 	);
 }
 
@@ -39,7 +40,7 @@ export function QuickActions() {
 					</div>
 				</CardQuickAction>
 				<CardQuickAction href={ROUTES.EXERCISES}>
-					<div className="space-y-1 px-4">
+					<div className="space-y-1">
 						<div className="text-2xl">{mockExercises.length}</div>
 						<div className="text-muted-foreground">Exercises</div>
 					</div>

@@ -44,6 +44,7 @@ model WorkoutSession {
   completedAt DateTime?
 
   createdAt DateTime @default(now())
+  setLogs   SetLog[]
 }
 
 model Program {
@@ -109,8 +110,12 @@ model ProgramHasExercise {
 
 model SetLog {
   id     String @id @default(uuid())
-  weight Float // The weight lifted
-  reps   Int // Number of reps performed
+  weight Float
+  reps   Int
+  order  Int
+
+  sessionId String
+  session   WorkoutSession @relation(fields: [sessionId], references: [id])
 
   // Timing fields
   createdAt DateTime  @default(now())
