@@ -4,9 +4,11 @@ import { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { ModeToggle } from "@/components/mode-toggle/mode-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ConfirmProvider } from "@/lib/hooks/use-confirm";
 
 const APP_NAME = "Fit-Tracker";
 const APP_DEFAULT_TITLE = "Fit-Tracker";
@@ -87,13 +89,15 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="bg-background min-h-svh">
-						{/* Main Content Area */}
-						<div className="absolute right-0 p-5">
-							<ModeToggle />
+					<ConfirmProvider>
+						<div className="bg-background min-h-svh">
+							{/* Main Content Area */}
+							<div className="absolute right-0 p-5">
+								<ModeToggle />
+							</div>
+							{children}
 						</div>
-						{children}
-					</div>
+					</ConfirmProvider>
 					<Toaster />
 				</ThemeProvider>
 			</body>
