@@ -1,6 +1,6 @@
 {
 	"name": "fit-tracker",
-	"version": "1.0.1",
+	"version": "0.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -75,6 +75,7 @@
 		"@vitest/browser-playwright": "^4.0.16",
 		"@vitest/coverage-v8": "^4.0.16",
 		"babel-plugin-react-compiler": "1.0.0",
+		"conventional-changelog-conventionalcommits": "^9.1.0",
 		"devmoji": "^2.3.0",
 		"eslint": "^9",
 		"eslint-config-next": "16.1.1",

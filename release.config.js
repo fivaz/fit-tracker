@@ -1,8 +1,32 @@
 module.exports = {
-	branches: ["main"], // or "master", "+([0-9])?(.{+([0-9]),x}).x"
+	branches: ["main"],
 	plugins: [
-		"@semantic-release/commit-analyzer",
-		"@semantic-release/release-notes-generator",
+		[
+			"@semantic-release/commit-analyzer",
+			{
+				preset: "conventionalcommits",
+			},
+		],
+		[
+			"@semantic-release/release-notes-generator",
+			{
+				preset: "conventionalcommits",
+				presetConfig: {
+					types: [
+						{ type: "feat", section: "✨ Features" },
+						{ type: "fix", section: "🐛 Bug Fixes" },
+						{ type: "style", section: "💄 Style" },
+						{ type: "refactor", section: "♻️ Refactoring" },
+						{ type: "perf", section: "⚡ Performance" },
+						{ type: "test", section: "🧪 Tests" },
+						{ type: "build", section: "🏗️ Build" },
+						{ type: "ci", section: "👷 CI" },
+						{ type: "chore", section: "🧹 Chores" },
+						{ type: "docs", section: "📝 Documentation" },
+					],
+				},
+			},
+		],
 		"@semantic-release/changelog",
 		[
 			"@semantic-release/git",
