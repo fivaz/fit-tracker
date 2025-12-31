@@ -2,6 +2,23 @@
 
 import { Exercise, Program } from "@/generated/prisma/client";
 
+export const mockUser = {
+	id: "user-123-abc",
+	name: "Alex Rivera",
+	email: "alex.fit@example.com",
+	image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+
+	// Body Metrics
+	weight: 82.5, // kg
+	bodyFat: 18.2, // %
+	muscleMass: 42.0, // %
+
+	activeSessionId: null, // No workout currently in progress
+	emailVerified: true,
+	createdAt: new Date("2025-01-01T10:00:00Z"),
+	updatedAt: new Date("2025-12-30T15:30:00Z"),
+};
+
 export const mockPrograms = [
 	{ id: "1", name: "Push Day", exercises: [1, 2, 3] },
 	{ id: "2", name: "Pull Day", exercises: [1, 2] },
