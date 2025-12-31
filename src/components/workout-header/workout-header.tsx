@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { intervalToDuration } from "date-fns";
+import { Timer } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useWorkoutTimer } from "@/lib/hooks/use-workout-timer";
 import { endWorkout } from "@/lib/workout/action";
 
 type WorkoutHeaderProps = {
@@ -14,34 +15,14 @@ type WorkoutHeaderProps = {
 };
 
 export function WorkoutHeader({ sessionId, startedAt, programName }: WorkoutHeaderProps) {
-	const [elapsed, setElapsed] = useState("00:00");
 	const [isPending, setIsPending] = useState(false);
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const now = new Date();
-			const start = new Date(startedAt);
-
-			// 1. Get the duration object { hours, minutes, seconds }
-			const duration = intervalToDuration({ start, end: now });
-
-			// 2. Format it into a string
-			// We manually pad it to keep the 00:00:00 digital clock look
-			const h = (duration.hours || 0).toString().padStart(2, "0");
-			const m = (duration.minutes || 0).toString().padStart(2, "0");
-			const s = (duration.seconds || 0).toString().padStart(2, "0");
-
-			setElapsed(duration.hours ? `${h}:${m}:${s}` : `${m}:${s}`);
-		}, 1000);
-
-		return () => clearInterval(interval);
-	}, [startedAt]);
+	const elapsed = useWorkoutTimer(startedAt);
 
 	const handleEnd = async () => {
-		if (confirm("Finish workout?")) {
-			setIsPending(true);
-			await endWorkout(sessionId);
-		}
+		if (!confirm("Finish workout?")) return;
+
+		setIsPending(true);
+		await endWorkout(sessionId);
 	};
 
 	return (
@@ -53,12 +34,8 @@ export function WorkoutHeader({ sessionId, startedAt, programName }: WorkoutHead
 				<span className="text-primary font-mono text-2xl font-black tabular-nums">{elapsed}</span>
 			</div>
 
-			<Button
-				variant="destructive"
-				onClick={handleEnd}
-				disabled={isPending}
-				className="shadow-destructive/20 rounded-full px-6 shadow-lg"
-			>
+			<Button variant="destructive" onClick={handleEnd} disabled={isPending} className="">
+				<Timer className="size-5" />
 				{isPending ? "Ending..." : "End Workout"}
 			</Button>
 		</header>
