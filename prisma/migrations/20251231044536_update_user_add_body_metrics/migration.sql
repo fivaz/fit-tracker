@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "user" ADD COLUMN     "bodyFat" DOUBLE PRECISION,
+ADD COLUMN     "muscleMass" DOUBLE PRECISION,
+ADD COLUMN     "weight" DOUBLE PRECISION;

@@ -24,8 +24,8 @@ import { ROUTES } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 
 export function LoginForm({ className, ...props }: ComponentProps<"div">) {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [email, setEmail] = useState("test@test.com");
+	const [password, setPassword] = useState("test@test.com");
 	const [rememberMe, setRememberMe] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [socialLoading, setSocialLoading] = useState<"google" | "github" | null>(null);

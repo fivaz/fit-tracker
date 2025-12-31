@@ -6,6 +6,7 @@ export const ROUTES = {
 	WORKOUT: "/workout",
 	LOGIN: "/login",
 	REGISTER: "/register",
+	SETTINGS: "/settings",
 };
 
 export const MAJOR_MUSCLE_GROUPS = [

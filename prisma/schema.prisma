@@ -14,12 +14,18 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(uuid())
-  email           String           @unique
-  name            String
-  programs        Program[]
-  emailVerified   Boolean          @default(false)
-  image           String?
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String
+  programs      Program[]
+  emailVerified Boolean   @default(false)
+  image         String?
+
+  // --- Body Metrics ---
+  weight     Float?
+  bodyFat    Float?
+  muscleMass Float?
+
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   sessions        Session[]
