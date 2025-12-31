@@ -29,12 +29,13 @@ export async function proxy(req: NextRequest) {
 export const config = {
 	matcher: [
 		/*
-		 * We exclude specific folders and files from the middleware:
-		 * - api: All your backend routes
-		 * - .well-known: Chrome devtools and other manifest files
-		 * - _next/static & _next/image: Next.js internal assets
-		 * - favicon.ico, sw.js, manifest.json: Common root-level static files
+		 * Match all request paths except for the ones starting with:
+		 * - api (API routes)
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - .well-known (security/manifest files)
+		 * - All files with extensions (e.g., .svg, .png, .jpg, .json)
 		 */
-		"/((?!api|.well-known|_next/static|_next/image|favicon.ico|sw.js|manifest.json).*)",
+		"/((?!api|_next/static|_next/image|.well-known|favicon.ico|sw.js|manifest.json|.*\\..*).*)",
 	],
 };

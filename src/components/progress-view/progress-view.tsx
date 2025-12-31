@@ -75,7 +75,7 @@ function ProgressChart({
 	return (
 		<div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
 			<h3 className="mb-4 flex items-center gap-2 font-semibold">
-				<TrendingUp className="h-5 w-5" style={{ color }} />
+				<TrendingUp className="size-5" style={{ color }} />
 				{title}
 			</h3>
 			<div style={{ width: "100%", height: "256px" }}>
@@ -193,7 +193,7 @@ export function ProgressView({ exercises, sessions }: ProgressViewProps) {
 						onClick={() => router.back()}
 						className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
 					>
-						<ChevronLeft className="h-6 w-6" />
+						<ChevronLeft className="size-6" />
 					</button>
 					<div>
 						<h2 className="text-lg font-semibold">Progress Tracking</h2>

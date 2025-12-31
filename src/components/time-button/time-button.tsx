@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { format, parse } from "date-fns";
-import { Clock, Trash2 } from "lucide-react";
+import { Clock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -41,7 +41,7 @@ export function AppLayout({ children }: AppLayout2Props) {
 										: "text-gray-600 hover:text-gray-200 dark:text-gray-400"
 								}`}
 							>
-								<item.icon className={`h-6 w-6 ${isActive ? "fill-orange-500/10" : ""}`} />
+								<item.icon className={`size-6 ${isActive ? "fill-orange-500/10" : ""}`} />
 								<span className="text-xs">{item.label}</span>
 							</Link>
 						);

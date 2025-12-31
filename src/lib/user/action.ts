@@ -1,12 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
 
-import { auth } from "@/lib/auth";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";

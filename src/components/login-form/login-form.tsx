@@ -1,10 +1,10 @@
 "use client";
 
-import { ComponentProps, FormEvent, useState } from "react";
+import React, { ComponentProps, FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { GalleryVerticalEnd, Loader2 } from "lucide-react";
+import { Dumbbell, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { GithubIcon } from "@/components/icons/github-icon";
@@ -24,8 +24,8 @@ import { ROUTES } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 
 export function LoginForm({ className, ...props }: ComponentProps<"div">) {
-	const [email, setEmail] = useState("test@test.com");
-	const [password, setPassword] = useState("test@test.com");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [rememberMe, setRememberMe] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [socialLoading, setSocialLoading] = useState<"google" | "github" | null>(null);
@@ -77,12 +77,12 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
 			<form onSubmit={handleLogin}>
 				<FieldGroup>
 					<div className="flex flex-col items-center gap-2 text-center">
-						<Link href="/" className="flex flex-col items-center gap-2 font-medium">
-							<div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
-								<GalleryVerticalEnd className="size-6" />
+						<div className="flex flex-col items-center gap-2 font-medium">
+							<div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-md">
+								<Dumbbell className="size-8 text-white" />
 							</div>
-							<span className="sr-only">Acme Inc.</span>
-						</Link>
+							<span className="sr-only">Fit Tracker</span>
+						</div>
 						<h1 className="text-xl font-bold">Welcome back</h1>
 						<FieldDescription>
 							Don&apos;t have an account?{" "}

@@ -4,7 +4,7 @@ import { ChangeEvent, ComponentProps, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { GalleryVerticalEnd, Loader2, X } from "lucide-react";
+import { Dumbbell, GalleryVerticalEnd, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { GithubIcon } from "@/components/icons/github-icon";
@@ -98,8 +98,8 @@ export function RegisterForm({ className, ...props }: ComponentProps<"div">) {
 				<FieldGroup>
 					<div className="flex flex-col items-center gap-2 text-center">
 						<Link href="/" className="flex flex-col items-center gap-2 font-medium">
-							<div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
-								<GalleryVerticalEnd className="size-6" />
+							<div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-md">
+								<Dumbbell className="size-8 text-white" />
 							</div>
 							<span className="sr-only">Acme Inc.</span>
 						</Link>

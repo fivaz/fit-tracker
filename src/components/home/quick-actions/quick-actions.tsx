@@ -8,7 +8,6 @@ import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
 import { getExercises } from "@/lib/exercise/action";
 import { cn } from "@/lib/utils";
-import { mockExercises, mockWorkoutSessions } from "@/seed/mock-data";
 
 export function CardQuickAction({
 	href,

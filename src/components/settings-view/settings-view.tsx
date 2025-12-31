@@ -70,7 +70,7 @@ function ThemeToggle() {
 							: "text-muted-foreground hover:text-foreground"
 					}`}
 				>
-					<Icon className="h-4 w-4" />
+					<Icon className="size-4" />
 					<span className="hidden sm:inline">{label}</span>
 				</button>
 			))}
@@ -135,8 +135,8 @@ function EditableField({
 				className="hover:bg-muted/50 flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors"
 				onClick={toggleExpanded}
 			>
-				<div className="bg-muted flex h-8 w-8 items-center justify-center rounded-lg">
-					<Icon className="text-muted-foreground h-4 w-4" />
+				<div className="bg-muted flex size-8 items-center justify-center rounded-lg">
+					<Icon className="text-muted-foreground size-4" />
 				</div>
 				<div className="min-w-0 flex-1">
 					<div className="text-sm font-medium">{label}</div>
@@ -151,7 +151,7 @@ function EditableField({
 					animate={{ rotate: isExpanded ? 90 : 0 }}
 					transition={{ type: "spring", stiffness: 300, damping: 30 }}
 				>
-					<ChevronRight className="text-muted-foreground h-5 w-5" />
+					<ChevronRight className="text-muted-foreground size-5" />
 				</motion.div>
 			</div>
 
@@ -260,7 +260,7 @@ export function SettingsView({ user }: SettingsViewProps) {
 			<div className="bg-background sticky top-0 z-10 border-b shadow-sm">
 				<div className="flex items-center gap-3 p-4">
 					<Button variant="ghost" size="icon" onClick={() => router.back()}>
-						<ChevronLeft className="h-6 w-6" />
+						<ChevronLeft className="size-6" />
 					</Button>
 					<div>
 						<h2 className="text-lg font-semibold">Settings</h2>
@@ -293,11 +293,11 @@ export function SettingsView({ user }: SettingsViewProps) {
 									</div>
 								)}
 								<div className="bg-background absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-90">
-									<Camera className="h-6 w-6" />
+									<Camera className="size-6" />
 								</div>
 								{isUploadingAvatar && (
 									<div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50">
-										<div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
+										<div className="size-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
 									</div>
 								)}
 							</button>

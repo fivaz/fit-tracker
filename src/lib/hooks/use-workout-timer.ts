@@ -13,9 +13,7 @@ function formatDuration(start: Date, end: Date): string {
 }
 
 export function useWorkoutTimer(startedAt: Date): string {
-	const [elapsed, setElapsed] = useState(() =>
-		formatDuration(new Date(startedAt), new Date())
-	);
+	const [elapsed, setElapsed] = useState(() => formatDuration(new Date(startedAt), new Date()));
 
 	useEffect(() => {
 		const interval = setInterval(() => {
