@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
-import withRspack from "next-rspack";
 
+// import withRspack from "next-rspack";
 import pkg from "./package.json";
 
 const nextConfig: NextConfig = {
@@ -17,5 +17,5 @@ const nextConfig: NextConfig = {
 	},
 };
 
-// export default nextConfig;
-export default withRspack(nextConfig);
+export default nextConfig;
+// export default withRspack(nextConfig);
