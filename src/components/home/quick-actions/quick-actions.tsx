@@ -31,7 +31,7 @@ export async function QuickActions() {
 	const [exercises, programs] = await Promise.all([getExercises(), getPrograms()]);
 
 	return (
-		<div className="grid space-y-3">
+		<div className="grid space-y-4">
 			<CardQuickAction href={ROUTES.PROGRESS}>
 				<div className="flex items-center gap-3">
 					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">

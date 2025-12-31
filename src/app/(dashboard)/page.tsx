@@ -15,7 +15,7 @@ export default async function Home() {
 	}
 
 	return (
-		<div className="space-y-4 p-4">
+		<div className="space-y-8 p-4">
 			<Header />
 
 			<StartWorkout />
