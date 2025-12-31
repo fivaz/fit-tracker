@@ -23,13 +23,11 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
 				programName={workout.programName}
 			/>
 
-			<main className="mt-6 space-y-4 px-4">
-				<h2 className="px-1 text-lg font-semibold">Exercise List</h2>
-
+			<div className="mt-6 space-y-4 px-4">
 				{workout.exercises.map((item) => (
 					<WorkoutExercise key={item.id} exercise={item} sessionId={workout.sessionId} />
 				))}
-			</main>
+			</div>
 		</div>
 	);
 }
