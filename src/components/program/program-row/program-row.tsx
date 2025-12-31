@@ -56,12 +56,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 									{program.exercises.length} exercise{program.exercises.length > 0 && "s"}
 								</CardDescription>
 								<CardAction className="space-x-2">
-									<Button
-										variant="outline"
-										onClick={() => setIsEditing(true)}
-										className="text-chart-2 hover:text-chart-3"
-										size="icon-sm"
-									>
+									<Button variant="outline" onClick={() => setIsEditing(true)} size="icon-sm">
 										<Pencil className="size-4" />
 									</Button>
 									<Button
