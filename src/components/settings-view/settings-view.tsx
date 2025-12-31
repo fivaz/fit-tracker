@@ -217,7 +217,9 @@ export function SettingsView({ user }: SettingsViewProps) {
 					</span>
 				</button>
 
-				<div className="text-muted-foreground pb-4 text-center text-xs">Version 1.0.0</div>
+				<div className="text-muted-foreground pb-4 text-center text-xs">
+					Version {process.env.NEXT_PUBLIC_APP_VERSION}
+				</div>
 			</div>
 		</div>
 	);
