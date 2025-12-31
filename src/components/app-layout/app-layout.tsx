@@ -8,7 +8,7 @@ import {
 	DumbbellIcon,
 	HomeIcon,
 	NotebookTabsIcon,
-	SettingsIcon,
+	Settings2Icon,
 	TrendingUpIcon,
 } from "lucide-react";
 
@@ -26,7 +26,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 		{ icon: NotebookTabsIcon, label: "Programs", href: ROUTES.PROGRAMS },
 		{ icon: DumbbellIcon, label: "Exercises", href: ROUTES.EXERCISES },
 		{ icon: TrendingUpIcon, label: "Progress", href: ROUTES.PROGRESS },
-		{ icon: SettingsIcon, label: "Settings", href: ROUTES.SETTINGS },
+		{ icon: Settings2Icon, label: "Settings", href: ROUTES.SETTINGS },
 	];
 
 	return (

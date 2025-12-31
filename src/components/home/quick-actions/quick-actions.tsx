@@ -1,11 +1,7 @@
 import { ComponentProps } from "react";
 import Link from "next/link";
 
-import {
-	DumbbellIcon,
-	NotebookTabsIcon,
-	TrendingUpIcon,
-} from "lucide-react";
+import { DumbbellIcon, NotebookTabsIcon, TrendingUpIcon } from "lucide-react";
 
 import { getPrograms } from "@/components/program/action";
 import { Card } from "@/components/ui/card";

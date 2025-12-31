@@ -1,4 +1,4 @@
-import { DumbbellIcon, NotebookTabsIcon } from "lucide-react";
+import { DumbbellIcon } from "lucide-react";
 
 export function ExerciseEmptyState() {
 	return (

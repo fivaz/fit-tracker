@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, ComponentProps, useState } from "react";
+import { ChangeEvent, ComponentProps, FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -59,7 +59,7 @@ export function RegisterForm({ className, ...props }: ComponentProps<"div">) {
 		}
 	};
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		if (password !== passwordConfirmation) {
 			toast.error("Passwords do not match");
