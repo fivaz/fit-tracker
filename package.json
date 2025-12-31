@@ -11,7 +11,7 @@
 		"format": "prettier --write . && eslint --fix .",
 		"storybook": "storybook dev -p 6006",
 		"create": "plop --plopfile templates/plopfile.mjs",
-		"db:setup": "prisma migrate dev",
+		"db:setup": "pnpm prisma migrate reset --force && pnpm prisma db seed && prisma migrate dev",
 		"db:reset": "pnpm prisma migrate reset --force && pnpm prisma db seed",
 		"db:seed": "prisma db seed",
 		"db:generate": "prisma generate"

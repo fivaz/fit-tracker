@@ -8,7 +8,9 @@ import { Clock, Dumbbell, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { WorkoutSetRow } from "@/components/workout-set-row/workout-set-row";
 import { Exercise } from "@/generated/prisma/client";
+import { createSetAction, deleteSetAction, updateSetAction } from "@/lib/setlogs/action";
 
 type SetEntry = {
 	id: string;
@@ -19,32 +21,64 @@ type SetEntry = {
 
 type WorkoutExerciseProps = {
 	exercise: Exercise;
+	sessionId: string;
 };
 
-export function WorkoutExercise({ exercise }: WorkoutExerciseProps) {
+export function WorkoutExercise({ exercise, sessionId }: WorkoutExerciseProps) {
 	const [sets, setSets] = useState<SetEntry[]>([]);
 
-	const addSet = () => {
-		const newSet: SetEntry = {
-			id: crypto.randomUUID(),
-			reps: "",
-			weight: "",
-			completedAt: "",
-		};
-		setSets([...sets, newSet]);
+	const handleAddSet = async () => {
+		// Prevent multiple clicks while creating
+		const nextOrder = sets.length;
+
+		// 1. Call DB Action
+		try {
+			const newDbSet = await createSetAction(exercise.id, sessionId, nextOrder);
+
+			// 2. Update local state with the actual DB object
+			const formattedSet: SetEntry = {
+				id: newDbSet.id,
+				reps: String(newDbSet.reps || ""),
+				weight: String(newDbSet.weight || ""),
+				completedAt: "",
+			};
+
+			setSets((prev) => [...prev, formattedSet]);
+		} catch (error) {
+			console.error("Failed to create set:", error);
+		}
 	};
 
-	const removeSet = (id: string) => {
-		setSets(sets.filter((set) => set.id !== id));
+	const handleUpdate = async (id: string, data: Partial<SetEntry>) => {
+		// 1. Optimistic Update (Instant UI feedback)
+		setSets((prev) => prev.map((s) => (s.id === id ? { ...s, ...data } : s)));
+
+		// 2. Live DB Save (Background)
+		try {
+			await updateSetAction(id, {
+				reps: data.reps ? parseInt(data.reps) : undefined,
+				weight: data.weight ? parseFloat(data.weight) : undefined,
+				completedAt: data.completedAt,
+			});
+		} catch (error) {
+			console.error("Failed to sync set:", error);
+			// TODO: Revert state if critical
+		}
 	};
 
-	const updateSet = (id: string, field: keyof SetEntry, value: string) => {
-		setSets(sets.map((set) => (set.id === id ? { ...set, [field]: value } : set)));
-	};
+	const handleDelete = async (id: string) => {
+		// 1. Optimistic Update
+		const previousSets = [...sets];
+		setSets((prev) => prev.filter((s) => s.id !== id));
 
-	const markCompleted = (id: string) => {
-		const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-		updateSet(id, "completedAt", now);
+		// 2. DB Action
+		try {
+			await deleteSetAction(id);
+		} catch (error) {
+			console.error("Failed to delete set:", error);
+			setSets(previousSets); // Rollback on error
+			alert("Could not delete set. Check your connection.");
+		}
 	};
 
 	return (
@@ -69,66 +103,27 @@ export function WorkoutExercise({ exercise }: WorkoutExerciseProps) {
 				</div>
 			</CardHeader>
 
-			<CardContent className="">
-				<div className="space-y-3">
-					{sets.map((set, index) => (
-						<div
-							key={set.id}
-							className="group animate-in fade-in slide-in-from-left-2 flex items-center gap-2"
-						>
-							<div className="text-muted-foreground w-6 flex-none text-xs font-bold">
-								{index + 1}
-							</div>
+			{sets.length > 0 && (
+				<CardContent>
+					<div className="space-y-3">
+						{sets.map((set, index) => (
+							<WorkoutSetRow
+								key={set.id}
+								index={index}
+								set={set}
+								onUpdate={handleUpdate}
+								onDelete={handleDelete}
+							/>
+						))}
+					</div>
+				</CardContent>
+			)}
 
-							<div className="grid flex-1 grid-cols-3 gap-2">
-								<Input
-									type="number"
-									placeholder="kg"
-									value={set.weight}
-									onChange={(e) => updateSet(set.id, "weight", e.target.value)}
-									className="h-9 text-center tabular-nums"
-								/>
-								<Input
-									type="number"
-									placeholder="reps"
-									value={set.reps}
-									onChange={(e) => updateSet(set.id, "reps", e.target.value)}
-									className="h-9 text-center tabular-nums"
-								/>
-								<Button
-									variant={set.completedAt ? "ghost" : "outline"}
-									size="sm"
-									onClick={() => markCompleted(set.id)}
-									className="h-9 gap-1 px-2 font-mono text-xs"
-								>
-									{set.completedAt ? (
-										<span className="text-primary font-bold">{set.completedAt}</span>
-									) : (
-										<>
-											<Clock className="size-3" />
-											Finish
-										</>
-									)}
-								</Button>
-							</div>
-
-							<Button
-								variant="ghost"
-								size="icon"
-								onClick={() => removeSet(set.id)}
-								className="text-muted-foreground hover:text-destructive size-8"
-							>
-								<Trash2 className="size-4" />
-							</Button>
-						</div>
-					))}
-				</div>
-			</CardContent>
 			<CardFooter>
 				<Button
 					variant="outline"
 					className="border-muted-foreground/30 hover:border-primary/50 text-muted-foreground hover:text-primary h-10 w-full gap-2 border-dashed transition-all"
-					onClick={addSet}
+					onClick={handleAddSet}
 				>
 					<Plus className="size-4" />
 					Add Set

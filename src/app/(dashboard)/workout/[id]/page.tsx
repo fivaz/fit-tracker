@@ -27,7 +27,7 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
 				<h2 className="px-1 text-lg font-semibold">Exercise List</h2>
 
 				{session.program.exercises.map((item) => (
-					<WorkoutExercise key={item.exerciseId} exercise={item.exercise} />
+					<WorkoutExercise key={item.exerciseId} exercise={item.exercise} sessionId={session.id} />
 				))}
 			</main>
 		</div>

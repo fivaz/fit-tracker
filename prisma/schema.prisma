@@ -118,9 +118,9 @@ model SetLog {
   session   WorkoutSession @relation(fields: [sessionId], references: [id])
 
   // Timing fields
-  createdAt DateTime  @default(now())
-  endedAt   DateTime? // Nullable until the user hits "Stop"
-  deletedAt DateTime?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime? // Nullable until the user hits "Stop"
+  deletedAt   DateTime?
 
   // Metadata
   isPersonalRecord Boolean @default(false)
