@@ -1,7 +1,11 @@
 import { ComponentProps } from "react";
 import Link from "next/link";
 
-import { Dumbbell, Folder, TrendingUp } from "lucide-react";
+import {
+	DumbbellIcon,
+	NotebookTabsIcon,
+	TrendingUpIcon,
+} from "lucide-react";
 
 import { getPrograms } from "@/components/program/action";
 import { Card } from "@/components/ui/card";
@@ -34,7 +38,7 @@ export async function QuickActions() {
 			<CardQuickAction href={ROUTES.PROGRESS}>
 				<div className="flex items-center gap-3">
 					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">
-						<TrendingUp className="size-5 text-green-500" />
+						<TrendingUpIcon className="size-5 text-green-500" />
 					</div>
 					<div className="text-left">
 						<div className="font-medium">View Progress</div>
@@ -45,8 +49,8 @@ export async function QuickActions() {
 
 			<CardQuickAction href={ROUTES.PROGRAMS}>
 				<div className="flex items-center gap-3">
-					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10">
-						<Folder className="size-5 text-orange-500" />
+					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10">
+						<NotebookTabsIcon className="size-5 text-blue-500" />
 					</div>
 					<div className="text-left">
 						<div className="font-medium">Manage Programs</div>
@@ -60,7 +64,7 @@ export async function QuickActions() {
 			<CardQuickAction href={ROUTES.EXERCISES}>
 				<div className="flex items-center gap-3">
 					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500/10">
-						<Dumbbell className="size-5 text-purple-500" />
+						<DumbbellIcon className="size-5 text-purple-500" />
 					</div>
 					<div className="text-left">
 						<div className="font-medium">Exercise Library</div>

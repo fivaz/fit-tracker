@@ -4,7 +4,13 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Dumbbell, Folder, Home, SettingsIcon, TrendingUp } from "lucide-react";
+import {
+	DumbbellIcon,
+	HomeIcon,
+	NotebookTabsIcon,
+	SettingsIcon,
+	TrendingUpIcon,
+} from "lucide-react";
 
 import { ROUTES } from "@/lib/consts";
 
@@ -16,10 +22,10 @@ export function AppLayout({ children }: AppLayoutProps) {
 	const pathname = usePathname();
 
 	const navItems = [
-		{ icon: Home, label: "Home", href: ROUTES.HOME },
-		{ icon: Folder, label: "Programs", href: ROUTES.PROGRAMS },
-		{ icon: Dumbbell, label: "Exercises", href: ROUTES.EXERCISES },
-		{ icon: TrendingUp, label: "Progress", href: ROUTES.PROGRESS },
+		{ icon: HomeIcon, label: "Home", href: ROUTES.HOME },
+		{ icon: NotebookTabsIcon, label: "Programs", href: ROUTES.PROGRAMS },
+		{ icon: DumbbellIcon, label: "Exercises", href: ROUTES.EXERCISES },
+		{ icon: TrendingUpIcon, label: "Progress", href: ROUTES.PROGRESS },
 		{ icon: SettingsIcon, label: "Settings", href: ROUTES.SETTINGS },
 	];
 
