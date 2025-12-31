@@ -60,24 +60,48 @@ export async function getActiveSessionId() {
 export async function getWorkoutSession(sessionId: string) {
 	const userId = await getUserId();
 
+	// 1. Fetch data (Removed the deep 'sets: true' include)
 	const session = await prisma.workoutSession.findUnique({
 		where: { id: sessionId, userId },
 		include: {
+			// ✅ Fetch all sets for THIS session only (Flat List)
+			setLogs: {
+				orderBy: { order: "asc" },
+			},
 			program: {
 				include: {
 					exercises: {
 						orderBy: { order: "asc" },
-						include: { exercise: true },
+						include: {
+							exercise: true, // Just get exercise info (name, muscle, img)
+						},
 					},
 				},
 			},
 		},
 	});
 
-	// If session doesn't exist or is already finished, 404 or redirect
 	if (!session || session.completedAt) {
 		return null;
 	}
 
-	return session;
+	// 2. Transform: Distribute the flat logs into the exercises
+	// This creates the exact "Nested" structure your UI wants
+	const exercisesWithSets = session.program.exercises.map((pe) => {
+		const exerciseSets = session.setLogs.filter((log) => log.exerciseId === pe.exerciseId);
+
+		return {
+			...pe.exercise, // Name, info, etc.
+			// We manually attach the specific sets for this session here
+			setLogs: exerciseSets,
+		};
+	});
+
+	// 3. Return a clean object for the page
+	return {
+		sessionId: session.id,
+		startedAt: session.startedAt,
+		programName: session.program.name,
+		exercises: exercisesWithSets,
+	};
 }

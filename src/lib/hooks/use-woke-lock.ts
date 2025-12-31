@@ -6,7 +6,7 @@ export function useWakeLock() {
 		if ("wakeLock" in navigator) {
 			const requestWakeLock = async () => {
 				try {
-					await (navigator as any).wakeLock.request("screen");
+					await navigator.wakeLock.request("screen");
 				} catch (err) {
 					console.error("Wake Lock failed", err);
 				}

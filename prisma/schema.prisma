@@ -86,7 +86,7 @@ model Exercise {
 
   // Changed to use the junction table
   programs ProgramHasExercise[]
-  sets     SetLog[]
+  setLogs  SetLog[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

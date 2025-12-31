@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { formatDuration, intervalToDuration } from "date-fns";
+import { intervalToDuration } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { endWorkout } from "@/lib/workout/action";

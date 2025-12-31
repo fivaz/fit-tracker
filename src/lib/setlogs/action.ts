@@ -20,14 +20,14 @@ export async function createSetAction(exerciseId: string, sessionId: string, ord
 
 export async function updateSetAction(
 	id: string,
-	data: { reps?: number; weight?: number; completedAt?: string },
+	data: { reps?: number; weight?: number; completedAt?: Date },
 ) {
 	await prisma.setLog.update({
 		where: { id },
 		data: {
 			reps: data.reps,
 			weight: data.weight,
-			completedAt: data.completedAt ? new Date() : undefined,
+			completedAt: data.completedAt,
 		},
 	});
 }

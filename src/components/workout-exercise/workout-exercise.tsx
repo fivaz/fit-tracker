@@ -3,29 +3,36 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import { Clock, Dumbbell, Plus, Trash2 } from "lucide-react";
+import { Dumbbell, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { WorkoutSetRow } from "@/components/workout-set-row/workout-set-row";
-import { Exercise } from "@/generated/prisma/client";
+import { Exercise, SetLog } from "@/generated/prisma/client";
 import { createSetAction, deleteSetAction, updateSetAction } from "@/lib/setlogs/action";
 
 type SetEntry = {
 	id: string;
 	reps: string;
 	weight: string;
-	completedAt: string;
+	completedAt: Date | null;
 };
 
 type WorkoutExerciseProps = {
-	exercise: Exercise;
+	exercise: Exercise & { setLogs: SetLog[] };
 	sessionId: string;
 };
 
 export function WorkoutExercise({ exercise, sessionId }: WorkoutExerciseProps) {
-	const [sets, setSets] = useState<SetEntry[]>([]);
+	const [sets, setSets] = useState<SetEntry[]>(
+		exercise.setLogs.map((log) => ({
+			id: log.id,
+			reps: String(log.reps ?? ""),
+			weight: String(log.weight ?? ""),
+			completedAt: log.completedAt,
+		})),
+	);
 
 	const handleAddSet = async () => {
 		// Prevent multiple clicks while creating
@@ -40,29 +47,38 @@ export function WorkoutExercise({ exercise, sessionId }: WorkoutExerciseProps) {
 				id: newDbSet.id,
 				reps: String(newDbSet.reps || ""),
 				weight: String(newDbSet.weight || ""),
-				completedAt: "",
+				completedAt: null,
 			};
 
 			setSets((prev) => [...prev, formattedSet]);
 		} catch (error) {
 			console.error("Failed to create set:", error);
+			toast.error("Could not create set. Check your connection.");
 		}
 	};
 
 	const handleUpdate = async (id: string, data: Partial<SetEntry>) => {
-		// 1. Optimistic Update (Instant UI feedback)
+		// 1. Save snapshot of current state for rollback
+		const previousSets = [...sets];
+
+		// 2. Apply Optimistic Update (Instant UI change)
 		setSets((prev) => prev.map((s) => (s.id === id ? { ...s, ...data } : s)));
 
-		// 2. Live DB Save (Background)
+		// 3. Live DB Save
 		try {
 			await updateSetAction(id, {
 				reps: data.reps ? parseInt(data.reps) : undefined,
 				weight: data.weight ? parseFloat(data.weight) : undefined,
-				completedAt: data.completedAt,
+				completedAt: data.completedAt ?? undefined,
 			});
 		} catch (error) {
 			console.error("Failed to sync set:", error);
-			// TODO: Revert state if critical
+
+			// 4. Rollback to the previous state on failure
+			setSets(previousSets);
+
+			// Notify user (Optional: use a toast library like sonner)
+			toast.error("Connection lost. Changes were not saved.");
 		}
 	};
 
@@ -77,7 +93,7 @@ export function WorkoutExercise({ exercise, sessionId }: WorkoutExerciseProps) {
 		} catch (error) {
 			console.error("Failed to delete set:", error);
 			setSets(previousSets); // Rollback on error
-			alert("Could not delete set. Check your connection.");
+			toast.error("Could not delete set. Check your connection.");
 		}
 	};
 

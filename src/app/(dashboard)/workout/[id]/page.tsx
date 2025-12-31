@@ -11,23 +11,23 @@ type WorkoutPageProps = {
 
 export default async function WorkoutPage({ params }: WorkoutPageProps) {
 	const { id } = await params;
-	const session = await getWorkoutSession(id);
+	const workout = await getWorkoutSession(id);
 
-	if (!session) redirect(ROUTES.HOME);
+	if (!workout) redirect(ROUTES.HOME);
 
 	return (
 		<div className="bg-background flex min-h-screen flex-col pb-32">
 			<WorkoutHeader
-				sessionId={session.id}
-				startedAt={session.startedAt}
-				programName={session.program.name}
+				sessionId={workout.sessionId}
+				startedAt={workout.startedAt}
+				programName={workout.programName}
 			/>
 
 			<main className="mt-6 space-y-4 px-4">
 				<h2 className="px-1 text-lg font-semibold">Exercise List</h2>
 
-				{session.program.exercises.map((item) => (
-					<WorkoutExercise key={item.exerciseId} exercise={item.exercise} sessionId={session.id} />
+				{workout.exercises.map((item) => (
+					<WorkoutExercise key={item.id} exercise={item} sessionId={workout.sessionId} />
 				))}
 			</main>
 		</div>

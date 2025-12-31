@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { v4 as uuidv4 } from "uuid";
 
-import { Exercise, MuscleGroup } from "@/generated/prisma/client";
+import { MuscleGroup } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";

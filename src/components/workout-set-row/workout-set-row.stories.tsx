@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { parse } from "date-fns";
 import { fn } from "storybook/test";
 
 import { WorkoutSetRow } from "@/components/workout-set-row/workout-set-row";
@@ -26,7 +27,7 @@ export const Primary: Story = {
 			id: "set-1",
 			reps: "12",
 			weight: "60",
-			completedAt: "",
+			completedAt: new Date(),
 		},
 	},
 };
@@ -38,7 +39,7 @@ export const Completed: Story = {
 			id: "set-2",
 			reps: "10",
 			weight: "60",
-			completedAt: "14:30",
+			completedAt: parse("14:30", "hh:mm", new Date()),
 		},
 	},
 };
@@ -50,7 +51,7 @@ export const Empty: Story = {
 			id: "set-3",
 			reps: "",
 			weight: "",
-			completedAt: "",
+			completedAt: null,
 		},
 	},
 };

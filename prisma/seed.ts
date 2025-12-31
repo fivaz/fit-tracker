@@ -1,4 +1,4 @@
-import { MuscleGroup, PrismaClient } from "@/generated/prisma/client";
+import { MuscleGroup } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
 async function main() {

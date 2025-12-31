@@ -13,14 +13,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
 	args: {
-		exercise: mockExercise,
+		exercise: { ...mockExercise, setLogs: [] },
 		sessionId: "session-123",
 	},
 };
 
 export const Secondary: Story = {
 	args: {
-		exercise: mockExercise,
+		exercise: { ...mockExercise, setLogs: [] },
 		sessionId: "session-123",
 	},
 };
