@@ -15,9 +15,10 @@ import { saveProgram } from "@/lib/program/action";
 type ProgramFormProps = {
 	program: Partial<Program>;
 	onClose: () => void;
+	onSave: (formData: FormData) => Promise<void>;
 };
 
-export function ProgramForm({ program, onClose }: ProgramFormProps) {
+export function ProgramForm({ program, onClose, onSave }: ProgramFormProps) {
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, setIsPending] = useState(false);
 	const isEdit = !!program.id;
@@ -27,10 +28,10 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		setIsPending(true);
 
 		try {
-			await saveProgram(formData);
+			await onSave(formData);
 			onClose();
 		} catch (err: unknown) {
-			setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+			setError(err instanceof Error ? err.message : "Something went wrong.");
 		} finally {
 			setIsPending(false);
 		}

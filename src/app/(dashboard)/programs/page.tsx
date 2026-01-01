@@ -14,8 +14,6 @@ export default function ProgramsPage() {
 				</Suspense>
 			</div>
 
-			<ProgramFormButton />
-
 			<Suspense fallback={<ProgramsSkeleton />}>
 				<ProgramsContent />
 			</Suspense>

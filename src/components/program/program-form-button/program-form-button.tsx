@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 
 import { Plus } from "lucide-react";
@@ -9,9 +7,12 @@ import { ProgramForm } from "@/components/program/program-form-button/program-fo
 import { Button } from "@/components/ui/button";
 import { Program } from "@/generated/prisma/client";
 
-export function ProgramFormButton() {
-	const [open, setOpen] = useState(false);
+type Props = {
+	onSave: (formData: FormData) => Promise<void>;
+};
 
+export function ProgramFormButton({ onSave }: Props) {
+	const [open, setOpen] = useState(false);
 	const program: Partial<Program> = {};
 
 	return (
@@ -22,7 +23,7 @@ export function ProgramFormButton() {
 				</Button>
 			) : (
 				<AnimatePresence>
-					<ProgramForm program={program} onClose={() => setOpen(false)} />
+					<ProgramForm program={program} onClose={() => setOpen(false)} onSave={onSave} />
 				</AnimatePresence>
 			)}
 		</div>

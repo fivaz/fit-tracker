@@ -22,9 +22,11 @@ import { deleteProgramAction } from "@/lib/program/action";
 
 type ProgramRowProps = {
 	program: Program & { exercises: { exerciseId: string }[] };
+	onDelete: () => Promise<void>; // New prop
+	onEdit: (formData: FormData) => Promise<void>; // New prop
 };
 
-export function ProgramRow({ program }: ProgramRowProps) {
+export function ProgramRow({ program, onDelete, onEdit }: ProgramRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [isPending, startTransition] = useTransition();
@@ -32,7 +34,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 	const handleDelete = async () => {
 		startTransition(async () => {
 			try {
-				await deleteProgramAction(program.id);
+				await onDelete();
 				setShowDeleteDialog(false);
 			} catch (error) {
 				console.error("Failed to delete program:", error);
@@ -44,7 +46,12 @@ export function ProgramRow({ program }: ProgramRowProps) {
 		<div className="relative">
 			<AnimatePresence mode="wait">
 				{isEditing ? (
-					<ProgramForm key="edit-form" program={program} onClose={() => setIsEditing(false)} />
+					<ProgramForm
+						key="edit-form"
+						program={program}
+						onClose={() => setIsEditing(false)}
+						onSave={onEdit}
+					/>
 				) : (
 					<motion.div
 						key="display-row"
