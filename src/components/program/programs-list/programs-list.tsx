@@ -17,7 +17,7 @@ type ProgramsListProps = {
 
 export function ProgramsList({ initialPrograms }: ProgramsListProps) {
 	return (
-		<ProgramsProvider initialPrograms={initialPrograms}>
+		<ProgramsProvider initialItems={initialPrograms}>
 			<div className="space-y-4">
 				<ProgramFormButton />
 				<ProgramsListInternal />
@@ -27,7 +27,7 @@ export function ProgramsList({ initialPrograms }: ProgramsListProps) {
 }
 
 function ProgramsListInternal() {
-	const { programs } = usePrograms();
+	const { items: programs } = usePrograms();
 
 	if (programs.length === 0) {
 		return <ProgramEmptyState />;

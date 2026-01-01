@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
@@ -21,27 +22,36 @@ import { deleteProgramAction } from "@/lib/program/action";
 import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramRowProps = {
-	program: Program & { exercises: { exerciseId: string }[] };
-	onDelete: () => Promise<void>; // New prop
-	onEdit: (formData: FormData) => Promise<void>; // New prop
+	program: ProgramWithExercises;
 };
 
-export function ProgramRow({ program }: { program: ProgramWithExercises }) {
+export function ProgramRow({ program }: ProgramRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [isPending, startTransition] = useTransition();
-	const { deleteProgram } = usePrograms(); // <--- Get delete function
+	const { deleteItem, addItem } = usePrograms();
 
 	const handleDelete = async () => {
-		deleteProgram(program.id);
+		const itemToRollback = { ...program };
+		deleteItem(program.id);
 		setShowDeleteDialog(false);
 
-		try {
-			await deleteProgramAction(program.id);
-		} catch (error) {
-			console.error("Failed to delete", error);
-			// Ideally trigger a toast or page refresh here if it fails
-		}
+		startTransition(async () => {
+			try {
+				await deleteProgramAction(program.id);
+				toast.success(`"${itemToRollback.name}" deleted successfully`);
+			} catch (error) {
+				// 4. Rollback: Put the item back if server fails
+				addItem(itemToRollback);
+
+				toast.error(`Failed to delete "${itemToRollback.name}"`, {
+					description: "Please check your connection and try again.",
+				});
+
+				// TODO create a special function that in dev it shows console, in prod send to sentry
+				console.error("Delete Error:", error);
+			}
+		});
 	};
 
 	return (
@@ -57,7 +67,7 @@ export function ProgramRow({ program }: { program: ProgramWithExercises }) {
 						exit={{ opacity: 0, x: -100 }}
 						layout
 					>
-						<Card className={isPending ? "pointer-events-none opacity-50" : ""}>
+						<Card className={isPending ? "opacity-50 grayscale" : ""}>
 							<CardHeader>
 								<CardTitle>{program.name}</CardTitle>
 								<CardDescription>

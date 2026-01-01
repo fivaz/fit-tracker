@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
@@ -19,8 +19,8 @@ type ProgramFormProps = {
 };
 
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
-	const { addProgram, updateProgram } = usePrograms();
-	const [isPending, setIsPending] = useState(false);
+	const { addItem, updateItem } = usePrograms();
+	const [isPending, startTransition] = useTransition();
 	const [error, setError] = useState<string | null>(null);
 	const isEdit = !!program.id;
 
@@ -28,23 +28,27 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		const id = formData.get("id") as string;
 		const name = formData.get("name") as string;
 
-		const optimisticData = {
+		const optimisticProduct = {
 			...program,
 			id: id || crypto.randomUUID(),
 			name,
 		};
 
 		if (id) {
-			updateProgram(optimisticData);
+			updateItem(optimisticProduct);
 		} else {
-			addProgram(optimisticData);
+			addItem(optimisticProduct);
 		}
 
 		onClose();
 
-		saveProgram(formData).catch((err) => {
-			console.error("Failed to save", err);
-			// Optional: Toast error here
+		startTransition(async () => {
+			try {
+				await saveProgram(formData);
+			} catch (e) {
+				setError(e instanceof Error ? e.message : "An unexpected error occurred");
+				// TODO Handle error
+			}
 		});
 	};
 
