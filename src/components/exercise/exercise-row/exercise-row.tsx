@@ -9,11 +9,11 @@ import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
-import { Exercise } from "@/generated/prisma/client";
 import { deleteExerciseAction } from "@/lib/exercise/action";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 
 type ExerciseRowProps = {
-	exercise: Exercise & { programs?: { programId: string }[] };
+	exercise: ExerciseWithPrograms;
 	programId?: string;
 };
 

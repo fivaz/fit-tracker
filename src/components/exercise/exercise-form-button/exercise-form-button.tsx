@@ -7,7 +7,7 @@ import { AnimatePresence } from "motion/react";
 
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
-import { Exercise } from "@/generated/prisma/client";
+import { ExerciseFormInput } from "@/lib/exercise/types";
 
 type ExerciseFormButtonProps = {
 	programId?: string;
@@ -16,7 +16,7 @@ type ExerciseFormButtonProps = {
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const [open, setOpen] = useState(false);
 
-	const emptyExercise: Partial<Exercise> = {};
+	const emptyExercise: ExerciseFormInput = {};
 
 	return (
 		<div>

@@ -5,11 +5,13 @@ import { AnimatePresence } from "motion/react";
 
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
-import { Program } from "@/generated/prisma/client";
+import { buildEmptyProgram, ProgramUI, ProgramWithExercises } from "@/lib/program/types";
+
+
 
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
-	const program = { id: "" };
+	const program = buildEmptyProgram();
 
 	return (
 		<div>

@@ -2,9 +2,9 @@
 import { cache } from "react";
 import { revalidatePath } from "next/cache";
 
-import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
+import { ProgramWithExercises } from "@/lib/program/types";
 import { getUserId } from "@/lib/utils-server";
 
 export const getProgramById = cache(async (id: string) => {
@@ -36,12 +36,10 @@ export const getProgramById = cache(async (id: string) => {
 	}
 });
 
-export async function getPrograms(): Promise<
-	Array<Program & { exercises: { exerciseId: string }[] }>
-> {
+export async function getPrograms(): Promise<ProgramWithExercises[]> {
 	const userId = await getUserId();
 
-	return prisma.program.findMany({
+	const programs = await prisma.program.findMany({
 		where: { userId, deletedAt: null },
 		include: {
 			exercises: {
@@ -54,6 +52,9 @@ export async function getPrograms(): Promise<
 		},
 		orderBy: { createdAt: "desc" },
 	});
+
+	// Transform to UI types (remove database-only fields)
+	return programs.map(({ userId: _, createdAt, updatedAt, deletedAt, ...rest }) => rest);
 }
 
 export async function getProgramsCount() {

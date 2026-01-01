@@ -1,6 +1,7 @@
-import { Program } from "@/generated/prisma/client";
 import { createOptimisticContext } from "@/lib/hooks/create-optimistic-context";
-
-export type ProgramWithExercises = Program & { exercises: { exerciseId: string }[] };
+import { ProgramWithExercises } from "./types";
 
 export const [ProgramsProvider, usePrograms] = createOptimisticContext<ProgramWithExercises>();
+
+// Re-export for convenience
+export type { ProgramWithExercises } from "./types";

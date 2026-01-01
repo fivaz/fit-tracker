@@ -9,13 +9,12 @@ import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/compone
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { Program } from "@/generated/prisma/client";
 import { reportError } from "@/lib/logger";
 import { saveProgram } from "@/lib/program/action";
-import { usePrograms } from "@/lib/program/programs-context";
+import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramFormProps = {
-	program: Partial<Program> & { id: string };
+	program: ProgramWithExercises;
 	onClose: () => void;
 };
 
@@ -30,7 +29,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		const id = formData.get("id") as string;
 		const name = formData.get("name") as string;
 
-		const optimisticProduct = {
+		const optimisticProduct: ProgramWithExercises = {
 			...program,
 			id: id || crypto.randomUUID(),
 			name,
@@ -52,7 +51,13 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 				toast.success(isEdit ? "Program updated" : "Program created");
 			} catch (e) {
 				if (isEdit) {
-					updateItem(program);
+					// Rollback to original program state
+					const originalProgram: ProgramWithExercises = {
+						id: program.id,
+						name: program.name || "",
+						exercises: program.exercises || [],
+					};
+					updateItem(originalProgram);
 				} else {
 					deleteItem(optimisticProduct.id);
 				}
