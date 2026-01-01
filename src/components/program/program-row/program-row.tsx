@@ -1,4 +1,3 @@
-"use client";
 import { useState, useTransition } from "react";
 import Link from "next/link";
 
@@ -19,6 +18,7 @@ import {
 import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { deleteProgramAction } from "@/lib/program/action";
+import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramRowProps = {
 	program: Program & { exercises: { exerciseId: string }[] };
@@ -26,32 +26,29 @@ type ProgramRowProps = {
 	onEdit: (formData: FormData) => Promise<void>; // New prop
 };
 
-export function ProgramRow({ program, onDelete, onEdit }: ProgramRowProps) {
+export function ProgramRow({ program }: { program: ProgramWithExercises }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [isPending, startTransition] = useTransition();
+	const { deleteProgram } = usePrograms(); // <--- Get delete function
 
 	const handleDelete = async () => {
-		startTransition(async () => {
-			try {
-				await onDelete();
-				setShowDeleteDialog(false);
-			} catch (error) {
-				console.error("Failed to delete program:", error);
-			}
-		});
+		deleteProgram(program.id);
+		setShowDeleteDialog(false);
+
+		try {
+			await deleteProgramAction(program.id);
+		} catch (error) {
+			console.error("Failed to delete", error);
+			// Ideally trigger a toast or page refresh here if it fails
+		}
 	};
 
 	return (
 		<div className="relative">
 			<AnimatePresence mode="wait">
 				{isEditing ? (
-					<ProgramForm
-						key="edit-form"
-						program={program}
-						onClose={() => setIsEditing(false)}
-						onSave={onEdit}
-					/>
+					<ProgramForm key="edit-form" program={program} onClose={() => setIsEditing(false)} />
 				) : (
 					<motion.div
 						key="display-row"

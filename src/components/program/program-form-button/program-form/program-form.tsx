@@ -11,30 +11,41 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Program } from "@/generated/prisma/client";
 import { saveProgram } from "@/lib/program/action";
+import { usePrograms } from "@/lib/program/programs-context";
 
 type ProgramFormProps = {
 	program: Partial<Program>;
 	onClose: () => void;
-	onSave: (formData: FormData) => Promise<void>;
 };
 
-export function ProgramForm({ program, onClose, onSave }: ProgramFormProps) {
-	const [error, setError] = useState<string | null>(null);
+export function ProgramForm({ program, onClose }: ProgramFormProps) {
+	const { addProgram, updateProgram } = usePrograms();
 	const [isPending, setIsPending] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const isEdit = !!program.id;
 
 	const handleSubmit = async (formData: FormData) => {
-		setError(null);
-		setIsPending(true);
+		const id = formData.get("id") as string;
+		const name = formData.get("name") as string;
 
-		try {
-			await onSave(formData);
-			onClose();
-		} catch (err: unknown) {
-			setError(err instanceof Error ? err.message : "Something went wrong.");
-		} finally {
-			setIsPending(false);
+		const optimisticData = {
+			...program,
+			id: id || crypto.randomUUID(),
+			name,
+		};
+
+		if (id) {
+			updateProgram(optimisticData);
+		} else {
+			addProgram(optimisticData);
 		}
+
+		onClose();
+
+		saveProgram(formData).catch((err) => {
+			console.error("Failed to save", err);
+			// Optional: Toast error here
+		});
 	};
 
 	return (

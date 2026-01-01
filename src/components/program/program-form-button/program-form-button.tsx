@@ -7,11 +7,8 @@ import { ProgramForm } from "@/components/program/program-form-button/program-fo
 import { Button } from "@/components/ui/button";
 import { Program } from "@/generated/prisma/client";
 
-type Props = {
-	onSave: (formData: FormData) => Promise<void>;
-};
 
-export function ProgramFormButton({ onSave }: Props) {
+export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
 	const program: Partial<Program> = {};
 
@@ -23,7 +20,7 @@ export function ProgramFormButton({ onSave }: Props) {
 				</Button>
 			) : (
 				<AnimatePresence>
-					<ProgramForm program={program} onClose={() => setOpen(false)} onSave={onSave} />
+					<ProgramForm program={program} onClose={() => setOpen(false)} />
 				</AnimatePresence>
 			)}
 		</div>

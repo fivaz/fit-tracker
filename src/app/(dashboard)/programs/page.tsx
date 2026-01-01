@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 
-import { ProgramFormButton } from "@/components/program/program-form-button/program-form-button";
-import { ProgramsContent } from "@/components/program/programs-content/programs-content";
+import { ProgramsList } from "@/components/program/programs-list/programs-list";
 import { ProgramsSkeleton } from "@/components/program/programs-skeleton/programs-skeleton";
+import { getPrograms } from "@/lib/program/action";
+import { devDelay } from "@/lib/utils";
 
 export default function ProgramsPage() {
 	return (
@@ -30,4 +31,11 @@ async function ProgramsCount() {
 			{count} program{count !== 1 && "s"}
 		</p>
 	);
+}
+
+async function ProgramsContent() {
+	const programs = await getPrograms();
+	await devDelay();
+
+	return <ProgramsList initialPrograms={programs} />;
 }
