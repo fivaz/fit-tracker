@@ -7,7 +7,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ModeToggle } from "@/components/mode-toggle/mode-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { ConfirmProvider } from "@/lib/hooks/use-confirm";
+import { ConfirmProvider } from "@/lib/hooks/confirm-provider";
 
 const APP_NAME = "Fit-Tracker";
 const APP_DEFAULT_TITLE = "Fit-Tracker";
