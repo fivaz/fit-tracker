@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { ModeToggle } from "@/components/mode-toggle/mode-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";

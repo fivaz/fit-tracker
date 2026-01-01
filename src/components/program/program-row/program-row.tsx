@@ -6,7 +6,6 @@ import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
-import { deleteProgramAction } from "@/components/program/action";
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/card";
 import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
+import { deleteProgramAction } from "@/lib/program/action";
 
 type ProgramRowProps = {
 	program: Program & { exercises: { exerciseId: string }[] };

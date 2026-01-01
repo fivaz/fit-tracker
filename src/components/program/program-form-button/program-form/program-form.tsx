@@ -10,8 +10,7 @@ import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Program } from "@/generated/prisma/client";
-
-import { saveProgram } from "../../action";
+import { saveProgram } from "@/lib/program/action";
 
 type ProgramFormProps = {
 	program: Partial<Program>;

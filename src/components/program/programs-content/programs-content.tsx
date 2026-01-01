@@ -1,8 +1,8 @@
 import { AnimatePresence } from "motion/react";
 
-import { getPrograms } from "@/components/program/action";
 import { ProgramEmptyState } from "@/components/program/program-empty-state/program-empty-state";
 import { ProgramRow } from "@/components/program/program-row/program-row";
+import { getPrograms } from "@/lib/program/action";
 import { devDelay } from "@/lib/utils";
 
 export async function ProgramsContent() {

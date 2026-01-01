@@ -1,31 +1,35 @@
-import { AnimatePresence } from "motion/react";
+import { Suspense } from "react";
 
-import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
-import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { getExercises } from "@/lib/exercise/action";
+import { ExercisesContent } from "@/components/exercise/exercises-content/exercises-content";
+import { ExercisesSkeleton } from "@/components/exercise/exercises-skeleton/exercises-skeleton";
 
-export default async function ExercisesPage() {
-	const exercises = await getExercises();
-
+export default function ExercisesPage() {
 	return (
 		<div className="space-y-4 p-4">
 			<div className="pt-2 pb-2">
 				<h1 className="mb-1 text-xl tracking-tight">Workout Exercises</h1>
-				<p className="text-primary text-sm">{exercises.length} exercises</p>
+				<Suspense fallback={<div className="text-primary text-sm">Loading...</div>}>
+					<ExercisesCount />
+				</Suspense>
 			</div>
 
 			<ExerciseFormButton />
 
-			<div className="space-y-2">
-				<AnimatePresence mode="popLayout">
-					{exercises.map((exercise) => (
-						<ExerciseRow key={exercise.id} exercise={exercise} />
-					))}
-				</AnimatePresence>
-			</div>
-
-			{exercises.length === 0 && <ExerciseEmptyState />}
+			<Suspense fallback={<ExercisesSkeleton />}>
+				<ExercisesContent />
+			</Suspense>
 		</div>
+	);
+}
+
+async function ExercisesCount() {
+	const { getExercisesCount } = await import("@/lib/exercise/action");
+	const count = await getExercisesCount();
+
+	return (
+		<p className="text-primary text-sm">
+			{count} exercise{count !== 1 && "s"}
+		</p>
 	);
 }

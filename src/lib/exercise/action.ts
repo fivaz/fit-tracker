@@ -47,6 +47,14 @@ export async function getExercises() {
 	});
 }
 
+export async function getExercisesCount() {
+	const userId = await getUserId();
+
+	return prisma.exercise.count({
+		where: { userId, deletedAt: null },
+	});
+}
+
 async function uploadImage(imageFile: File | null, userId: string) {
 	if (!imageFile || !(imageFile.size > 0)) {
 		return null;

@@ -24,7 +24,7 @@ export default function ProgramsPage() {
 }
 
 async function ProgramsCount() {
-	const { getProgramsCount } = await import("@/components/program/action");
+	const { getProgramsCount } = await import("@/lib/program/action");
 	const count = await getProgramsCount();
 
 	return (

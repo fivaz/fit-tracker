@@ -7,10 +7,10 @@ import { AnimatePresence } from "motion/react";
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { getProgramById } from "@/components/program/action";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/lib/consts";
+import { getProgramById } from "@/lib/program/action";
 import { startWorkout } from "@/lib/workout/action";
 
 interface PageProps {
