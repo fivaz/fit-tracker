@@ -24,11 +24,11 @@ import { ROUTES } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 
 export function RegisterForm({ className, ...props }: ComponentProps<"div">) {
-	const [firstName, setFirstName] = useState("setFirstName");
-	const [lastName, setLastName] = useState("setLastName");
-	const [email, setEmail] = useState("test@test.com");
-	const [password, setPassword] = useState("test@test.com");
-	const [passwordConfirmation, setPasswordConfirmation] = useState("test@test.com");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordConfirmation, setPasswordConfirmation] = useState("");
 	const [image, setImage] = useState<File | null>(null);
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);

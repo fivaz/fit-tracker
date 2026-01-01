@@ -16,11 +16,7 @@ type ExerciseFormButtonProps = {
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const [open, setOpen] = useState(false);
 
-	// Create a "New" exercise template
-	const emptyExercise: Partial<Exercise> = {
-		name: "Bench Press",
-		muscles: ["chest"],
-	};
+	const emptyExercise: Partial<Exercise> = {};
 
 	return (
 		<div>
