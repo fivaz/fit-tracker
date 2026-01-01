@@ -71,9 +71,14 @@ export async function getWorkoutSession(sessionId: string) {
 			program: {
 				include: {
 					exercises: {
+						where: {
+							exercise: {
+								deletedAt: null,
+							},
+						},
 						orderBy: { order: "asc" },
 						include: {
-							exercise: true, // Just get exercise info (name, muscle, img)
+							exercise: true,
 						},
 					},
 				},
