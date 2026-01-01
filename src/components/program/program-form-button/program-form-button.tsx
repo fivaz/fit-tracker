@@ -9,7 +9,7 @@ import { Program } from "@/generated/prisma/client";
 
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
-	const program: Partial<Program> = {};
+	const program = { id: "" };
 
 	return (
 		<div>

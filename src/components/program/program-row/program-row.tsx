@@ -17,6 +17,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
+import { reportError } from "@/lib/logger";
 import { deleteProgramAction } from "@/lib/program/action";
 import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
 
@@ -38,17 +39,16 @@ export function ProgramRow({ program }: ProgramRowProps) {
 		startTransition(async () => {
 			try {
 				await deleteProgramAction(program.id);
-				toast.success(`"${itemToRollback.name}" deleted successfully`);
+				toast.success("Deleted!");
 			} catch (error) {
-				// 4. Rollback: Put the item back if server fails
 				addItem(itemToRollback);
 
-				toast.error(`Failed to delete "${itemToRollback.name}"`, {
-					description: "Please check your connection and try again.",
+				reportError(error, {
+					level: "error",
+					extra: { programId: program.id, programName: program.name },
 				});
 
-				// TODO create a special function that in dev it shows console, in prod send to sentry
-				console.error("Delete Error:", error);
+				toast.error("Failed to delete program");
 			}
 		});
 	};

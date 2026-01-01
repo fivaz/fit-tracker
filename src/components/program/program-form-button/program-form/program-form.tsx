@@ -2,26 +2,26 @@ import { useState, useTransition } from "react";
 
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 
-import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Program } from "@/generated/prisma/client";
+import { reportError } from "@/lib/logger";
 import { saveProgram } from "@/lib/program/action";
 import { usePrograms } from "@/lib/program/programs-context";
 
 type ProgramFormProps = {
-	program: Partial<Program>;
+	program: Partial<Program> & { id: string };
 	onClose: () => void;
 };
 
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
-	const { addItem, updateItem } = usePrograms();
+	const { addItem, updateItem, deleteItem } = usePrograms();
 	const [isPending, startTransition] = useTransition();
-	const [error, setError] = useState<string | null>(null);
 	const isEdit = !!program.id;
 
 	const handleSubmit = async (formData: FormData) => {
@@ -34,7 +34,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 			name,
 		};
 
-		if (id) {
+		if (isEdit) {
 			updateItem(optimisticProduct);
 		} else {
 			addItem(optimisticProduct);
@@ -45,9 +45,18 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		startTransition(async () => {
 			try {
 				await saveProgram(formData);
+				toast.success(isEdit ? "Program updated" : "Program created");
 			} catch (e) {
-				setError(e instanceof Error ? e.message : "An unexpected error occurred");
-				// TODO Handle error
+				if (isEdit) {
+					updateItem(program);
+				} else {
+					deleteItem(optimisticProduct.id);
+				}
+
+				reportError(e, { extra: { id, name, isEdit } });
+				toast.error(isEdit ? "Failed to update program" : "Failed to create program", {
+					description: "Your changes were rolled back.",
+				});
 			}
 		});
 	};
@@ -75,13 +84,6 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 				<CardContent>
 					<FieldGroup>
 						<FieldSet>
-							{error && (
-								<Alert className="text-destructive bg-destructive/10">
-									<AlertCircle className="size-4" />
-									<AlertTitle>{error}</AlertTitle>
-								</Alert>
-							)}
-
 							<Field>
 								<FieldLabel htmlFor="name">Program Name</FieldLabel>
 								<Input
