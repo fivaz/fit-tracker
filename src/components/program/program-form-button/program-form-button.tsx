@@ -7,7 +7,6 @@ import { ProgramForm } from "@/components/program/program-form-button/program-fo
 import { Button } from "@/components/ui/button";
 import { Program } from "@/generated/prisma/client";
 
-
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
 	const program: Partial<Program> = {};

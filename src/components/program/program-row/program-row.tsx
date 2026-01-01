@@ -16,7 +16,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { deleteProgramAction } from "@/lib/program/action";
 import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
