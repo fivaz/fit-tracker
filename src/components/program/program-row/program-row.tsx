@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 
 import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
@@ -27,14 +27,17 @@ type ProgramRowProps = {
 export function ProgramRow({ program }: ProgramRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const [isPending, startTransition] = useTransition();
 
 	const handleDelete = async () => {
-		try {
-			await deleteProgramAction(program.id);
-			setShowDeleteDialog(false);
-		} catch (error) {
-			console.error("Failed to delete program:", error);
-		}
+		startTransition(async () => {
+			try {
+				await deleteProgramAction(program.id);
+				setShowDeleteDialog(false);
+			} catch (error) {
+				console.error("Failed to delete program:", error);
+			}
+		});
 	};
 
 	return (
@@ -48,15 +51,21 @@ export function ProgramRow({ program }: ProgramRowProps) {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, x: -100 }}
+						layout
 					>
-						<Card>
+						<Card className={isPending ? "pointer-events-none opacity-50" : ""}>
 							<CardHeader>
 								<CardTitle>{program.name}</CardTitle>
 								<CardDescription>
-									{program.exercises.length} exercise{program.exercises.length > 0 && "s"}
+									{program.exercises.length} exercise{program.exercises.length !== 1 && "s"}
 								</CardDescription>
 								<CardAction className="space-x-2">
-									<Button variant="outline" onClick={() => setIsEditing(true)} size="icon-sm">
+									<Button
+										variant="outline"
+										onClick={() => setIsEditing(true)}
+										size="icon-sm"
+										disabled={isPending}
+									>
 										<Pencil className="size-4" />
 									</Button>
 									<Button
@@ -64,6 +73,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 										className="text-destructive hover:text-red-500"
 										size="icon-sm"
 										onClick={() => setShowDeleteDialog(true)}
+										disabled={isPending}
 									>
 										<Trash2 className="size-4" />
 									</Button>
@@ -75,6 +85,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 									asChild
 									className="text-chart-2 hover:text-chart-3 w-full"
 									variant="outline"
+									disabled={isPending}
 								>
 									<Link href={`${ROUTES.PROGRAMS}/${program.id}`}>
 										<Dumbbell className="size-4" />

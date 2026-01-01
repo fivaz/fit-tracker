@@ -56,6 +56,14 @@ export async function getPrograms(): Promise<
 	});
 }
 
+export async function getProgramsCount() {
+	const userId = await getUserId();
+
+	return prisma.program.count({
+		where: { userId, deletedAt: null },
+	});
+}
+
 export async function getRecentPrograms() {
 	const userId = await getUserId();
 
