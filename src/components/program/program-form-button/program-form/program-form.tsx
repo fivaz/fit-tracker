@@ -24,7 +24,9 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 	const [isPending, startTransition] = useTransition();
 	const isEdit = !!program.id;
 
-	const handleSubmit = async (formData: FormData) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {		
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
 		const id = formData.get("id") as string;
 		const name = formData.get("name") as string;
 
@@ -34,15 +36,17 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 			name,
 		};
 
-		if (isEdit) {
-			updateItem(optimisticProduct);
-		} else {
-			addItem(optimisticProduct);
-		}
 
 		onClose();
 
 		startTransition(async () => {
+
+			if (isEdit) {
+				updateItem(optimisticProduct);
+			} else {
+				addItem(optimisticProduct);
+			}
+
 			try {
 				await saveProgram(formData);
 				toast.success(isEdit ? "Program updated" : "Program created");
@@ -67,7 +71,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 			animate={{ opacity: 1, height: "auto", scale: 1 }}
 			exit={{ opacity: 0, height: 0, scale: 0.95 }}
 			transition={{ duration: 0.2 }}
-			action={handleSubmit}
+			onSubmit={handleSubmit}
 		>
 			<Card>
 				<CardHeader className="flex items-center justify-between px-5">
