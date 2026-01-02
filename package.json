@@ -91,6 +91,7 @@
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"pwa-asset-generator": "^8.1.2",
 		"semantic-release": "^25.0.2",
+		"semantic-release-pnpm": "^1.0.2",
 		"storybook": "^10.1.10",
 		"tailwindcss": "^4",
 		"tsx": "^4.21.0",
