@@ -5,8 +5,8 @@ import { DumbbellIcon, NotebookTabsIcon, TrendingUpIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
-import { getExercises } from "@/lib/exercise/action";
-import { getPrograms } from "@/lib/program/action";
+import { getExercises } from "@/lib/exercise/actions";
+import { getPrograms } from "@/lib/program/actions";
 import { cn } from "@/lib/utils";
 
 export function CardQuickAction({

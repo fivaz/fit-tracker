@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { WorkoutExercise } from "@/components/workout/workout-exercise/workout-exercise";
 import { WorkoutHeader } from "@/components/workout/workout-header/workout-header";
 import { ROUTES } from "@/lib/consts";
-import { getWorkoutSessionById } from "@/lib/workout/action";
+import { getWorkoutSessionById } from "@/lib/workout/actions";
 
 type WorkoutPageProps = {
 	params: Promise<{ id: string }>;

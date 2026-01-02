@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TimeButton } from "@/components/workout/time-button/time-button";
 import { useConfirm } from "@/lib/hooks/use-confirm";
-import { deleteSetAction, updateSetAction } from "@/lib/set-logs/actions";
+import { deleteSetAction, upsertSetAction } from "@/lib/set-logs/actions";
 import { useSetLogs } from "@/lib/set-logs/set-logs-context";
 import { SetLogUI } from "@/lib/set-logs/types";
 
@@ -16,16 +16,17 @@ type WorkoutSetRowProps = {
 	index: number;
 	set: SetLogUI;
 	sessionId: string;
+	exerciseId: string;
 };
 
-export function WorkoutSetRow({ index, set, sessionId }: WorkoutSetRowProps) {
+export function WorkoutSetRow({ index, set, sessionId, exerciseId }: WorkoutSetRowProps) {
 	const confirm = useConfirm();
 	const { updateItem, deleteItem } = useSetLogs();
 
 	const persistUpdate = (updatedSet: SetLogUI) => {
 		startTransition(async () => {
 			updateItem(updatedSet);
-			await updateSetAction(set.id, sessionId, updatedSet);
+			await upsertSetAction(set.id, sessionId, exerciseId, updatedSet);
 		});
 	};
 

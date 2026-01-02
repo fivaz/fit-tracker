@@ -18,7 +18,7 @@ import {
 import { ROUTES } from "@/lib/consts";
 import { useConfirm } from "@/lib/hooks/use-confirm";
 import { reportError } from "@/lib/logger";
-import { deleteProgramAction } from "@/lib/program/action";
+import { deleteProgramAction } from "@/lib/program/actions";
 import { ProgramSummary, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramRowProps = {

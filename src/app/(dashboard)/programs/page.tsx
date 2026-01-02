@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { ProgramsList } from "@/components/program/programs-list/programs-list";
 import { ProgramsSkeleton } from "@/components/program/programs-skeleton/programs-skeleton";
-import { getPrograms } from "@/lib/program/action";
+import { getPrograms } from "@/lib/program/actions";
 
 export default function ProgramsPage() {
 	return (
@@ -22,7 +22,7 @@ export default function ProgramsPage() {
 }
 
 async function ProgramsCount() {
-	const { getProgramsCount } = await import("@/lib/program/action");
+	const { getProgramsCount } = await import("@/lib/program/actions");
 	const count = await getProgramsCount();
 
 	return (

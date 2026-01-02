@@ -1,4 +1,3 @@
-// lib/logger.ts
 import * as Sentry from "@sentry/nextjs";
 
 type LogLevel = "info" | "warn" | "error";
@@ -14,7 +13,6 @@ export function reportError(error: unknown, options: LogOptions = {}) {
 	const message = error instanceof Error ? error.message : String(error);
 
 	if (process.env.NODE_ENV === "development") {
-		// 🛠️ Development: Beautiful console logs
 		const styles = {
 			info: "color: #007bff; font-weight: bold;",
 			warn: "color: #ffc107; font-weight: bold;",
@@ -26,7 +24,6 @@ export function reportError(error: unknown, options: LogOptions = {}) {
 		if (extra) console.table(extra);
 		console.groupEnd();
 	} else {
-		// 🚀 Production: Send to Sentry
 		Sentry.withScope((scope) => {
 			if (extra) {
 				scope.setExtras(extra);

@@ -4,36 +4,32 @@ import { revalidatePath } from "next/cache";
 
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
+import { SetLogUI } from "@/lib/set-logs/types";
 import { getUserId } from "@/lib/utils-server";
 
-export async function createSetAction(exerciseId: string, sessionId: string, order: number) {
-	const userId = await getUserId();
-
-	await prisma.setLog.create({
-		data: {
-			exerciseId,
-			sessionId,
-			order,
-			userId,
-			reps: 0,
-			weight: 0,
-		},
-	});
-
-	revalidatePath(`${ROUTES.WORKOUT}/${sessionId}`);
-}
-
-export async function updateSetAction(
+export async function upsertSetAction(
 	id: string,
 	sessionId: string,
-	data: { reps: number; weight: number; completedAt: Date | null },
+	exerciseId: string,
+	data: Partial<SetLogUI>,
 ) {
-	await prisma.setLog.update({
+	const userId = await getUserId();
+
+	await prisma.setLog.upsert({
 		where: { id },
-		data: {
-			reps: data.reps,
+		update: {
 			weight: data.weight,
+			reps: data.reps,
 			completedAt: data.completedAt,
+		},
+		create: {
+			id: id,
+			userId,
+			sessionId: sessionId,
+			exerciseId: exerciseId,
+			weight: data.weight ?? 0,
+			reps: data.reps ?? 0,
+			order: data.order ?? 0,
 		},
 	});
 

@@ -2,7 +2,7 @@ import { AnimatePresence } from "motion/react";
 
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { getExercises } from "@/lib/exercise/action";
+import { getExercises } from "@/lib/exercise/actions";
 
 export async function ExercisesContent() {
 	const exercises = await getExercises();

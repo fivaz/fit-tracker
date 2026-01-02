@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { WorkoutSetRow } from "@/components/workout/workout-set-row/workout-set-row";
 import { SetLog } from "@/generated/prisma/client";
 import { ExerciseUI } from "@/lib/exercise/types";
-import { createSetAction } from "@/lib/set-logs/actions";
+import { upsertSetAction } from "@/lib/set-logs/actions";
 import { SetLogsProvider, useSetLogs } from "@/lib/set-logs/set-logs-context";
 import { buildEmptySetLog } from "@/lib/set-logs/types";
 
@@ -31,7 +31,6 @@ function WorkoutExerciseContent({ exercise, sessionId }: WorkoutExerciseProps) {
 	const { items: sets, addItem } = useSetLogs();
 
 	const handleAddSet = async () => {
-		console.log("sets.length", sets.length);
 		const newSet = buildEmptySetLog({
 			id: crypto.randomUUID(),
 			exerciseId: exercise.id,
@@ -41,7 +40,7 @@ function WorkoutExerciseContent({ exercise, sessionId }: WorkoutExerciseProps) {
 
 		startTransition(async () => {
 			addItem(newSet);
-			await createSetAction(exercise.id, sessionId, sets.length);
+			await upsertSetAction(newSet.id, sessionId, exercise.id, newSet);
 		});
 	};
 
@@ -71,7 +70,13 @@ function WorkoutExerciseContent({ exercise, sessionId }: WorkoutExerciseProps) {
 				<CardContent>
 					<div className="space-y-3">
 						{sets.map((set, index) => (
-							<WorkoutSetRow key={set.id} index={index} set={set} sessionId={sessionId} />
+							<WorkoutSetRow
+								key={set.id}
+								index={index}
+								set={set}
+								sessionId={sessionId}
+								exerciseId={exercise.id}
+							/>
 						))}
 					</div>
 				</CardContent>

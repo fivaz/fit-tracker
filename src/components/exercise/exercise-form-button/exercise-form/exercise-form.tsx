@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { saveExercise } from "@/lib/exercise/action";
+import { saveExercise } from "@/lib/exercise/actions";
 import { parseExerciseFormData } from "@/lib/exercise/exercise-form-data";
 import { useExercises } from "@/lib/exercise/exercises-context";
 import { ExerciseWithPrograms } from "@/lib/exercise/types";

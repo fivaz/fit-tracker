@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Play } from "lucide-react";
 
 import { ROUTES } from "@/lib/consts";
-import { getRecentPrograms } from "@/lib/program/action";
+import { getRecentPrograms } from "@/lib/program/actions";
 
 export async function StartWorkout() {
 	const programs = await getRecentPrograms();

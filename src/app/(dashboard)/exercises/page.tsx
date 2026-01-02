@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { ExercisesList } from "@/components/exercise/exercises-list/exercises-list";
 import { ExercisesSkeleton } from "@/components/exercise/exercises-skeleton/exercises-skeleton";
-import { getExercises } from "@/lib/exercise/action";
+import { getExercises } from "@/lib/exercise/actions";
 
 export default function ExercisesPage() {
 	return (
@@ -22,7 +22,7 @@ export default function ExercisesPage() {
 }
 
 async function ExercisesCount() {
-	const { getExercisesCount } = await import("@/lib/exercise/action");
+	const { getExercisesCount } = await import("@/lib/exercise/actions");
 	const count = await getExercisesCount();
 
 	return (

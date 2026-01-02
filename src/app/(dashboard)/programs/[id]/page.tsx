@@ -7,8 +7,8 @@ import { ProgramExerciseList } from "@/components/program/program-detail-content
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/lib/consts";
-import { getProgramByIdWithExercises } from "@/lib/program/action";
-import { startWorkout } from "@/lib/workout/action";
+import { getProgramByIdWithExercises } from "@/lib/program/actions";
+import { startWorkout } from "@/lib/workout/actions";
 
 interface PageProps {
 	params: Promise<{ id: string }>;

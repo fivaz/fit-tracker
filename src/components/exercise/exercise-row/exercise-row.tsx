@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
-import { deleteExerciseAction } from "@/lib/exercise/action";
+import { deleteExerciseAction } from "@/lib/exercise/actions";
 import { useExercises } from "@/lib/exercise/exercises-context";
 import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { useConfirm } from "@/lib/hooks/use-confirm";

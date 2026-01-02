@@ -9,7 +9,7 @@ import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/compone
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { reportError } from "@/lib/logger";
-import { saveProgram } from "@/lib/program/action";
+import { saveProgram } from "@/lib/program/actions";
 import { ProgramSummary, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramFormProps = {

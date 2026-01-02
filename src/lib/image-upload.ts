@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
-
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";
 
 export interface ImageUploadOptions {
@@ -36,7 +34,7 @@ export async function uploadImage(
 	}
 
 	const fileExtension = imageFile.name.split(".").pop();
-	const imagePath = `${userId}/${uuidv4()}.${fileExtension}`;
+	const imagePath = `${userId}/${crypto.randomUUID()}.${fileExtension}`;
 
 	await uploadFile(imageFile, bucket, imagePath);
 

@@ -4,7 +4,7 @@ import { Header } from "@/components/home/header/header";
 import { QuickActions } from "@/components/home/quick-actions/quick-actions";
 import { StartWorkout } from "@/components/home/start-workout/start-workout";
 import { ROUTES } from "@/lib/consts";
-import { getActiveSessionId } from "@/lib/workout/action";
+import { getActiveSessionId } from "@/lib/workout/actions";
 
 export default async function Home() {
 	const sessionId = await getActiveSessionId();

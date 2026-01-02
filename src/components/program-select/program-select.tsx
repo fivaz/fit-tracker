@@ -2,13 +2,12 @@
 
 import { ComponentProps, useMemo, useState } from "react";
 
-import useSWR from "swr"; // pnpm add swr
+import useSWR from "swr";
 
 import { FieldLabel } from "@/components/ui/field";
 import { MultiSelect } from "@/components/ui/multi-select";
-import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have a skeleton loader
+import { Skeleton } from "@/components/ui/skeleton";
 
-// Basic fetcher function
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 type ProgramSelectProps = ComponentProps<"select"> & {
@@ -18,14 +17,12 @@ type ProgramSelectProps = ComponentProps<"select"> & {
 export function ProgramSelect({ name, defaultValue }: ProgramSelectProps) {
 	const [selected, setSelected] = useState<string[]>(defaultValue || []);
 
-	// 1. Fetch programs from your API route
 	const {
 		data: programs,
 		error,
 		isLoading,
 	} = useSWR<{ id: string; name: string }[]>("/api/programs", fetcher);
 
-	// 2. Build options dynamically once data arrives
 	const options = useMemo(() => {
 		if (!programs) return [];
 		return programs.map((program) => ({

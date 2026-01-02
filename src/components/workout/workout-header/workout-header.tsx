@@ -7,7 +7,7 @@ import { Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useConfirm } from "@/lib/hooks/use-confirm";
 import { useWorkoutTimer } from "@/lib/hooks/use-workout-timer";
-import { endWorkout } from "@/lib/workout/action";
+import { endWorkout } from "@/lib/workout/actions";
 
 type WorkoutHeaderProps = {
 	sessionId: string;
