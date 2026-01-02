@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { type FormEvent, useState, useTransition } from "react";
 
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
@@ -23,7 +23,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 	const [isPending, startTransition] = useTransition();
 	const isEdit = !!program.id;
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {		
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const id = formData.get("id") as string;
@@ -35,11 +35,9 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 			name,
 		};
 
-
 		onClose();
 
 		startTransition(async () => {
-
 			if (isEdit) {
 				updateItem(optimisticProduct);
 			} else {
