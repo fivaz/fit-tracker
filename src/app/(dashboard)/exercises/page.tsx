@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 
-import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
-import { ExercisesContent } from "@/components/exercise/exercises-content/exercises-content";
+import { ExercisesList } from "@/components/exercise/exercises-list/exercises-list";
 import { ExercisesSkeleton } from "@/components/exercise/exercises-skeleton/exercises-skeleton";
+import { getExercises } from "@/lib/exercise/action";
+import { devDelay } from "@/lib/utils";
 
 export default function ExercisesPage() {
 	return (
@@ -13,8 +14,6 @@ export default function ExercisesPage() {
 					<ExercisesCount />
 				</Suspense>
 			</div>
-
-			<ExerciseFormButton />
 
 			<Suspense fallback={<ExercisesSkeleton />}>
 				<ExercisesContent />
@@ -32,4 +31,11 @@ async function ExercisesCount() {
 			{count} exercise{count !== 1 && "s"}
 		</p>
 	);
+}
+
+async function ExercisesContent() {
+	const exercises = await getExercises();
+	await devDelay();
+
+	return <ExercisesList initialExercises={exercises} />;
 }

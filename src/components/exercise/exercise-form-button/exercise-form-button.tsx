@@ -16,7 +16,9 @@ type ExerciseFormButtonProps = {
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const [open, setOpen] = useState(false);
 
-	const emptyExercise: ExerciseFormInput = {};
+	const emptyExercise: ExerciseFormInput = {
+		name: "Test ",
+	};
 
 	return (
 		<div>

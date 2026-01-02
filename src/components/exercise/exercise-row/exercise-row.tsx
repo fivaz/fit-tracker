@@ -1,33 +1,56 @@
 "use client";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import Image from "next/image";
 
-import { Dumbbell, Pencil, Trash2 } from "lucide-react"; // Added Dumbbell as fallback
+import { Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
 
-import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { deleteExerciseAction } from "@/lib/exercise/action";
-import { ExerciseWithPrograms } from "@/lib/exercise/types";
+import { useExercises } from "@/lib/exercise/exercises-context";
+import { ExerciseSummary, ExerciseWithPrograms } from "@/lib/exercise/types";
+import { useConfirm } from "@/lib/hooks/use-confirm";
+import { reportError } from "@/lib/logger";
 
 type ExerciseRowProps = {
-	exercise: ExerciseWithPrograms;
+	exercise: ExerciseSummary | ExerciseWithPrograms;
 	programId?: string;
 };
 
 export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
+	const { deleteItem, addItem } = useExercises();
 	const [isEditing, setIsEditing] = useState(false);
-	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const confirm = useConfirm();
 
 	const handleDelete = async () => {
-		try {
-			await deleteExerciseAction(exercise.id);
-			setShowDeleteDialog(false);
-		} catch (error) {
-			console.error("Failed to delete exercise:", error);
-		}
+		const confirmed = await confirm({
+			title: "Delete Program",
+			message: `Are you sure you want to delete "${exercise.name}"? This action cannot be undone.`,
+		});
+
+		if (!confirmed) return;
+
+		const itemToRollback = { ...exercise };
+
+		startTransition(async () => {
+			deleteItem(exercise.id);
+
+			try {
+				await deleteExerciseAction(exercise.id);
+				toast.success("Exercise deleted");
+			} catch (error) {
+				addItem(itemToRollback);
+
+				reportError(error, { extra: { id: exercise.id, name: exercise.name } });
+
+				toast.error("Failed to delete exercise", {
+					description: "Your changes were rolled back.",
+				});
+			}
+		});
 	};
 
 	return (
@@ -82,7 +105,7 @@ export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 										variant="outline"
 										className="text-destructive hover:text-red-500"
 										size="icon-sm"
-										onClick={() => setShowDeleteDialog(true)}
+										onClick={handleDelete}
 									>
 										<Trash2 className="size-4" />
 									</Button>
@@ -92,14 +115,6 @@ export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 					</motion.div>
 				)}
 			</AnimatePresence>
-
-			<ConfirmDialog
-				isOpen={showDeleteDialog}
-				title="Delete Exercise"
-				message={`Are you sure you want to delete "${exercise.name}"? This action cannot be undone.`}
-				onConfirm={handleDelete}
-				onCancel={() => setShowDeleteDialog(false)}
-			/>
 		</div>
 	);
 }

@@ -14,3 +14,7 @@ export type ExerciseWithPrograms = ExerciseUI & {
 	programs?: { programId: string }[];
 };
 
+// Exercise summary - optimized for list views (no programs list)
+export type ExerciseSummary = ExerciseUI & {
+	programCount: number;
+};

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { type FormEvent, startTransition, useState, useTransition } from "react";
 import Image from "next/image";
 
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 
 import { MuscleSelect } from "@/components/muscle-select/muscle-select";
 import { ProgramSelect } from "@/components/program-select/program-select";
@@ -12,8 +13,11 @@ import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/compone
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { MuscleGroup } from "@/generated/prisma/client";
 import { saveExercise } from "@/lib/exercise/action";
-import { ExerciseFormInput } from "@/lib/exercise/types";
+import { useExercises } from "@/lib/exercise/exercises-context";
+import { ExerciseFormInput, ExerciseSummary } from "@/lib/exercise/types";
+import { reportError } from "@/lib/logger";
 
 type ExerciseFormProps = {
 	exercise: ExerciseFormInput;
@@ -22,25 +26,62 @@ type ExerciseFormProps = {
 };
 
 export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps) {
+	const { addItem, updateItem, deleteItem } = useExercises();
 	const [error, setError] = useState<string | null>(null);
-	const [isPending, setIsPending] = useState(false);
 	const isEdit = !!exercise.id;
 
 	const initialProgramIds =
 		exercise.programs?.map((p) => p.programId) || (programId ? [programId] : []);
 
-	const handleSubmit = async (formData: FormData) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		setError(null);
-		setIsPending(true);
 
-		try {
-			await saveExercise(formData);
-			onClose();
-		} catch (err: unknown) {
-			setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-		} finally {
-			setIsPending(false);
-		}
+		const formData = new FormData(e.currentTarget);
+		const id = formData.get("id") as string;
+		const name = formData.get("name") as string;
+		const musclesRaw = formData.getAll("muscles");
+		const muscles = Array.isArray(musclesRaw) ? musclesRaw : [musclesRaw];
+
+		const optimisticExercise: ExerciseSummary = {
+			...exercise,
+			id: id || crypto.randomUUID(),
+			name,
+			image: exercise.image || null,
+			muscles: muscles as MuscleGroup[],
+			programCount: 0,
+		};
+
+		onClose();
+
+		startTransition(async () => {
+			if (isEdit) {
+				updateItem(optimisticExercise);
+			} else {
+				addItem(optimisticExercise);
+			}
+
+			try {
+				await saveExercise(formData);
+				toast.success(isEdit ? "Exercise updated" : "Exercise created");
+			} catch (err: unknown) {
+				if (isEdit && exercise.id) {
+					// Revert to previous state
+					updateItem(exercise as ExerciseSummary & { programCount: number });
+				} else {
+					// Remove the optimistically added exercise
+					deleteItem(optimisticExercise.id);
+				}
+
+				const errorMessage =
+					err instanceof Error ? err.message : "Something went wrong. Please try again.";
+				reportError(err, { extra: { id, name, isEdit } });
+				toast.error(isEdit ? "Failed to update exercise" : "Failed to create exercise", {
+					description: "Your changes were rolled back.",
+				});
+				setError(errorMessage);
+			}
+		});
 	};
 
 	return (
@@ -49,7 +90,7 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 			animate={{ opacity: 1, height: "auto", scale: 1 }}
 			exit={{ opacity: 0, height: 0, scale: 0.95 }}
 			transition={{ duration: 0.2 }}
-			action={handleSubmit}
+			onSubmit={handleSubmit}
 		>
 			<Card>
 				<CardHeader className="flex items-center justify-between px-5">
@@ -117,17 +158,10 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 				</CardContent>
 
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full" disabled={isPending}>
-						{isPending && <Spinner />}
+					<Button type="submit" className="w-full">
 						{isEdit ? "Save Changes" : "Create Exercise"}
 					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onClose}
-						className="w-full"
-						disabled={isPending}
-					>
+					<Button type="button" variant="outline" onClick={onClose} className="w-full">
 						Cancel
 					</Button>
 				</CardFooter>

@@ -46,16 +46,15 @@ export function ProgramRow({ program }: ProgramRowProps) {
 
 			try {
 				await deleteProgramAction(program.id);
-				toast.success("Deleted!");
+				toast.success("Program deleted!");
 			} catch (error) {
 				addItem(itemToRollback);
 
-				reportError(error, {
-					level: "error",
-					extra: { programId: program.id, programName: program.name },
-				});
+				reportError(error, { extra: { programId: program.id, programName: program.name } });
 
-				toast.error("Failed to delete program");
+				toast.error("Failed to delete program", {
+					description: "Your changes were rolled back.",
+				});
 			}
 		});
 	};

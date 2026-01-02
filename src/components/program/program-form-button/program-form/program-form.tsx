@@ -1,4 +1,4 @@
-import { type FormEvent, useState, useTransition } from "react";
+import { type FormEvent, startTransition, useState, useTransition } from "react";
 
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
@@ -20,7 +20,6 @@ type ProgramFormProps = {
 
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
 	const { addItem, updateItem, deleteItem } = usePrograms();
-	const [isPending, startTransition] = useTransition();
 	const isEdit = !!program.id;
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -101,17 +100,10 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 				</CardContent>
 
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full" disabled={isPending}>
-						{isPending && <Spinner />}
+					<Button type="submit" className="w-full">
 						{isEdit ? "Save Changes" : "Create Program"}
 					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onClose}
-						className="w-full"
-						disabled={isPending}
-					>
+					<Button type="button" variant="outline" onClick={onClose} className="w-full">
 						Cancel
 					</Button>
 				</CardFooter>

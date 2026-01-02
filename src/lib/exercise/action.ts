@@ -6,33 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import { MuscleGroup } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
+import { ExerciseSummary } from "@/lib/exercise/types";
 import { prisma } from "@/lib/prisma";
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";
 import { getUserId } from "@/lib/utils-server";
-import { ExerciseWithPrograms } from "@/lib/exercise/types";
 
-export const getExerciseById = cache(async (id: string) => {
-	try {
-		const userId = await getUserId();
-
-		const exercise = await prisma.exercise.findUnique({
-			where: { id, userId, deletedAt: null },
-		});
-
-		if (!exercise) {
-			return null;
-		}
-
-		// Transform to UI type (remove database-only fields)
-		const { userId: _, createdAt, updatedAt, deletedAt, ...rest } = exercise;
-		return rest;
-	} catch (error) {
-		console.error("Error fetching exercise:", error);
-		return null;
-	}
-});
-
-export async function getExercises(): Promise<ExerciseWithPrograms[]> {
+export async function getExercises(): Promise<ExerciseSummary[]> {
 	const userId = await getUserId();
 
 	const exercises = await prisma.exercise.findMany({
@@ -40,17 +19,26 @@ export async function getExercises(): Promise<ExerciseWithPrograms[]> {
 			userId,
 			deletedAt: null,
 		},
-		include: {
+		select: {
+			id: true,
+			name: true,
+			image: true,
+			muscles: true,
 			programs: {
-				select: {
-					programId: true,
-				},
+				where: { program: { deletedAt: null } },
+				select: { programId: true },
 			},
 		},
+		orderBy: { createdAt: "desc" },
 	});
 
-	// Transform to UI types (remove database-only fields)
-	return exercises.map(({ userId: _, createdAt, updatedAt, deletedAt, ...rest }) => rest);
+	return exercises.map(({ programs, ...rest }) => {
+		const programCount = programs?.length ?? 0;
+		return {
+			...rest,
+			programCount,
+		};
+	});
 }
 
 export async function getExercisesCount() {
