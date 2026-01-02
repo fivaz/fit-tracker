@@ -5,10 +5,13 @@ import { redirect } from "next/navigation";
 
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
+import { devDelay } from "@/lib/utils";
 import { getUserId } from "@/lib/utils-server";
 
 export async function startWorkout(programId: string) {
 	"use server";
+	await devDelay();
+
 	const userId = await getUserId();
 
 	const session = await prisma.workoutSession.create({
@@ -28,6 +31,8 @@ export async function startWorkout(programId: string) {
 }
 
 export async function endWorkout(sessionId: string) {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	await prisma.workoutSession.update({
@@ -45,6 +50,8 @@ export async function endWorkout(sessionId: string) {
 }
 
 export async function getActiveSessionId() {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	const user = await prisma.user.findUnique({
@@ -58,6 +65,8 @@ export async function getActiveSessionId() {
 }
 
 export async function getWorkoutSession(sessionId: string) {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	// 1. Fetch data (Removed the deep 'sets: true' include)

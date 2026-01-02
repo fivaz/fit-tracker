@@ -51,15 +51,12 @@ export default async function ProgramPage({ params }: PageProps) {
 			<ProgramExerciseList programId={program.id} initialExercises={exercises} />
 
 			<div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2">
-				<Button
-					size="lg"
-					type="submit"
-					disabled={exercises.length === 0}
-					formAction={startWorkout.bind(null, program.id)}
-				>
-					Start Workout
-					<Dumbbell />
-				</Button>
+				<form action={startWorkout.bind(null, program.id)}>
+					<Button size="lg" type="submit" disabled={exercises.length === 0}>
+						Start Workout
+						<Dumbbell />
+					</Button>
+				</form>
 			</div>
 		</div>
 	);

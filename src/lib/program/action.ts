@@ -88,9 +88,6 @@ export async function getRecentPrograms() {
 
 	const recentSessions = await prisma.workoutSession.findMany({
 		where: { userId },
-		orderBy: { startedAt: "desc" },
-		distinct: ["programId"],
-		take: 3,
 		include: {
 			program: {
 				include: {
@@ -108,6 +105,9 @@ export async function getRecentPrograms() {
 				},
 			},
 		},
+		take: 3,
+		distinct: ["programId"],
+		orderBy: { startedAt: "desc" },
 	});
 
 	return recentSessions.map((session) => {
