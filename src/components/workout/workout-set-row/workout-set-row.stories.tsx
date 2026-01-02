@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { parse } from "date-fns";
 
-import { WorkoutSetRow } from "@/components/workout-set-row/workout-set-row";
+import { WorkoutSetRow } from "@/components/workout/workout-set-row/workout-set-row";
 
 const meta: Meta<typeof WorkoutSetRow> = {
 	title: "Workout/WorkoutSetRow",

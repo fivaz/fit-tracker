@@ -4,9 +4,9 @@ import { startTransition } from "react";
 
 import { Trash2 } from "lucide-react";
 
-import { TimeButton } from "@/components/time-button/time-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { TimeButton } from "@/components/workout/time-button/time-button";
 import { useConfirm } from "@/lib/hooks/use-confirm";
 import { deleteSetAction, updateSetAction } from "@/lib/set-logs/actions";
 import { useSetLogs } from "@/lib/set-logs/set-logs-context";

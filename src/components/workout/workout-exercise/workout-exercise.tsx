@@ -7,7 +7,7 @@ import { Dumbbell, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { WorkoutSetRow } from "@/components/workout-set-row/workout-set-row";
+import { WorkoutSetRow } from "@/components/workout/workout-set-row/workout-set-row";
 import { SetLog } from "@/generated/prisma/client";
 import { ExerciseUI } from "@/lib/exercise/types";
 import { createSetAction } from "@/lib/set-logs/actions";
