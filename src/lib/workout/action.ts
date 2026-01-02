@@ -73,7 +73,7 @@ export async function getWorkoutSession(sessionId: string) {
 	const session = await prisma.workoutSession.findUnique({
 		where: { id: sessionId, userId },
 		include: {
-			// ✅ Fetch all sets for THIS session only (Flat List)
+			// Fetch all sets for THIS session only (Flat List)
 			setLogs: {
 				orderBy: { order: "asc" },
 			},

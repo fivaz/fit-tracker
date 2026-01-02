@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { WorkoutSetRow } from "@/components/workout-set-row/workout-set-row";
 import { Exercise, SetLog } from "@/generated/prisma/client";
+import { ExerciseUI } from "@/lib/exercise/types";
 
 import { SetEntry, useWorkoutSets } from "./use-workout-sets";
 
 type WorkoutExerciseProps = {
-	exercise: Exercise & { setLogs: SetLog[] };
+	exercise: ExerciseUI & { setLogs: SetLog[] };
 	sessionId: string;
 };
 
