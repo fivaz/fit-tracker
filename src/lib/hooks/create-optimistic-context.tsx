@@ -14,11 +14,23 @@ interface OptimisticContextProps<T> {
 	setItems: (items: T[]) => void;
 }
 
-export function createOptimisticContext<T extends Identifiable>() {
+export function createOptimisticContext<T extends Identifiable>(
+	defaultSortFn?: (items: T[]) => T[],
+) {
 	const Context = createContext<OptimisticContextProps<T> | null>(null);
 
-	function Provider({ children, initialItems }: { children: ReactNode; initialItems: T[] }) {
-		const { optimisticItems, dispatch } = useOptimisticList<T>(initialItems);
+	function Provider({
+		children,
+		initialItems,
+		sortFn = defaultSortFn,
+	}: {
+		children: ReactNode;
+		initialItems: T[];
+		sortFn?: (items: T[]) => T[];
+	}) {
+		const { optimisticItems, dispatch } = useOptimisticList<T>(initialItems, {
+			sortFn,
+		});
 
 		const value: OptimisticContextProps<T> = {
 			items: optimisticItems,

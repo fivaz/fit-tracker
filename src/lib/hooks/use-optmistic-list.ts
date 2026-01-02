@@ -8,30 +8,46 @@ type Action<T> =
 	| { type: "delete"; id: string }
 	| { type: "set"; items: T[] };
 
-export function useOptimisticList<T extends Identifiable>(initialItems: T[]) {
+interface UseOptimisticListOptions<T> {
+	sortFn?: (items: T[]) => T[];
+}
+
+export function useOptimisticList<T extends Identifiable>(
+	initialItems: T[],
+	options: UseOptimisticListOptions<T> = {},
+) {
+	const { sortFn } = options;
+
 	const [optimisticItems, dispatch] = useOptimistic(
 		initialItems,
 		(state: T[], action: Action<T>): T[] => {
+			let newState: T[];
+
 			switch (action.type) {
 				case "add":
-					// We cast the partial item to T so the rest of the app
-					// sees a "complete" object, even if it's missing some DB-only fields.
-					return [action.item as T, ...state];
+					newState = [...state, action.item as T];
+					break;
 
 				case "update":
-					return state.map((item) =>
+					newState = state.map((item) =>
 						item.id === action.item.id ? { ...item, ...action.item } : item,
 					);
+					break;
 
 				case "delete":
-					return state.filter((item) => item.id !== action.id);
+					newState = state.filter((item) => item.id !== action.id);
+					break;
 
 				case "set":
-					return action.items;
+					newState = action.items;
+					break;
 
 				default:
 					return state;
 			}
+
+			// Apply custom sort function if provided
+			return sortFn ? sortFn(newState) : newState;
 		},
 	);
 

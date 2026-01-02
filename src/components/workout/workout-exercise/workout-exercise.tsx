@@ -31,15 +31,17 @@ function WorkoutExerciseContent({ exercise, sessionId }: WorkoutExerciseProps) {
 	const { items: sets, addItem } = useSetLogs();
 
 	const handleAddSet = async () => {
+		console.log("sets.length", sets.length);
 		const newSet = buildEmptySetLog({
 			id: crypto.randomUUID(),
 			exerciseId: exercise.id,
 			sessionId,
+			order: sets.length,
 		});
 
 		startTransition(async () => {
 			addItem(newSet);
-			await createSetAction(exercise.id, sessionId, 0);
+			await createSetAction(exercise.id, sessionId, sets.length);
 		});
 	};
 
