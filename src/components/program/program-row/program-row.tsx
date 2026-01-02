@@ -25,6 +25,17 @@ type ProgramRowProps = {
 	program: ProgramSummary;
 };
 
+/**
+ * Renders a row for a program with controls to edit, delete, and navigate to manage exercises.
+ *
+ * Renders the program name and exercise count, lets the user toggle an inline edit form, and provides
+ * a "Manage Exercises" link. Deleting the program shows a confirmation prompt, performs an optimistic
+ * removal from local state, invokes the deletion action, and on failure restores the item and reports the error.
+ * Controls are disabled while a deletion is pending.
+ *
+ * @param program - The program summary to render (id, name, exerciseCount, etc.).
+ * @returns The program row JSX element.
+ */
 export function ProgramRow({ program }: ProgramRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isPending, startTransition] = useTransition();

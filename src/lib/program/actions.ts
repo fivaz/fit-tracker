@@ -44,6 +44,11 @@ export const getProgramByIdWithExercises = cache(async (id: string) => {
 	}
 });
 
+/**
+ * Retrieve the current user's programs as summaries including exercise counts.
+ *
+ * @returns An array of program summaries where each item has `id`, `name`, and `exerciseCount` representing the number of non-deleted exercises.
+ */
 export async function getPrograms(): Promise<ProgramSummary[]> {
 	await devDelay();
 
@@ -71,6 +76,11 @@ export async function getPrograms(): Promise<ProgramSummary[]> {
 	});
 }
 
+/**
+ * Get the number of programs belonging to the current user that are not deleted.
+ *
+ * @returns The count of programs for the current user where `deletedAt` is null.
+ */
 export async function getProgramsCount() {
 	await devDelay();
 
@@ -81,6 +91,11 @@ export async function getProgramsCount() {
 	});
 }
 
+/**
+ * Retrieve up to three most recent programs based on the user's workout sessions.
+ *
+ * @returns An array of program summaries containing `id`, `name`, and `exerciseCount` (the number of non-deleted exercises on the program) for up to three most recently started sessions; returns an empty array if no sessions exist.
+ */
 export async function getRecentPrograms() {
 	await devDelay();
 
@@ -121,6 +136,12 @@ export async function getRecentPrograms() {
 	});
 }
 
+/**
+ * Create a new program or update an existing one using values from the provided FormData.
+ *
+ * @param formData - Form data containing `name` (required) and optional `id` (program id to update)
+ * @throws Error if `name` is missing
+ */
 export async function saveProgram(formData: FormData) {
 	await devDelay();
 
@@ -147,6 +168,13 @@ export async function saveProgram(formData: FormData) {
 	revalidatePath(ROUTES.PROGRAMS);
 }
 
+/**
+ * Soft-delete the program with the given id for the current user and revalidate the programs route.
+ *
+ * Sets the program's `deletedAt` timestamp to the current date and triggers revalidation of the programs listing.
+ *
+ * @param id - The id of the program to soft-delete
+ */
 export async function deleteProgramAction(id: string) {
 	await devDelay();
 

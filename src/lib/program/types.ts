@@ -11,6 +11,11 @@ export type ProgramExerciseRelation = ProgramHasExercise & {
 	exercise: Exercise;
 };
 
+/**
+ * Create a ProgramSummary populated with default empty values.
+ *
+ * @returns A ProgramSummary with `id` and `name` as empty strings and `exerciseCount` set to 0
+ */
 export function buildEmptyProgram(): ProgramSummary {
 	return {
 		id: "",

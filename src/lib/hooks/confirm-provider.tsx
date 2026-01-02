@@ -11,6 +11,13 @@ interface ConfirmProviderProps {
 	children: ReactNode;
 }
 
+/**
+ * Wraps children with ConfirmContext and renders a confirm dialog controlled by that context.
+ *
+ * The provided context exposes a `confirm` method that opens the dialog with supplied options.
+ *
+ * @returns A promise that resolves to `true` when the user confirms and `false` when the user cancels.
+ */
 export function ConfirmProvider({ children }: ConfirmProviderProps) {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [options, setOptions] = React.useState<ConfirmOptions>({

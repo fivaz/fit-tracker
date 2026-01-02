@@ -7,6 +7,11 @@ import { uploadImage } from "@/lib/image-upload";
 import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/utils-server";
 
+/**
+ * Retrieve the currently authenticated user's record.
+ *
+ * @returns The user record for the current user, or `null` if no user is found.
+ */
 export async function getUser() {
 	const userId = await getUserId();
 
@@ -43,6 +48,12 @@ export async function updateBodyMetrics(data: {
 	revalidatePath(ROUTES.SETTINGS);
 }
 
+/**
+ * Uploads the "avatar" file from a FormData, updates the current user's image URL, and revalidates the settings page.
+ *
+ * @param formData - A FormData instance containing an "avatar" entry with the file to upload.
+ * @returns `{ success: true, url: string }` with the public image URL on success, `null` if the upload failed or no public URL was produced.
+ */
 export async function uploadAvatar(formData: FormData) {
 	const userId = await getUserId();
 

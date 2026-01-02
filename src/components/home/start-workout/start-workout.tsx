@@ -6,6 +6,15 @@ import { Play } from "lucide-react";
 import { ROUTES } from "@/lib/consts";
 import { getRecentPrograms } from "@/lib/program/actions";
 
+/**
+ * Render the "Start Workout" card which lists recent programs or shows a call-to-action when none exist.
+ *
+ * The component displays a header and either:
+ * - a list of recent programs with each item linking to the program page and showing the program name and exercise count, or
+ * - an empty-state message and a link to create/view programs when no recent programs are available.
+ *
+ * @returns The JSX element for the Start Workout UI card containing program links and exercise counts, or an empty-state CTA when there are no programs.
+ */
 export async function StartWorkout() {
 	const programs = await getRecentPrograms();
 

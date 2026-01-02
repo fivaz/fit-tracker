@@ -23,6 +23,13 @@ import { authClient, signUp } from "@/lib/auth-client";
 import { ROUTES } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 
+/**
+ * Render the user registration form with fields for name, email, password, optional profile image, and social sign-up buttons.
+ *
+ * Validates password confirmation, converts an uploaded image to a base64 payload when present, initiates email or social signup flows, displays toast notifications for success or error, and navigates to the home route on successful account creation.
+ *
+ * @returns A React element that renders the registration form UI.
+ */
 export function RegisterForm({ className, ...props }: ComponentProps<"div">) {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");

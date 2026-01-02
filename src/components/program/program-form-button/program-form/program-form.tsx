@@ -17,6 +17,16 @@ type ProgramFormProps = {
 	onClose: () => void;
 };
 
+/**
+ * Renders a form for creating or editing a program and performs optimistic updates.
+ *
+ * Persists the submitted form via `saveProgram`, applies an optimistic add/update through `usePrograms`,
+ * and rolls back optimistic changes, reports the error, and shows a toast if persistence fails.
+ *
+ * @param program - Initial program values used to populate the form; absence of `id` indicates create mode.
+ * @param onClose - Callback invoked to close the form; called immediately after submission and when canceling.
+ * @returns A React element rendering the program form.
+ */
 export function ProgramForm({ program, onClose }: ProgramFormProps) {
 	const { addItem, updateItem, deleteItem } = usePrograms();
 	const isEdit = !!program.id;

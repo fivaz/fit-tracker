@@ -13,6 +13,13 @@ type ProgramDetailContentProps = {
 	programId: string;
 };
 
+/**
+ * Render a program's exercise list wrapped in an ExercisesProvider and an add-exercise button.
+ *
+ * @param initialExercises - Initial exercises to populate the provider's state
+ * @param programId - Identifier of the program used by the add-exercise button
+ * @returns The React element that renders the provider-wrapped exercise list and form button
+ */
 export function ProgramExerciseList({ initialExercises, programId }: ProgramDetailContentProps) {
 	return (
 		<ExercisesProvider initialItems={initialExercises}>
@@ -24,6 +31,11 @@ export function ProgramExerciseList({ initialExercises, programId }: ProgramDeta
 	);
 }
 
+/**
+ * Render the current exercises from context, showing an empty state when no exercises exist.
+ *
+ * @returns A React element that is either an ExerciseEmptyState or a container with ExerciseRow items wrapped in AnimatePresence for animated layout transitions.
+ */
 function ExerciseListInternal() {
 	const { items: exercises } = useExercises();
 

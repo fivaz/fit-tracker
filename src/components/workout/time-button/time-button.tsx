@@ -14,6 +14,15 @@ interface TimeButtonProps {
 	onChange: (date: Date | null) => void;
 }
 
+/**
+ * Render a compact control that displays a time or lets the user edit/set it.
+ *
+ * Shows the provided `time` formatted as "HH:mm". A short click sets the time to now if none is set; a long press (600ms) enters an inline HH:mm text input for manual editing.
+ *
+ * @param time - The currently selected time, or `null` when no time is set.
+ * @param onChange - Callback invoked with the new `Date` (or `null`) when the time is updated.
+ * @returns A React element that displays the time or an inline time input for editing.
+ */
 export function TimeButton({ time, onChange }: TimeButtonProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [inputValue, setInputValue] = useState(time ? format(time, "HH:mm") : "");

@@ -19,6 +19,15 @@ type WorkoutSetRowProps = {
 	exerciseId: string;
 };
 
+/**
+ * Render a row of controls for a single workout set, including inputs for weight and reps, a completion-time picker, and a delete action.
+ *
+ * @param index - Zero-based position of the set in the list (displayed as 1-based).
+ * @param set - The set data to render and edit.
+ * @param sessionId - Current workout session identifier used when persisting changes.
+ * @param exerciseId - Current exercise identifier used when persisting changes.
+ * @returns A React element representing the workout set row.
+ */
 export function WorkoutSetRow({ index, set, sessionId, exerciseId }: WorkoutSetRowProps) {
 	const confirm = useConfirm();
 	const { updateItem, deleteItem } = useSetLogs();

@@ -5,6 +5,13 @@ import { useTheme } from "next-themes";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { motion } from "motion/react";
 
+/**
+ * Theme selector component that lets users choose between light, dark, and system themes.
+ *
+ * Displays three segmented buttons with an animated indicator that reflects and updates the current theme.
+ *
+ * @returns A JSX element rendering the theme toggle control
+ */
 export function ThemeToggle() {
 	const { theme, setTheme } = useTheme();
 

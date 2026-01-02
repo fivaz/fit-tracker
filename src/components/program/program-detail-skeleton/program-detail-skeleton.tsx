@@ -1,6 +1,14 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Renders a skeleton UI for the program detail view.
+ *
+ * The skeleton includes a full-width top button placeholder and three exercise row placeholders
+ * to simulate the page layout while content is loading.
+ *
+ * @returns A JSX element containing a top form button skeleton and three exercise row skeletons.
+ */
 export function ProgramDetailSkeleton() {
 	return (
 		<div className="space-y-4">
@@ -17,6 +25,14 @@ export function ProgramDetailSkeleton() {
 	);
 }
 
+/**
+ * Renders a Card-shaped skeleton placeholder representing a single exercise row.
+ *
+ * The skeleton includes a header with title and subtitle placeholders, two action icon placeholders
+ * in the top-right, and a full-width content line to represent exercise details.
+ *
+ * @returns A JSX element containing the exercise row skeleton UI
+ */
 function ExerciseRowSkeleton() {
 	return (
 		<Card>

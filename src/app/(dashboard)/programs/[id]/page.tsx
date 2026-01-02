@@ -14,6 +14,14 @@ interface PageProps {
 	params: Promise<{ id: string }>;
 }
 
+/**
+ * Render the program detail page displaying program info, its exercises, and a start-workout action.
+ *
+ * Fetches the program (with its exercises) using the provided `id`. If no program is found, triggers a 404 via `notFound()`.
+ *
+ * @param params - A promise resolving to an object with an `id` string identifying the program to display
+ * @returns A React element containing the program header, exercise list, and a fixed start-workout form (the start button is disabled when the program has no exercises)
+ */
 export default async function ProgramPage({ params }: PageProps) {
 	const { id } = await params;
 

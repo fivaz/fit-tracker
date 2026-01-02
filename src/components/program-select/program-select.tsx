@@ -14,6 +14,13 @@ type ProgramSelectProps = ComponentProps<"select"> & {
 	defaultValue: string[] | undefined;
 };
 
+/**
+ * Render a program selection UI that shows a multi-select and maintains hidden inputs for server submission.
+ *
+ * @param name - The HTML form field name used for each hidden input representing a selected program id.
+ * @param defaultValue - Optional initial array of selected program ids.
+ * @returns A React element containing a labeled multi-select of available programs, hidden inputs for each selected value, and a loading or error state as needed.
+ */
 export function ProgramSelect({ name, defaultValue }: ProgramSelectProps) {
 	const [selected, setSelected] = useState<string[]>(defaultValue || []);
 

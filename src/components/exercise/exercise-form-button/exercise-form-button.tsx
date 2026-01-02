@@ -13,6 +13,15 @@ type ExerciseFormButtonProps = {
 	programId?: string;
 };
 
+/**
+ * Renders a button that opens a form to create a new exercise.
+ *
+ * When closed this displays a full-width "New Exercise" button; when opened it renders
+ * an ExerciseForm initialized with a freshly built empty exercise.
+ *
+ * @param programId - Optional program ID to associate the new exercise with; if provided the empty exercise will include that program reference.
+ * @returns The rendered JSX element for the exercise-creation UI (button or form).
+ */
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const [open, setOpen] = useState(false);
 

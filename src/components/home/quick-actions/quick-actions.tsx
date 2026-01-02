@@ -9,6 +9,14 @@ import { getExercises } from "@/lib/exercise/actions";
 import { getPrograms } from "@/lib/program/actions";
 import { cn } from "@/lib/utils";
 
+/**
+ * Render a styled Card that links to the provided `href` and displays the given children.
+ *
+ * @param href - The destination URL for the link inside the card.
+ * @param className - Optional additional class names appended to the card's base styles.
+ * @param children - Content rendered inside the Link within the card.
+ * @returns A Card element containing a Next.js Link to `href` that wraps `children`.
+ */
 export function CardQuickAction({
 	href,
 	className,

@@ -12,6 +12,12 @@ type ExercisesListProps = {
 	initialExercises: ExerciseWithPrograms[];
 };
 
+/**
+ * Render the exercises list UI and provide it with initial exercise data.
+ *
+ * @param initialExercises - Initial array of exercises (each may include associated programs) used to populate the exercises context
+ * @returns The rendered exercises list element
+ */
 export function ExercisesList({ initialExercises }: ExercisesListProps) {
 	return (
 		<ExercisesProvider initialItems={initialExercises}>
@@ -23,6 +29,11 @@ export function ExercisesList({ initialExercises }: ExercisesListProps) {
 	);
 }
 
+/**
+ * Renders the current exercises from context, showing an empty state when none exist.
+ *
+ * @returns The JSX element: an ExerciseEmptyState when there are no exercises, otherwise a container with an AnimatePresence-wrapped list of ExerciseRow components for each exercise.
+ */
 function ExercisesListInternal() {
 	const { items: exercises } = useExercises();
 
