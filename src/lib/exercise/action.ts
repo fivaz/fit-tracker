@@ -6,9 +6,12 @@ import { parseExerciseFormData } from "@/lib/exercise/exercise-form-data";
 import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { uploadImage } from "@/lib/image-upload";
 import { prisma } from "@/lib/prisma";
+import { devDelay } from "@/lib/utils";
 import { getUserId } from "@/lib/utils-server";
 
 export async function getExercises(): Promise<ExerciseWithPrograms[]> {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	return prisma.exercise.findMany({
@@ -39,6 +42,8 @@ export async function getExercisesCount() {
 }
 
 export async function saveExercise(formData: FormData) {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	const { id, name, muscles, programs, imageFile } = parseExerciseFormData(formData);
@@ -87,6 +92,8 @@ export async function saveExercise(formData: FormData) {
 }
 
 export async function deleteExerciseAction(id: string) {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	await prisma.exercise.update({

@@ -11,16 +11,4 @@ const adapter = new PrismaPg({ connectionString });
 
 const prisma = new PrismaClient({ adapter });
 
-prisma.$extends({
-	query: {
-		$allModels: {
-			async $allOperations({ args, query }) {
-				// Only delay in development
-				await devDelay();
-				return query(args);
-			},
-		},
-	},
-});
-
 export { prisma };

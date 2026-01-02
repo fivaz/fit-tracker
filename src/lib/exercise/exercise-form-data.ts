@@ -26,6 +26,6 @@ export function parseExerciseFormData(formData: FormData): ExerciseOutput {
 		name,
 		muscles,
 		programs,
-		imageFile,
+		imageFile: imageFile && imageFile?.size > 0 ? imageFile : null,
 	};
 }

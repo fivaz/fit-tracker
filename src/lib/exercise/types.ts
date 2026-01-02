@@ -13,12 +13,13 @@ export type ExerciseSummary = ExerciseUI & {
 	programCount: number;
 };
 
-export function buildEmptyExercise(): ExerciseWithPrograms {
+export function buildEmptyExercise(exercise: Partial<ExerciseWithPrograms>): ExerciseWithPrograms {
 	return {
 		id: "",
 		name: "",
 		image: "",
 		muscles: [],
 		programs: [],
+		...exercise,
 	};
 }

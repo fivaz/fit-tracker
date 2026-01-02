@@ -35,7 +35,6 @@ async function ProgramsCount() {
 
 async function ProgramsContent() {
 	const programs = await getPrograms();
-	await devDelay();
 
 	return <ProgramsList initialPrograms={programs} />;
 }

@@ -5,10 +5,13 @@ import { revalidatePath } from "next/cache";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { ProgramSummary } from "@/lib/program/types";
+import { devDelay } from "@/lib/utils";
 import { getUserId } from "@/lib/utils-server";
 
-export const getProgramById = cache(async (id: string) => {
+export const getProgramByIdWithExercises = cache(async (id: string) => {
 	try {
+		await devDelay();
+
 		const userId = await getUserId();
 
 		const program = await prisma.program.findUnique({
@@ -29,7 +32,12 @@ export const getProgramById = cache(async (id: string) => {
 			return null;
 		}
 
-		return program;
+		const exercises = program.exercises.map((ex) => ({
+			...ex.exercise,
+			programs: [{ programId: program.id }],
+		}));
+
+		return { program, exercises };
 	} catch (error) {
 		console.error("Error fetching program:", error);
 		return null;
@@ -37,6 +45,8 @@ export const getProgramById = cache(async (id: string) => {
 });
 
 export async function getPrograms(): Promise<ProgramSummary[]> {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	const programs = await prisma.program.findMany({
@@ -62,6 +72,8 @@ export async function getPrograms(): Promise<ProgramSummary[]> {
 }
 
 export async function getProgramsCount() {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	return prisma.program.count({
@@ -70,6 +82,8 @@ export async function getProgramsCount() {
 }
 
 export async function getRecentPrograms() {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	const recentSessions = await prisma.workoutSession.findMany({
@@ -83,8 +97,6 @@ export async function getRecentPrograms() {
 					exercises: {
 						where: {
 							exercise: {
-								// We only want the junction records
-								// where the actual exercise is NOT deleted
 								deletedAt: null,
 							},
 						},
@@ -110,6 +122,8 @@ export async function getRecentPrograms() {
 }
 
 export async function saveProgram(formData: FormData) {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	const id = formData.get("id")?.toString();
@@ -134,6 +148,8 @@ export async function saveProgram(formData: FormData) {
 }
 
 export async function deleteProgramAction(id: string) {
+	await devDelay();
+
 	const userId = await getUserId();
 
 	await prisma.program.update({

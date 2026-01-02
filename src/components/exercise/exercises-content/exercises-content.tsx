@@ -7,7 +7,6 @@ import { devDelay } from "@/lib/utils";
 
 export async function ExercisesContent() {
 	const exercises = await getExercises();
-	await devDelay();
 
 	if (exercises.length === 0) {
 		return <ExerciseEmptyState />;

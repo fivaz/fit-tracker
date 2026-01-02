@@ -35,7 +35,6 @@ async function ExercisesCount() {
 
 async function ExercisesContent() {
 	const exercises = await getExercises();
-	await devDelay();
 
 	return <ExercisesList initialExercises={exercises} />;
 }
