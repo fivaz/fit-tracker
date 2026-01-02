@@ -14,6 +14,7 @@ import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { MuscleGroup } from "@/generated/prisma/client";
 import { saveExercise } from "@/lib/exercise/action";
+import { parseExerciseFormData } from "@/lib/exercise/exercise-form-data";
 import { useExercises } from "@/lib/exercise/exercises-context";
 import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { reportError } from "@/lib/logger";
@@ -36,21 +37,15 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 		e.preventDefault();
 		setError(null);
 
-		// TODO create a function to convert FormData into  exercise and use it here and in saveExercise
 		const formData = new FormData(e.currentTarget);
-		const id = formData.get("id") as string;
-		const name = formData.get("name") as string;
-		const muscles = formData.getAll("muscles") as MuscleGroup[];
-		const programIds = formData.getAll("programIds") as string[];
+		const { id, name, muscles, programs, imageFile } = parseExerciseFormData(formData);
 
 		const optimisticExercise: ExerciseWithPrograms = {
 			id: id || crypto.randomUUID(),
+			image: imageFile ? URL.createObjectURL(imageFile) : null,
 			name,
-			image: exercise.image || null,
-			muscles: muscles as MuscleGroup[],
-			programs: programIds.map((pId) => ({
-				programId: pId,
-			})),
+			muscles,
+			programs,
 		};
 
 		onClose();
