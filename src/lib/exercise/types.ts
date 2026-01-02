@@ -1,4 +1,4 @@
-import { Exercise, SetLog } from "@/generated/prisma/client";
+import { Exercise } from "@/generated/prisma/client";
 // Base UI type - excludes database-only fields
 export type ExerciseUI = Omit<Exercise, "userId" | "createdAt" | "updatedAt" | "deletedAt">;
 

@@ -1,40 +1,64 @@
+"use client";
+
+import { startTransition } from "react";
+
 import { Trash2 } from "lucide-react";
 
 import { TimeButton } from "@/components/time-button/time-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useConfirm } from "@/lib/hooks/use-confirm";
-
-type WorkoutSet = {
-	id: string;
-	reps: string;
-	weight: string;
-	completedAt: Date | null;
-};
+import { deleteSetAction, updateSetAction } from "@/lib/set-logs/actions";
+import { useSetLogs } from "@/lib/set-logs/set-logs-context";
+import { SetLogUI } from "@/lib/set-logs/types";
 
 type WorkoutSetRowProps = {
 	index: number;
-	set: WorkoutSet;
-	onUpdate: (id: string, data: Partial<Omit<WorkoutSet, "id">>) => void;
-	onDelete: (id: string) => void;
+	set: SetLogUI;
+	sessionId: string;
 };
 
-export function WorkoutSetRow({ index, set, onUpdate, onDelete }: WorkoutSetRowProps) {
+export function WorkoutSetRow({ index, set, sessionId }: WorkoutSetRowProps) {
 	const confirm = useConfirm();
-	const handleDelete = async () => {
-		const confirmed = await confirm({
-			title: "Delete set",
-			message: "This set has data. Are you sure you want to delete it?",
+	const { updateItem, deleteItem } = useSetLogs();
+
+	const persistUpdate = (updatedSet: SetLogUI) => {
+		startTransition(async () => {
+			updateItem(updatedSet);
+			await updateSetAction(set.id, sessionId, updatedSet);
 		});
-		const hasData = set.reps || set.weight || set.completedAt;
-
-		if (!hasData || !confirmed) return;
-
-		onDelete(set.id);
 	};
 
-	const updateField = (field: keyof Omit<WorkoutSet, "id">) => (value: string | Date) => {
-		onUpdate(set.id, { [field]: value });
+	const handleWeightBlur = (value: string) => {
+		const numeric = parseFloat(value);
+		const final = isNaN(numeric) ? 0 : numeric;
+		if (final !== set.weight) {
+			persistUpdate({ ...set, weight: final });
+		}
+	};
+
+	const handleRepsBlur = (value: string) => {
+		const numeric = parseInt(value, 10);
+		const final = isNaN(numeric) ? 0 : numeric;
+		if (final !== set.reps) {
+			persistUpdate({ ...set, reps: final });
+		}
+	};
+
+	const handleTimeChange = (newDate: Date | null) => {
+		persistUpdate({ ...set, completedAt: newDate });
+	};
+
+	const handleDelete = async () => {
+		if (set.reps || set.weight || set.completedAt) {
+			const confirmed = await confirm({ title: "Delete set", message: "Are you sure?" });
+			if (!confirmed) return;
+		}
+
+		startTransition(async () => {
+			deleteItem(set.id);
+			await deleteSetAction(set.id, sessionId);
+		});
 	};
 
 	return (
@@ -45,18 +69,20 @@ export function WorkoutSetRow({ index, set, onUpdate, onDelete }: WorkoutSetRowP
 				<Input
 					type="number"
 					placeholder="kg"
-					value={set.weight}
-					onChange={(e) => updateField("weight")(e.target.value)}
+					defaultValue={set.weight === 0 ? "" : set.weight}
+					onBlur={(e) => handleWeightBlur(e.target.value)}
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
 					className="h-9 text-center tabular-nums"
 				/>
 				<Input
 					type="number"
 					placeholder="reps"
-					value={set.reps}
-					onChange={(e) => updateField("reps")(e.target.value)}
+					defaultValue={set.reps === 0 ? "" : set.reps}
+					onBlur={(e) => handleRepsBlur(e.target.value)}
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
 					className="h-9 text-center tabular-nums"
 				/>
-				<TimeButton time={set.completedAt} onTimeChange={updateField("completedAt")} />
+				<TimeButton time={set.completedAt} onChange={handleTimeChange} />
 			</div>
 
 			<Button

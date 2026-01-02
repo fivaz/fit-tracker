@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { ExercisesList } from "@/components/exercise/exercises-list/exercises-list";
 import { ExercisesSkeleton } from "@/components/exercise/exercises-skeleton/exercises-skeleton";
 import { getExercises } from "@/lib/exercise/action";
-import { devDelay } from "@/lib/utils";
 
 export default function ExercisesPage() {
 	return (

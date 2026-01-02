@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { ProgramsList } from "@/components/program/programs-list/programs-list";
 import { ProgramsSkeleton } from "@/components/program/programs-skeleton/programs-skeleton";
 import { getPrograms } from "@/lib/program/action";
-import { devDelay } from "@/lib/utils";
 
 export default function ProgramsPage() {
 	return (

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { WorkoutExercise } from "@/components/workout-exercise/workout-exercise";
 import { WorkoutHeader } from "@/components/workout-header/workout-header";
 import { ROUTES } from "@/lib/consts";
-import { getWorkoutSession } from "@/lib/workout/action";
+import { getWorkoutSessionById } from "@/lib/workout/action";
 
 type WorkoutPageProps = {
 	params: Promise<{ id: string }>;
@@ -11,21 +11,21 @@ type WorkoutPageProps = {
 
 export default async function WorkoutPage({ params }: WorkoutPageProps) {
 	const { id } = await params;
-	const workout = await getWorkoutSession(id);
+	const workoutSession = await getWorkoutSessionById(id);
 
-	if (!workout) redirect(ROUTES.HOME);
+	if (!workoutSession) redirect(ROUTES.HOME);
 
 	return (
 		<div className="bg-background flex min-h-screen flex-col pb-32">
 			<WorkoutHeader
-				sessionId={workout.sessionId}
-				startedAt={workout.startedAt}
-				programName={workout.programName}
+				sessionId={workoutSession.id}
+				startedAt={workoutSession.startedAt}
+				programName={workoutSession.programName}
 			/>
 
 			<div className="mt-6 space-y-4 px-4">
-				{workout.exercises.map((item) => (
-					<WorkoutExercise key={item.id} exercise={item} sessionId={workout.sessionId} />
+				{workoutSession.exercises.map((item) => (
+					<WorkoutExercise key={item.id} exercise={item} sessionId={workoutSession.id} />
 				))}
 			</div>
 		</div>

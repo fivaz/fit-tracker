@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -27,7 +28,7 @@ export async function startWorkout(programId: string) {
 		data: { activeSessionId: session.id },
 	});
 
-	redirect(`${ROUTES.WORKOUT}/${programId}`);
+	redirect(`${ROUTES.WORKOUT}/${session.id}`);
 }
 
 export async function endWorkout(sessionId: string) {
@@ -64,14 +65,14 @@ export async function getActiveSessionId() {
 	return user?.activeSessionId || null;
 }
 
-export async function getWorkoutSession(sessionId: string) {
+export const getWorkoutSessionById = cache(async (id: string) => {
 	await devDelay();
 
 	const userId = await getUserId();
 
 	// 1. Fetch data (Removed the deep 'sets: true' include)
 	const session = await prisma.workoutSession.findUnique({
-		where: { id: sessionId, userId },
+		where: { id: id, userId },
 		include: {
 			// Fetch all sets for THIS session only (Flat List)
 			setLogs: {
@@ -113,9 +114,9 @@ export async function getWorkoutSession(sessionId: string) {
 
 	// 3. Return a clean object for the page
 	return {
-		sessionId: session.id,
+		id: session.id,
 		startedAt: session.startedAt,
 		programName: session.program.name,
 		exercises: exercisesWithSets,
 	};
-}
+});

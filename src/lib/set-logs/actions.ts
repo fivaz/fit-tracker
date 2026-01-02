@@ -1,12 +1,15 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
+import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/utils-server";
 
 export async function createSetAction(exerciseId: string, sessionId: string, order: number) {
 	const userId = await getUserId();
 
-	return prisma.setLog.create({
+	await prisma.setLog.create({
 		data: {
 			exerciseId,
 			sessionId,
@@ -16,11 +19,14 @@ export async function createSetAction(exerciseId: string, sessionId: string, ord
 			weight: 0,
 		},
 	});
+
+	revalidatePath(`${ROUTES.WORKOUT}/${sessionId}`);
 }
 
 export async function updateSetAction(
 	id: string,
-	data: { reps?: number; weight?: number; completedAt?: Date },
+	sessionId: string,
+	data: { reps: number; weight: number; completedAt: Date | null },
 ) {
 	await prisma.setLog.update({
 		where: { id },
@@ -30,10 +36,14 @@ export async function updateSetAction(
 			completedAt: data.completedAt,
 		},
 	});
+
+	revalidatePath(`${ROUTES.WORKOUT}/${sessionId}`);
 }
 
-export async function deleteSetAction(id: string) {
+export async function deleteSetAction(id: string, sessionId: string) {
 	await prisma.setLog.delete({
 		where: { id },
 	});
+
+	revalidatePath(`${ROUTES.WORKOUT}/${sessionId}`);
 }

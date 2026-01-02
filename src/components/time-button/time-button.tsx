@@ -1,52 +1,55 @@
+"use client";
+
 import { useState } from "react";
 
-import { format, parse } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 import { Clock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLongPress } from "@/lib/hooks/use-long-press";
 
-export function TimeButton({
-	time,
-	onTimeChange,
-}: {
+interface TimeButtonProps {
 	time: Date | null;
-	onTimeChange: (date: Date) => void;
-}) {
-	const [isEditing, setIsEditing] = useState(false);
-	const [inputValue, setInputValue] = useState("");
+	onChange: (date: Date | null) => void;
+}
 
-	const displayTime = time ? format(time, "HH:mm") : "";
+export function TimeButton({ time, onChange }: TimeButtonProps) {
+	const [isEditing, setIsEditing] = useState(false);
+	const [inputValue, setInputValue] = useState(time ? format(time, "HH:mm") : "");
 
 	const handleLongPress = () => setIsEditing(true);
 	const longPressHandlers = useLongPress(handleLongPress, 600);
 
-	const handleTimeInput = (value: string) => {
-		setInputValue(value);
+	const processTimeUpdate = (value: string) => {
 		if (value.length === 5) {
-			try {
-				const newDate = parse(value, "HH:mm", new Date());
-				if (!isNaN(newDate.getTime())) onTimeChange(newDate);
-			} catch {}
+			const newDate = parse(value, "HH:mm", new Date());
+			if (isValid(newDate)) {
+				onChange(newDate);
+			}
 		}
 	};
 
 	const handleBlur = () => {
-		if (inputValue.length === 5) {
-			const newDate = parse(inputValue, "HH:mm", new Date());
-			if (!isNaN(newDate.getTime())) onTimeChange(newDate);
-		}
+		processTimeUpdate(inputValue);
 		setIsEditing(false);
+	};
+
+	const handleQuickFinish = () => {
+		if (!time) {
+			onChange(new Date());
+		}
 	};
 
 	if (isEditing) {
 		return (
 			<Input
 				autoFocus
+				placeholder="06:30"
 				value={inputValue}
-				onChange={(e) => handleTimeInput(e.target.value)}
+				onChange={(e) => setInputValue(e.target.value)}
 				onBlur={handleBlur}
+				onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
 				className="h-9 text-center font-mono text-xs"
 			/>
 		);
@@ -56,12 +59,12 @@ export function TimeButton({
 		<Button
 			variant="outline"
 			size="sm"
+			onClick={handleQuickFinish}
 			{...longPressHandlers}
-			onClick={() => !isEditing && onTimeChange(new Date())}
 			className="h-9 gap-1 px-2 font-mono text-xs select-none"
 		>
 			{time ? (
-				<span className="text-primary font-bold">{displayTime}</span>
+				<span className="text-primary font-bold">{format(time, "HH:mm")}</span>
 			) : (
 				<>
 					<Clock className="size-3" /> Finish

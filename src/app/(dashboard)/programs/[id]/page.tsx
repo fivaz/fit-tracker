@@ -1,17 +1,13 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ChevronLeft, Dumbbell } from "lucide-react";
 
 import { ProgramExerciseList } from "@/components/program/program-detail-content/program-exercise-list";
-import { ProgramDetailSkeleton } from "@/components/program/program-detail-skeleton/program-detail-skeleton";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/lib/consts";
-import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { getProgramByIdWithExercises } from "@/lib/program/action";
-import type { ProgramExerciseRelation } from "@/lib/program/types";
 import { startWorkout } from "@/lib/workout/action";
 
 interface PageProps {

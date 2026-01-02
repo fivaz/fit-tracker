@@ -5,11 +5,8 @@ import { AnimatePresence } from "motion/react";
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { ProgramEmptyState } from "@/components/program/program-empty-state/program-empty-state";
-import { ProgramRow } from "@/components/program/program-row/program-row";
 import { ExercisesProvider, useExercises } from "@/lib/exercise/exercises-context";
 import { ExerciseWithPrograms } from "@/lib/exercise/types";
-import { usePrograms } from "@/lib/program/programs-context";
 
 type ProgramDetailContentProps = {
 	initialExercises: ExerciseWithPrograms[];

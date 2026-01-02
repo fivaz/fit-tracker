@@ -13,13 +13,13 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
 	args: {
 		time: new Date("2024-01-01T14:30:00"),
-		onTimeChange: fn(),
+		onChange: fn(),
 	},
 };
 
 export const Secondary: Story = {
 	args: {
 		time: null,
-		onTimeChange: fn(),
+		onChange: fn(),
 	},
 };
