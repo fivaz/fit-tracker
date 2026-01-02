@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 
 import { Plus } from "lucide-react";
@@ -7,14 +5,11 @@ import { AnimatePresence } from "motion/react";
 
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
-import { Program } from "@/generated/prisma/client";
+import { buildEmptyProgram } from "@/lib/program/types";
 
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
-
-	const program: Partial<Program> = {
-		name: "Chest",
-	};
+	const program = buildEmptyProgram();
 
 	return (
 		<div>

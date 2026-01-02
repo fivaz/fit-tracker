@@ -3,10 +3,10 @@ import Link from "next/link";
 
 import { DumbbellIcon, NotebookTabsIcon, TrendingUpIcon } from "lucide-react";
 
-import { getPrograms } from "@/components/program/action";
 import { Card } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
 import { getExercises } from "@/lib/exercise/action";
+import { getPrograms } from "@/lib/program/action";
 import { cn } from "@/lib/utils";
 
 export function CardQuickAction({

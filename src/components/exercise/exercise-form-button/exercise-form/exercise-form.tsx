@@ -12,11 +12,11 @@ import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/compone
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { Exercise } from "@/generated/prisma/client";
 import { saveExercise } from "@/lib/exercise/action";
+import { ExerciseFormInput } from "@/lib/exercise/types";
 
 type ExerciseFormProps = {
-	exercise: Partial<Exercise> & { programs?: { programId: string }[] };
+	exercise: ExerciseFormInput;
 	onClose: () => void;
 	programId?: string;
 };

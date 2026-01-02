@@ -7,7 +7,7 @@ import { AnimatePresence } from "motion/react";
 
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
-import { Exercise } from "@/generated/prisma/client";
+import { ExerciseFormInput } from "@/lib/exercise/types";
 
 type ExerciseFormButtonProps = {
 	programId?: string;
@@ -16,11 +16,7 @@ type ExerciseFormButtonProps = {
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const [open, setOpen] = useState(false);
 
-	// Create a "New" exercise template
-	const emptyExercise: Partial<Exercise> = {
-		name: "Bench Press",
-		muscles: ["chest"],
-	};
+	const emptyExercise: ExerciseFormInput = {};
 
 	return (
 		<div>

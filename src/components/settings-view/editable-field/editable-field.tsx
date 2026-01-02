@@ -1,8 +1,6 @@
 import { ComponentType, KeyboardEvent, useState } from "react";
 
-import {
-	ChevronRight,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";

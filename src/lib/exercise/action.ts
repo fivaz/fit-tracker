@@ -9,6 +9,7 @@ import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";
 import { getUserId } from "@/lib/utils-server";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 
 export const getExerciseById = cache(async (id: string) => {
 	try {
@@ -22,17 +23,19 @@ export const getExerciseById = cache(async (id: string) => {
 			return null;
 		}
 
-		return exercise;
+		// Transform to UI type (remove database-only fields)
+		const { userId: _, createdAt, updatedAt, deletedAt, ...rest } = exercise;
+		return rest;
 	} catch (error) {
 		console.error("Error fetching exercise:", error);
 		return null;
 	}
 });
 
-export async function getExercises() {
+export async function getExercises(): Promise<ExerciseWithPrograms[]> {
 	const userId = await getUserId();
 
-	return prisma.exercise.findMany({
+	const exercises = await prisma.exercise.findMany({
 		where: {
 			userId,
 			deletedAt: null,
@@ -44,6 +47,17 @@ export async function getExercises() {
 				},
 			},
 		},
+	});
+
+	// Transform to UI types (remove database-only fields)
+	return exercises.map(({ userId: _, createdAt, updatedAt, deletedAt, ...rest }) => rest);
+}
+
+export async function getExercisesCount() {
+	const userId = await getUserId();
+
+	return prisma.exercise.count({
+		where: { userId, deletedAt: null },
 	});
 }
 

@@ -1,12 +1,10 @@
-"use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 
 import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
 
-import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
-import { deleteProgramAction } from "@/components/program/action";
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,24 +15,49 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
+import { useConfirm } from "@/lib/hooks/use-confirm";
+import { reportError } from "@/lib/logger";
+import { deleteProgramAction } from "@/lib/program/action";
+import { ProgramSummary, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramRowProps = {
-	program: Program & { exercises: { exerciseId: string }[] };
+	program: ProgramSummary;
 };
 
 export function ProgramRow({ program }: ProgramRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
-	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const [isPending, startTransition] = useTransition();
+	const { deleteItem, addItem } = usePrograms();
+
+	const confirm = useConfirm();
 
 	const handleDelete = async () => {
-		try {
-			await deleteProgramAction(program.id);
-			setShowDeleteDialog(false);
-		} catch (error) {
-			console.error("Failed to delete program:", error);
-		}
+		const confirmed = await confirm({
+			title: "Delete Program",
+			message: `Are you sure you want to delete "${program.name}"? This action cannot be undone.`,
+		});
+
+		if (!confirmed) return;
+
+		const itemToRollback = { ...program };
+		startTransition(async () => {
+			deleteItem(program.id);
+
+			try {
+				await deleteProgramAction(program.id);
+				toast.success("Deleted!");
+			} catch (error) {
+				addItem(itemToRollback);
+
+				reportError(error, {
+					level: "error",
+					extra: { programId: program.id, programName: program.name },
+				});
+
+				toast.error("Failed to delete program");
+			}
+		});
 	};
 
 	return (
@@ -48,22 +71,29 @@ export function ProgramRow({ program }: ProgramRowProps) {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, x: -100 }}
+						layout
 					>
-						<Card>
+						<Card className={isPending ? "opacity-50 grayscale" : ""}>
 							<CardHeader>
 								<CardTitle>{program.name}</CardTitle>
 								<CardDescription>
-									{program.exercises.length} exercise{program.exercises.length > 0 && "s"}
+									{program.exerciseCount} exercise{program.exerciseCount !== 1 && "s"}
 								</CardDescription>
 								<CardAction className="space-x-2">
-									<Button variant="outline" onClick={() => setIsEditing(true)} size="icon-sm">
+									<Button
+										variant="outline"
+										onClick={() => setIsEditing(true)}
+										size="icon-sm"
+										disabled={isPending}
+									>
 										<Pencil className="size-4" />
 									</Button>
 									<Button
 										variant="outline"
 										className="text-destructive hover:text-red-500"
 										size="icon-sm"
-										onClick={() => setShowDeleteDialog(true)}
+										onClick={handleDelete}
+										disabled={isPending}
 									>
 										<Trash2 className="size-4" />
 									</Button>
@@ -75,6 +105,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 									asChild
 									className="text-chart-2 hover:text-chart-3 w-full"
 									variant="outline"
+									disabled={isPending}
 								>
 									<Link href={`${ROUTES.PROGRAMS}/${program.id}`}>
 										<Dumbbell className="size-4" />
@@ -87,14 +118,6 @@ export function ProgramRow({ program }: ProgramRowProps) {
 					</motion.div>
 				)}
 			</AnimatePresence>
-
-			<ConfirmDialog
-				isOpen={showDeleteDialog}
-				title="Delete Program"
-				message={`Are you sure you want to delete "${program.name}"? This action cannot be undone.`}
-				onConfirm={handleDelete}
-				onCancel={() => setShowDeleteDialog(false)}
-			/>
 		</div>
 	);
 }

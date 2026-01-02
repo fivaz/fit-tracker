@@ -2,9 +2,9 @@
 import { cache } from "react";
 import { revalidatePath } from "next/cache";
 
-import { Program } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
 import { prisma } from "@/lib/prisma";
+import { ProgramSummary } from "@/lib/program/types";
 import { getUserId } from "@/lib/utils-server";
 
 export const getProgramById = cache(async (id: string) => {
@@ -36,23 +36,36 @@ export const getProgramById = cache(async (id: string) => {
 	}
 });
 
-export async function getPrograms(): Promise<
-	Array<Program & { exercises: { exerciseId: string }[] }>
-> {
+export async function getPrograms(): Promise<ProgramSummary[]> {
 	const userId = await getUserId();
 
-	return prisma.program.findMany({
+	const programs = await prisma.program.findMany({
 		where: { userId, deletedAt: null },
-		include: {
+		select: {
+			id: true,
+			name: true,
 			exercises: {
-				where: {
-					exercise: { deletedAt: null },
-				},
-				// We only need the ID to count, keeps the payload small
+				where: { exercise: { deletedAt: null } },
 				select: { exerciseId: true },
 			},
 		},
 		orderBy: { createdAt: "desc" },
+	});
+
+	return programs.map(({ exercises, ...rest }) => {
+		const exerciseCount = exercises?.length ?? 0;
+		return {
+			...rest,
+			exerciseCount,
+		};
+	});
+}
+
+export async function getProgramsCount() {
+	const userId = await getUserId();
+
+	return prisma.program.count({
+		where: { userId, deletedAt: null },
 	});
 }
 
@@ -85,7 +98,15 @@ export async function getRecentPrograms() {
 		},
 	});
 
-	return recentSessions.map((session) => session.program);
+	return recentSessions.map((session) => {
+		const program = session.program;
+		const exerciseCount = (program.exercises || []).length;
+		return {
+			id: program.id,
+			name: program.name,
+			exerciseCount,
+		};
+	});
 }
 
 export async function saveProgram(formData: FormData) {

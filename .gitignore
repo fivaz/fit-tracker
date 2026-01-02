@@ -46,3 +46,5 @@ storybook-static
 /src/generated/prisma
 
 .idea/dataSources.xml
+# Sentry Config File
+.env.sentry-build-plugin
