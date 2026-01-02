@@ -8,8 +8,8 @@ export async function GET() {
 
 	const programs = await prisma.program.findMany({
 		select: { id: true, name: true },
-		where: { userId },
-		orderBy: { name: "asc" },
+		where: { userId, deletedAt: null },
+		orderBy: { name: "desc" },
 	});
 
 	return NextResponse.json(programs);

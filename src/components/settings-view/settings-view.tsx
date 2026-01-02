@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { User } from "@/generated/prisma/client";
 import { authClient } from "@/lib/auth-client";
 import { ROUTES } from "@/lib/consts";
-import { updateBodyMetrics, updateUserProfile, uploadAvatar } from "@/lib/user/action";
+import { updateBodyMetrics, updateUserProfile, uploadAvatar } from "@/lib/user/actions";
 
 // Sub-components
 function SettingSection({ title, children }: { title: string; children: ReactNode }) {

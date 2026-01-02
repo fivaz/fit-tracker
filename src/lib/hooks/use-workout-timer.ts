@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import { intervalToDuration } from "date-fns";
 
@@ -12,16 +12,13 @@ function formatDuration(start: Date, end: Date): string {
 	return duration.hours ? `${h}:${m}:${s}` : `${m}:${s}`;
 }
 
-export function useWorkoutTimer(startedAt: Date): string {
-	const [elapsed, setElapsed] = useState(() => formatDuration(new Date(startedAt), new Date()));
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setElapsed(formatDuration(new Date(startedAt), new Date()));
-		}, 1000);
-
-		return () => clearInterval(interval);
-	}, [startedAt]);
-
-	return elapsed;
+export function useWorkoutTimer(startedAt: Date) {
+	return useSyncExternalStore(
+		(callback) => {
+			const id = setInterval(callback, 1000);
+			return () => clearInterval(id);
+		},
+		() => formatDuration(new Date(startedAt), new Date()),
+		() => "00:00",
+	);
 }

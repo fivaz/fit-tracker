@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import { Play } from "lucide-react";
 
-import { getRecentPrograms } from "@/components/program/action";
 import { ROUTES } from "@/lib/consts";
+import { getRecentPrograms } from "@/lib/program/actions";
 
 export async function StartWorkout() {
 	const programs = await getRecentPrograms();
@@ -23,7 +23,7 @@ export async function StartWorkout() {
 								<div>
 									<div className="font-medium">{program.name}</div>
 									<div className="text-sm text-orange-100">
-										{program.exercises.length ?? 0} exercises
+										{program.exerciseCount ?? 0} exercises
 									</div>
 								</div>
 								<Play className="size-5" />

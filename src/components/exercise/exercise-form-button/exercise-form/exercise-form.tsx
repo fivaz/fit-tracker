@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { type FormEvent, startTransition, useState } from "react";
 import Image from "next/image";
 
 import { AlertCircle, X } from "lucide-react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 
 import { MuscleSelect } from "@/components/muscle-select/muscle-select";
 import { ProgramSelect } from "@/components/program-select/program-select";
@@ -11,36 +12,88 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
-import { Exercise } from "@/generated/prisma/client";
-import { saveExercise } from "@/lib/exercise/action";
+import { saveExercise } from "@/lib/exercise/actions";
+import { parseExerciseFormData } from "@/lib/exercise/exercise-form-data";
+import { useExercises } from "@/lib/exercise/exercises-context";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
+import { reportError } from "@/lib/logger";
 
 type ExerciseFormProps = {
-	exercise: Partial<Exercise> & { programs?: { programId: string }[] };
+	exercise: ExerciseWithPrograms;
 	onClose: () => void;
 	programId?: string;
 };
 
 export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps) {
+	const { addItem, updateItem, deleteItem } = useExercises();
 	const [error, setError] = useState<string | null>(null);
-	const [isPending, setIsPending] = useState(false);
 	const isEdit = !!exercise.id;
 
 	const initialProgramIds =
 		exercise.programs?.map((p) => p.programId) || (programId ? [programId] : []);
 
-	const handleSubmit = async (formData: FormData) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		setError(null);
-		setIsPending(true);
 
-		try {
-			await saveExercise(formData);
-			onClose();
-		} catch (err: unknown) {
-			setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-		} finally {
-			setIsPending(false);
+		const formData = new FormData(e.currentTarget);
+		const { id, name, muscles, programs, imageFile } = parseExerciseFormData(formData);
+
+		if (!name || name.trim().length === 0) {
+			setError("Name is required.");
+			return;
 		}
+
+		if (!muscles || muscles.length === 0) {
+			setError("Muscle group is required.");
+			return;
+		}
+
+		const previewUrl = imageFile ? URL.createObjectURL(imageFile) : null;
+
+		const optimisticExercise: ExerciseWithPrograms = {
+			id: id || crypto.randomUUID(),
+			image: previewUrl,
+			name,
+			muscles,
+			programs,
+		};
+
+		onClose();
+
+		startTransition(async () => {
+			if (isEdit) {
+				updateItem(optimisticExercise);
+			} else {
+				addItem(optimisticExercise);
+			}
+
+			try {
+				await saveExercise(formData);
+				toast.success(isEdit ? "Exercise updated" : "Exercise created");
+				if (previewUrl && previewUrl.startsWith("blob:")) {
+					URL.revokeObjectURL(previewUrl);
+				}
+			} catch (err: unknown) {
+				if (previewUrl && previewUrl.startsWith("blob:")) {
+					URL.revokeObjectURL(previewUrl);
+				}
+
+				if (isEdit && exercise.id) {
+					updateItem(exercise);
+				} else {
+					deleteItem(optimisticExercise.id);
+				}
+
+				const errorMessage =
+					err instanceof Error ? err.message : "Something went wrong. Please try again.";
+				reportError(err, { extra: { id, name, isEdit } });
+				toast.error(isEdit ? "Failed to update exercise" : "Failed to create exercise", {
+					description: "Your changes were rolled back.",
+				});
+				setError(errorMessage);
+			}
+		});
 	};
 
 	return (
@@ -49,7 +102,7 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 			animate={{ opacity: 1, height: "auto", scale: 1 }}
 			exit={{ opacity: 0, height: 0, scale: 0.95 }}
 			transition={{ duration: 0.2 }}
-			action={handleSubmit}
+			onSubmit={handleSubmit}
 		>
 			<Card>
 				<CardHeader className="flex items-center justify-between px-5">
@@ -80,11 +133,14 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 									name="name"
 									defaultValue={exercise.name}
 									placeholder="e.g., Bench Press"
+									required
+									minLength={1}
+									maxLength={255}
 								/>
 							</Field>
 
 							<Field>
-								<MuscleSelect name="muscles" defaultValue={exercise.muscles} />
+								<MuscleSelect name="muscles" defaultValue={exercise.muscles} required />
 							</Field>
 
 							<Field>
@@ -117,17 +173,10 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 				</CardContent>
 
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full" disabled={isPending}>
-						{isPending && <Spinner />}
+					<Button type="submit" className="w-full">
 						{isEdit ? "Save Changes" : "Create Exercise"}
 					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onClose}
-						className="w-full"
-						disabled={isPending}
-					>
+					<Button type="button" variant="outline" onClick={onClose} className="w-full">
 						Cancel
 					</Button>
 				</CardFooter>
