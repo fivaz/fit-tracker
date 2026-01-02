@@ -5,10 +5,11 @@ import { AnimatePresence } from "motion/react";
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseFormButton } from "@/components/exercise/exercise-form-button/exercise-form-button";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { ExercisesProvider, ExerciseSummary, useExercises } from "@/lib/exercise/exercises-context";
+import { ExercisesProvider, useExercises } from "@/lib/exercise/exercises-context";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 
 type ExercisesListProps = {
-	initialExercises: ExerciseSummary[];
+	initialExercises: ExerciseWithPrograms[];
 };
 
 export function ExercisesList({ initialExercises }: ExercisesListProps) {

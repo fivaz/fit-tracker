@@ -1,6 +1,6 @@
-import { type FormEvent, startTransition, useState, useTransition } from "react";
+import { type FormEvent, startTransition } from "react";
 
-import { AlertCircle, X } from "lucide-react";
+import { X } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 
@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
 import { reportError } from "@/lib/logger";
 import { saveProgram } from "@/lib/program/action";
 import { ProgramSummary, usePrograms } from "@/lib/program/programs-context";

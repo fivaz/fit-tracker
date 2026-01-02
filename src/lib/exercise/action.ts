@@ -1,20 +1,19 @@
 "use server";
-import { cache } from "react";
 import { revalidatePath } from "next/cache";
 
 import { v4 as uuidv4 } from "uuid";
 
 import { MuscleGroup } from "@/generated/prisma/client";
 import { ROUTES } from "@/lib/consts";
-import { ExerciseSummary } from "@/lib/exercise/types";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { prisma } from "@/lib/prisma";
 import { getPublicImageUrl, uploadFile } from "@/lib/supabase";
 import { getUserId } from "@/lib/utils-server";
 
-export async function getExercises(): Promise<ExerciseSummary[]> {
+export async function getExercises(): Promise<ExerciseWithPrograms[]> {
 	const userId = await getUserId();
 
-	const exercises = await prisma.exercise.findMany({
+	return prisma.exercise.findMany({
 		where: {
 			userId,
 			deletedAt: null,
@@ -31,14 +30,6 @@ export async function getExercises(): Promise<ExerciseSummary[]> {
 		},
 		orderBy: { createdAt: "desc" },
 	});
-
-	return exercises.map(({ programs, ...rest }) => {
-		const programCount = programs?.length ?? 0;
-		return {
-			...rest,
-			programCount,
-		};
-	});
 }
 
 export async function getExercisesCount() {
@@ -49,6 +40,7 @@ export async function getExercisesCount() {
 	});
 }
 
+//TODO remove duplicate with avatar upload
 async function uploadImage(imageFile: File | null, userId: string) {
 	if (!imageFile || !(imageFile.size > 0)) {
 		return null;

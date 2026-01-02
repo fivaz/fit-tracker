@@ -1,6 +1,6 @@
 // Centralized mock/seed data used by Storybook and lightweight UI mocks
 
-import { Exercise, Program } from "@/generated/prisma/client";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { ProgramSummary } from "@/lib/program/types";
 
 export const mockUser = {
@@ -41,13 +41,10 @@ export const mockProgram: ProgramSummary = {
 	// The Prisma generated Program type includes relation fields which we can omit by casting
 };
 
-export const mockExercise: Exercise = {
+export const mockExercise: ExerciseWithPrograms = {
 	id: "e1",
 	name: "Bench Press",
 	muscles: ["chest"],
-	userId: "u1",
-	createdAt: new Date(),
-	updatedAt: new Date(),
-	deletedAt: null,
 	image: null,
+	programs: [{ programId: mockProgram.id }],
 };

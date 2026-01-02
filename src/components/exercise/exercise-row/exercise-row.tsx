@@ -11,12 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { deleteExerciseAction } from "@/lib/exercise/action";
 import { useExercises } from "@/lib/exercise/exercises-context";
-import { ExerciseSummary, ExerciseWithPrograms } from "@/lib/exercise/types";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { useConfirm } from "@/lib/hooks/use-confirm";
 import { reportError } from "@/lib/logger";
 
 type ExerciseRowProps = {
-	exercise: ExerciseSummary | ExerciseWithPrograms;
+	exercise: ExerciseWithPrograms;
 	programId?: string;
 };
 
@@ -94,6 +94,13 @@ export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 										{exercise.muscles.slice(0, 3).join(", ")}
 										{exercise.muscles.length > 3 && ` +${exercise.muscles.length - 3}`}
 									</p>
+									{/*<p className="text-muted-foreground text-xs tracking-wider capitalize">*/}
+									{/*	{exercise.programs*/}
+									{/*		.map((p) => p.name)*/}
+									{/*		.slice(0, 3)*/}
+									{/*		.join(", ")}*/}
+									{/*	{exercise.programs.length > 3 && ` +${exercise.programs.length - 3}`}*/}
+									{/*</p>*/}
 								</div>
 
 								{/* --- Actions Section --- */}

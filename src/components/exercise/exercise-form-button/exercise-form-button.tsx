@@ -7,7 +7,7 @@ import { AnimatePresence } from "motion/react";
 
 import { ExerciseForm } from "@/components/exercise/exercise-form-button/exercise-form/exercise-form";
 import { Button } from "@/components/ui/button";
-import { ExerciseFormInput } from "@/lib/exercise/types";
+import { buildEmptyExercise } from "@/lib/exercise/types";
 
 type ExerciseFormButtonProps = {
 	programId?: string;
@@ -16,9 +16,7 @@ type ExerciseFormButtonProps = {
 export function ExerciseFormButton({ programId }: ExerciseFormButtonProps) {
 	const [open, setOpen] = useState(false);
 
-	const emptyExercise: ExerciseFormInput = {
-		name: "Test ",
-	};
+	const emptyExercise = buildEmptyExercise();
 
 	return (
 		<div>

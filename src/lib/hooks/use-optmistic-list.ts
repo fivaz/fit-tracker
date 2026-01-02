@@ -3,8 +3,8 @@ import { useOptimistic } from "react";
 type Identifiable = { id: string };
 
 type Action<T> =
-	| { type: "add"; item: Partial<T> & Identifiable }
-	| { type: "update"; item: Partial<T> & Identifiable }
+	| { type: "add"; item: T }
+	| { type: "update"; item: T }
 	| { type: "delete"; id: string }
 	| { type: "set"; items: T[] };
 
@@ -16,7 +16,7 @@ export function useOptimisticList<T extends Identifiable>(initialItems: T[]) {
 				case "add":
 					// We cast the partial item to T so the rest of the app
 					// sees a "complete" object, even if it's missing some DB-only fields.
-					return [...state, action.item as T];
+					return [action.item as T, ...state];
 
 				case "update":
 					return state.map((item) =>

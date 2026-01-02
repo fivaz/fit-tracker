@@ -1,4 +1,4 @@
-import { type FormEvent, startTransition, useState, useTransition } from "react";
+import { type FormEvent, startTransition, useState } from "react";
 import Image from "next/image";
 
 import { AlertCircle, X } from "lucide-react";
@@ -12,15 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
 import { MuscleGroup } from "@/generated/prisma/client";
 import { saveExercise } from "@/lib/exercise/action";
 import { useExercises } from "@/lib/exercise/exercises-context";
-import { ExerciseFormInput, ExerciseSummary } from "@/lib/exercise/types";
+import { ExerciseWithPrograms } from "@/lib/exercise/types";
 import { reportError } from "@/lib/logger";
 
 type ExerciseFormProps = {
-	exercise: ExerciseFormInput;
+	exercise: ExerciseWithPrograms;
 	onClose: () => void;
 	programId?: string;
 };
@@ -37,19 +36,21 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 		e.preventDefault();
 		setError(null);
 
+		// TODO create a function to convert FormData into  exercise and use it here and in saveExercise
 		const formData = new FormData(e.currentTarget);
 		const id = formData.get("id") as string;
 		const name = formData.get("name") as string;
-		const musclesRaw = formData.getAll("muscles");
-		const muscles = Array.isArray(musclesRaw) ? musclesRaw : [musclesRaw];
+		const muscles = formData.getAll("muscles") as MuscleGroup[];
+		const programIds = formData.getAll("programIds") as string[];
 
-		const optimisticExercise: ExerciseSummary = {
-			...exercise,
+		const optimisticExercise: ExerciseWithPrograms = {
 			id: id || crypto.randomUUID(),
 			name,
 			image: exercise.image || null,
 			muscles: muscles as MuscleGroup[],
-			programCount: 0,
+			programs: programIds.map((pId) => ({
+				programId: pId,
+			})),
 		};
 
 		onClose();
@@ -67,7 +68,7 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 			} catch (err: unknown) {
 				if (isEdit && exercise.id) {
 					// Revert to previous state
-					updateItem(exercise as ExerciseSummary & { programCount: number });
+					updateItem(exercise);
 				} else {
 					// Remove the optimistically added exercise
 					deleteItem(optimisticExercise.id);

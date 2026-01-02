@@ -1,7 +1,7 @@
 import { createOptimisticContext } from "../hooks/create-optimistic-context";
-import { ExerciseSummary } from "./types";
+import { ExerciseWithPrograms } from "./types";
 
-export const [ExercisesProvider, useExercises] = createOptimisticContext<ExerciseSummary>();
+export const [ExercisesProvider, useExercises] = createOptimisticContext<ExerciseWithPrograms>();
 
 // Re-export for convenience
 export type { ExerciseSummary } from "./types";

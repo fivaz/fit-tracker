@@ -8,8 +8,8 @@ type Identifiable = { id: string };
 
 interface OptimisticContextProps<T> {
 	items: T[];
-	addItem: (item: Partial<T> & Identifiable) => void;
-	updateItem: (item: Partial<T> & Identifiable) => void;
+	addItem: (item: T) => void;
+	updateItem: (item: T) => void;
 	deleteItem: (id: string) => void;
 	setItems: (items: T[]) => void;
 }
