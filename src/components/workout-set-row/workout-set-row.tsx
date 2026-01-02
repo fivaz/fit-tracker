@@ -3,6 +3,7 @@ import { Trash2 } from "lucide-react";
 import { TimeButton } from "@/components/time-button/time-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useConfirm } from "@/lib/hooks/use-confirm";
 
 type WorkoutSet = {
 	id: string;
@@ -19,11 +20,16 @@ type WorkoutSetRowProps = {
 };
 
 export function WorkoutSetRow({ index, set, onUpdate, onDelete }: WorkoutSetRowProps) {
-	const handleDelete = () => {
+	const confirm = useConfirm();
+	const handleDelete = async () => {
+		const confirmed = await confirm({
+			title: "Delete set",
+			message: "This set has data. Are you sure you want to delete it?",
+		});
 		const hasData = set.reps || set.weight || set.completedAt;
-		if (hasData && !confirm("This set has data. Are you sure you want to delete it?")) {
-			return;
-		}
+
+		if (!hasData || !confirmed) return;
+
 		onDelete(set.id);
 	};
 
