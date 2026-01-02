@@ -43,15 +43,6 @@ export async function saveExercise(formData: FormData) {
 
 	const { id, name, muscles, programs, imageFile } = parseExerciseFormData(formData);
 
-	// TODO move these validations to the form level
-	if (!name) {
-		throw new Error("Please provide a name for the exercise.");
-	}
-
-	if (!muscles || muscles.length === 0) {
-		throw new Error("Please provide a muscle for the exercise.");
-	}
-
 	const imageUrl = await uploadImage(imageFile || null, userId, "exercise-images");
 
 	const data = {

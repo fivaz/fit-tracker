@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { MuscleGroup } from "@/generated/prisma/client";
 import { saveExercise } from "@/lib/exercise/action";
 import { parseExerciseFormData } from "@/lib/exercise/exercise-form-data";
 import { useExercises } from "@/lib/exercise/exercises-context";
@@ -40,9 +39,21 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 		const formData = new FormData(e.currentTarget);
 		const { id, name, muscles, programs, imageFile } = parseExerciseFormData(formData);
 
+		if (!name || name.trim().length === 0) {
+			setError("Name is required.");
+			return;
+		}
+
+		if (!muscles || muscles.length === 0) {
+			setError("Muscle group is required.");
+			return;
+		}
+
+		const previewUrl = imageFile ? URL.createObjectURL(imageFile) : null;
+
 		const optimisticExercise: ExerciseWithPrograms = {
 			id: id || crypto.randomUUID(),
-			image: imageFile ? URL.createObjectURL(imageFile) : null,
+			image: previewUrl,
 			name,
 			muscles,
 			programs,
@@ -60,12 +71,17 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 			try {
 				await saveExercise(formData);
 				toast.success(isEdit ? "Exercise updated" : "Exercise created");
+				if (previewUrl && previewUrl.startsWith("blob:")) {
+					URL.revokeObjectURL(previewUrl);
+				}
 			} catch (err: unknown) {
+				if (previewUrl && previewUrl.startsWith("blob:")) {
+					URL.revokeObjectURL(previewUrl);
+				}
+
 				if (isEdit && exercise.id) {
-					// Revert to previous state
 					updateItem(exercise);
 				} else {
-					// Remove the optimistically added exercise
 					deleteItem(optimisticExercise.id);
 				}
 
@@ -117,11 +133,14 @@ export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps
 									name="name"
 									defaultValue={exercise.name}
 									placeholder="e.g., Bench Press"
+									required
+									minLength={1}
+									maxLength={255}
 								/>
 							</Field>
 
 							<Field>
-								<MuscleSelect name="muscles" defaultValue={exercise.muscles} />
+								<MuscleSelect name="muscles" defaultValue={exercise.muscles} required />
 							</Field>
 
 							<Field>
