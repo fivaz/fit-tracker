@@ -5,7 +5,6 @@ import { ChevronRight, Dumbbell, Pencil, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
 
-import { ConfirmDialog } from "@/components/confirm-dialog/confirm-dialog";
 import { ProgramForm } from "@/components/program/program-form-button/program-form/program-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +16,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { ROUTES } from "@/lib/consts";
+import { useConfirm } from "@/lib/hooks/use-confirm";
 import { reportError } from "@/lib/logger";
 import { deleteProgramAction } from "@/lib/program/action";
 import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
@@ -27,16 +27,23 @@ type ProgramRowProps = {
 
 export function ProgramRow({ program }: ProgramRowProps) {
 	const [isEditing, setIsEditing] = useState(false);
-	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const { deleteItem, addItem } = usePrograms();
 
-	const handleDelete = async () => {
-		const itemToRollback = { ...program };
-		deleteItem(program.id);
-		setShowDeleteDialog(false);
+	const confirm = useConfirm();
 
+	const handleDelete = async () => {
+		const confirmed = await confirm({
+			title: "Delete Program",
+			message: `Are you sure you want to delete "${program.name}"? This action cannot be undone.`,
+		});
+
+		if (!confirmed) return;
+
+		const itemToRollback = { ...program };
 		startTransition(async () => {
+			deleteItem(program.id);
+
 			try {
 				await deleteProgramAction(program.id);
 				toast.success("Deleted!");
@@ -85,7 +92,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 										variant="outline"
 										className="text-destructive hover:text-red-500"
 										size="icon-sm"
-										onClick={() => setShowDeleteDialog(true)}
+										onClick={handleDelete}
 										disabled={isPending}
 									>
 										<Trash2 className="size-4" />
@@ -111,14 +118,6 @@ export function ProgramRow({ program }: ProgramRowProps) {
 					</motion.div>
 				)}
 			</AnimatePresence>
-
-			<ConfirmDialog
-				isOpen={showDeleteDialog}
-				title="Delete Program"
-				message={`Are you sure you want to delete "${program.name}"? This action cannot be undone.`}
-				onConfirm={handleDelete}
-				onCancel={() => setShowDeleteDialog(false)}
-			/>
 		</div>
 	);
 }
