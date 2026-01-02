@@ -29,6 +29,12 @@ module.exports = {
 		],
 		"@semantic-release/changelog",
 		[
+			"@semantic-release/npm",
+			{
+				npmPublish: false,
+			},
+		],
+		[
 			"@semantic-release/git",
 			{
 				assets: ["package.json", "pnpm-lock.yaml", "CHANGELOG.md"],
@@ -36,6 +42,5 @@ module.exports = {
 			},
 		],
 		"@semantic-release/github",
-		"semantic-release-pnpm",
 	],
 };
