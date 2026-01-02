@@ -20,6 +20,15 @@ type ExerciseRowProps = {
 	programId?: string;
 };
 
+/**
+ * Displays a single exercise row with controls to edit or delete the exercise.
+ *
+ * The delete control prompts for confirmation, performs an optimistic removal, and restores the item if deletion fails.
+ *
+ * @param exercise - The exercise (including related program information) to display and edit.
+ * @param programId - Optional program id to pre-associate the exercise when opening the edit form.
+ * @returns The rendered exercise row element.
+ */
 export function ExerciseRow({ exercise, programId }: ExerciseRowProps) {
 	const { deleteItem, addItem } = useExercises();
 	const [isEditing, setIsEditing] = useState(false);

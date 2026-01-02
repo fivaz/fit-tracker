@@ -12,6 +12,14 @@ interface UseOptimisticListOptions<T> {
 	sortFn?: (items: T[]) => T[];
 }
 
+/**
+ * Manage an optimistic list of identifiable items with add, update, delete, and set actions, applying an optional sort after each update.
+ *
+ * @param initialItems - The initial items used to seed the optimistic list state.
+ * @param options - Optional configuration.
+ * @param options.sortFn - A function that receives the updated list and returns a reordered list; invoked after every action when provided.
+ * @returns An object containing `optimisticItems`, the current list state, and `dispatch`, a function to apply `add`, `update`, `delete`, or `set` actions to the list.
+ */
 export function useOptimisticList<T extends Identifiable>(
 	initialItems: T[],
 	options: UseOptimisticListOptions<T> = {},

@@ -14,6 +14,15 @@ interface OptimisticContextProps<T> {
 	setItems: (items: T[]) => void;
 }
 
+/**
+ * Creates a typed React context and provider pair for managing an optimistic list of identifiable items.
+ *
+ * @template T - Item type extending `{ id: string }`
+ * @param defaultSortFn - Optional default sort function applied to items when a Provider is mounted and no `sortFn` prop is supplied.
+ * @returns A readonly tuple [Provider, useOptimisticContext] where:
+ *  - `Provider` is a React component that accepts `{ children, initialItems, sortFn? }` and supplies an optimistic list context.
+ *  - `useOptimisticContext` is a hook that returns the context value with `items` and mutation helpers: `addItem(item)`, `updateItem(item)`, `deleteItem(id)`, and `setItems(items)`.
+ */
 export function createOptimisticContext<T extends Identifiable>(
 	defaultSortFn?: (items: T[]) => T[],
 ) {

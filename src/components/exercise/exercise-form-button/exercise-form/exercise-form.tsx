@@ -24,6 +24,18 @@ type ExerciseFormProps = {
 	programId?: string;
 };
 
+/**
+ * Render a form for creating or editing an exercise and apply optimistic UI updates while saving.
+ *
+ * The form validates required fields (name and muscles), builds FormData (including an optional image file),
+ * performs an optimistic add/update to the exercises context, and attempts to persist changes via the API.
+ * On API failure it rolls back the optimistic changes, reports the error, shows a toast, and surfaces an error message.
+ *
+ * @param exercise - The exercise to edit or a scaffold for creating a new exercise (may include associated programs and image).
+ * @param onClose - Callback invoked to close the form UI.
+ * @param programId - Optional program ID used to preselect a program when creating a new exercise.
+ * @returns The rendered exercise form element.
+ */
 export function ExerciseForm({ exercise, onClose, programId }: ExerciseFormProps) {
 	const { addItem, updateItem, deleteItem } = useExercises();
 	const [error, setError] = useState<string | null>(null);

@@ -9,6 +9,15 @@ type WorkoutPageProps = {
 	params: Promise<{ id: string }>;
 };
 
+/**
+ * Render the workout session page for a given session ID.
+ *
+ * Retrieves the workout session for the provided route `id` and renders a header and list of exercises.
+ * If no session is found, the request is redirected to the home route.
+ *
+ * @param params - A promise resolving to route parameters; must include `id` for the workout session
+ * @returns The React element for the workout session page
+ */
 export default async function WorkoutPage({ params }: WorkoutPageProps) {
 	const { id } = await params;
 	const workoutSession = await getWorkoutSessionById(id);

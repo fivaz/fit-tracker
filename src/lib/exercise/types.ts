@@ -12,6 +12,12 @@ export type ExerciseSummary = ExerciseUI & {
 	programCount: number;
 };
 
+/**
+ * Create a new ExerciseWithPrograms object populated with sensible defaults, with any provided fields overriding those defaults.
+ *
+ * @param exercise - Partial fields to merge into the default exercise object
+ * @returns An ExerciseWithPrograms object where `id`, `name`, and `image` are empty strings and `muscles` and `programs` are empty arrays unless overridden by `exercise`
+ */
 export function buildEmptyExercise(exercise: Partial<ExerciseWithPrograms>): ExerciseWithPrograms {
 	return {
 		id: "",

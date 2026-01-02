@@ -8,7 +8,13 @@ class SentryExampleAPIError extends Error {
 	}
 }
 
-// A faulty API route to test Sentry's error monitoring
+/**
+ * Handle GET requests by deliberately raising a SentryExampleAPIError to exercise Sentry error monitoring.
+ *
+ * This route logs an informational message and then throws the error so Sentry can capture it.
+ *
+ * @throws SentryExampleAPIError - raised to simulate a backend error for Sentry monitoring
+ */
 export function GET() {
 	Sentry.logger.info("Sentry example API called");
 	throw new SentryExampleAPIError(

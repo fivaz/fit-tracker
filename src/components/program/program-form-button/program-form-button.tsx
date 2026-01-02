@@ -7,6 +7,11 @@ import { ProgramForm } from "@/components/program/program-form-button/program-fo
 import { Button } from "@/components/ui/button";
 import { buildEmptyProgram } from "@/lib/program/types";
 
+/**
+ * Renders a control that toggles between a "New Program" button and a program creation form.
+ *
+ * @returns A React element that displays a full-width "New Program" button when closed and the program creation form when opened.
+ */
 export function ProgramFormButton() {
 	const [open, setOpen] = useState(false);
 	const program = buildEmptyProgram();

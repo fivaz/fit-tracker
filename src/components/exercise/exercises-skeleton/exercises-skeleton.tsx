@@ -1,6 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Renders a vertical stack of three skeleton placeholders for exercise rows.
+ *
+ * @returns A JSX element containing three skeleton-stubbed exercise rows.
+ */
 export function ExercisesSkeleton() {
 	return (
 		<div className="space-y-2">
@@ -11,6 +16,13 @@ export function ExercisesSkeleton() {
 	);
 }
 
+/**
+ * Renders a card-styled skeleton placeholder for a single exercise row, including title, subtitle, action icons, and content area.
+ *
+ * @returns A JSX element containing the skeleton-stubbed exercise row.
+ *
+ * @internal
+ */
 function ExerciseRowSkeleton() {
 	return (
 		<Card>

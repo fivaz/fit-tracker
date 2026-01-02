@@ -8,6 +8,14 @@ interface LogOptions {
 	extra?: Record<string, any>;
 }
 
+/**
+ * Reports an error or message to Sentry in non-development environments, and logs a styled, grouped message with details to the console in development.
+ *
+ * @param error - The value to report; if an `Error` instance its exception is captured (preserving stack/message), otherwise it is converted to a string and captured as a message.
+ * @param options - Optional logging options.
+ * @param options.level - Severity level: `"info"`, `"warn"`, or `"error"`. Defaults to `"error"`.
+ * @param options.extra - Additional context to attach; sent to Sentry as extras or printed as a table in development.
+ */
 export function reportError(error: unknown, options: LogOptions = {}) {
 	const { level = "error", extra } = options;
 	const message = error instanceof Error ? error.message : String(error);

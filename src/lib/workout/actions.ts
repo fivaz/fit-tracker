@@ -9,6 +9,14 @@ import { prisma } from "@/lib/prisma";
 import { devDelay } from "@/lib/utils";
 import { getUserId } from "@/lib/utils-server";
 
+/**
+ * Starts a new workout session for the current user and navigates to it.
+ *
+ * Creates a workout session tied to the given program, records the session start time,
+ * sets the user's activeSessionId to the new session, and redirects the client to the workout route for that session.
+ *
+ * @param programId - The ID of the workout program to start
+ */
 export async function startWorkout(programId: string) {
 	"use server";
 	await devDelay();
@@ -31,6 +39,13 @@ export async function startWorkout(programId: string) {
 	redirect(`${ROUTES.WORKOUT}/${session.id}`);
 }
 
+/**
+ * Marks the specified workout session as completed and clears the user's active session.
+ *
+ * Also triggers revalidation of the progress path and redirects the user to the home route.
+ *
+ * @param sessionId - The ID of the workout session to mark completed
+ */
 export async function endWorkout(sessionId: string) {
 	await devDelay();
 
@@ -50,6 +65,11 @@ export async function endWorkout(sessionId: string) {
 	redirect(ROUTES.HOME);
 }
 
+/**
+ * Retrieve the current user's active workout session ID.
+ *
+ * @returns The active session ID for the current user, or `null` if none.
+ */
 export async function getActiveSessionId() {
 	await devDelay();
 

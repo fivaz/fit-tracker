@@ -6,9 +6,10 @@ export type ExerciseOutput = Omit<ExerciseWithPrograms, "image"> & {
 };
 
 /**
- * Converts FormData into an Exercise object
- * @param formData - The FormData from the form submission
- * @returns Parsed exercise data
+ * Parse a form submission's FormData into an ExerciseOutput object.
+ *
+ * @param formData - The FormData produced by the exercise form
+ * @returns An ExerciseOutput with `id`, `name`, `muscles`, `programs` (array of `{ programId: string }`), and `imageFile` (`File` or `null`). `imageFile` is `null` when no file was provided or the file size is zero.
  */
 export function parseExerciseFormData(formData: FormData): ExerciseOutput {
 	const id = formData.get("id")?.toString() || "";

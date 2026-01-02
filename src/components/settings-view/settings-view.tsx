@@ -23,7 +23,13 @@ import { authClient } from "@/lib/auth-client";
 import { ROUTES } from "@/lib/consts";
 import { updateBodyMetrics, updateUserProfile, uploadAvatar } from "@/lib/user/actions";
 
-// Sub-components
+/**
+ * Renders a titled settings section with a header and a bordered content area.
+ *
+ * @param title - The section title displayed in the header.
+ * @param children - Content rendered inside the section's bordered container.
+ * @returns The section element containing the title and its children.
+ */
 function SettingSection({ title, children }: { title: string; children: ReactNode }) {
 	return (
 		<div className="space-y-3">

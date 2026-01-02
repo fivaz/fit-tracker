@@ -19,6 +19,15 @@ type WorkoutExerciseProps = {
 	sessionId: string;
 };
 
+/**
+ * Wraps the given exercise with a SetLogsProvider and renders its workout content.
+ *
+ * Initializes the provider with the exercise's `setLogs` so child components can read and modify set logs.
+ *
+ * @param exercise - Exercise data (including `setLogs`) used to render the exercise and initialize the set logs context
+ * @param sessionId - Identifier of the current workout session passed through to the rendered content
+ * @returns The rendered WorkoutExercise component tree with set logs context applied
+ */
 export function WorkoutExercise({ exercise, sessionId }: WorkoutExerciseProps) {
 	return (
 		<SetLogsProvider initialItems={exercise.setLogs}>
@@ -27,6 +36,15 @@ export function WorkoutExercise({ exercise, sessionId }: WorkoutExerciseProps) {
 	);
 }
 
+/**
+ * Render an exercise card showing its image, name, targeted muscles, current sets, and an "Add Set" action.
+ *
+ * When the add action is triggered, a new empty set is appended to the exercise's set logs and persisted for the given session.
+ *
+ * @param exercise - Exercise data (includes display fields and initial `setLogs`) to render
+ * @param sessionId - Identifier of the workout session used when creating or persisting sets
+ * @returns A React element representing the exercise section, its set rows, and an Add Set control
+ */
 function WorkoutExerciseContent({ exercise, sessionId }: WorkoutExerciseProps) {
 	const { items: sets, addItem } = useSetLogs();
 
