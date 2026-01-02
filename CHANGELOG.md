@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/fivaz/fit-tracker/compare/v1.0.0...v1.0.1) (2026-01-02)
+
+### 🐛 Bug Fixes
+
+* fix error with release requiring package-lock instead of pnpm-lock.yaml ([03723a5](https://github.com/fivaz/fit-tracker/commit/03723a5fa97b0c4419568ec481e09b084859c86c))
+
 ## 1.0.0 (2026-01-02)
 
 ### ✨ Features
