@@ -23,7 +23,7 @@ export async function StartWorkout() {
 								<div>
 									<div className="font-medium">{program.name}</div>
 									<div className="text-sm text-orange-100">
-										{program.exercises.length ?? 0} exercises
+										{program.exerciseCount ?? 0} exercises
 									</div>
 								</div>
 								<Play className="size-5" />

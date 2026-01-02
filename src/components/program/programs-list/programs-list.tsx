@@ -5,14 +5,10 @@ import { AnimatePresence } from "motion/react";
 import { ProgramEmptyState } from "@/components/program/program-empty-state/program-empty-state";
 import { ProgramFormButton } from "@/components/program/program-form-button/program-form-button";
 import { ProgramRow } from "@/components/program/program-row/program-row";
-import {
-	ProgramsProvider,
-	ProgramWithExercises,
-	usePrograms,
-} from "@/lib/program/programs-context";
+import { ProgramsProvider, ProgramSummary, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramsListProps = {
-	initialPrograms: ProgramWithExercises[];
+	initialPrograms: ProgramSummary[];
 };
 
 export function ProgramsList({ initialPrograms }: ProgramsListProps) {

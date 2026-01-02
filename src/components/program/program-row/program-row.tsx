@@ -19,10 +19,10 @@ import { ROUTES } from "@/lib/consts";
 import { useConfirm } from "@/lib/hooks/use-confirm";
 import { reportError } from "@/lib/logger";
 import { deleteProgramAction } from "@/lib/program/action";
-import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
+import { ProgramSummary, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramRowProps = {
-	program: ProgramWithExercises;
+	program: ProgramSummary;
 };
 
 export function ProgramRow({ program }: ProgramRowProps) {
@@ -77,7 +77,7 @@ export function ProgramRow({ program }: ProgramRowProps) {
 							<CardHeader>
 								<CardTitle>{program.name}</CardTitle>
 								<CardDescription>
-									{program.exercises.length} exercise{program.exercises.length !== 1 && "s"}
+									{program.exerciseCount} exercise{program.exerciseCount !== 1 && "s"}
 								</CardDescription>
 								<CardAction className="space-x-2">
 									<Button

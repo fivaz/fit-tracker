@@ -11,10 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { reportError } from "@/lib/logger";
 import { saveProgram } from "@/lib/program/action";
-import { ProgramWithExercises, usePrograms } from "@/lib/program/programs-context";
+import { ProgramSummary, usePrograms } from "@/lib/program/programs-context";
 
 type ProgramFormProps = {
-	program: ProgramWithExercises;
+	program: ProgramSummary;
 	onClose: () => void;
 };
 
@@ -29,7 +29,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 		const id = formData.get("id") as string;
 		const name = formData.get("name") as string;
 
-		const optimisticProduct: ProgramWithExercises = {
+		const optimisticProduct: ProgramSummary = {
 			...program,
 			id: id || crypto.randomUUID(),
 			name,
@@ -49,13 +49,7 @@ export function ProgramForm({ program, onClose }: ProgramFormProps) {
 				toast.success(isEdit ? "Program updated" : "Program created");
 			} catch (e) {
 				if (isEdit) {
-					// Rollback to original program state
-					const originalProgram: ProgramWithExercises = {
-						id: program.id,
-						name: program.name || "",
-						exercises: program.exercises || [],
-					};
-					updateItem(originalProgram);
+					updateItem(program);
 				} else {
 					deleteItem(optimisticProduct.id);
 				}
