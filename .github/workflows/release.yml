@@ -8,14 +8,31 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions: # Required for Semantic Release to push tags/releases
+      contents: write
+      issues: write
+      pull-requests: write
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: "20"
-      - run: npm ci
-      - run: npx semantic-release
+          version: 9 # or your specific version
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: 'pnpm' # Automatically caches pnpm store
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Release
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
