@@ -4,11 +4,13 @@ import { useState } from "react";
 
 import { Calendar, Dumbbell, TrendingUp } from "lucide-react";
 
-import { EmptyState } from "./empty-state";
-import { ExerciseSelector } from "./exercise-selector";
-import { ProgressChart } from "./progress-chart";
-import { ProgressHeader } from "./progress-header";
-import { StatsSummary } from "./stats-summary";
+import { ProgressWorkoutSession } from "@/lib/workout/type";
+
+import { EmptyState } from "./empty-state/empty-state";
+import { ExerciseSelector } from "./exercise-selector/exercise-selector";
+import { ProgressChart } from "./progress-chart/progress-chart";
+import { ProgressHeader } from "./progress-header/progress-header";
+import { StatsSummary } from "./stats-summary/stats-summary";
 import { useExerciseProgress } from "./use-exercise-progress";
 
 type Exercise = {
@@ -16,24 +18,9 @@ type Exercise = {
 	name: string;
 };
 
-type SetLog = {
-	id: string;
-	weight: number;
-	reps: number;
-	completedAt: Date | null;
-	exerciseId: string;
-};
-
-type WorkoutSession = {
-	id: string;
-	startedAt: Date;
-	completedAt: Date | null;
-	setLogs: SetLog[];
-};
-
 type ProgressViewProps = {
 	exercises: Exercise[];
-	sessions: WorkoutSession[];
+	sessions: ProgressWorkoutSession[];
 };
 
 export function ProgressView({ exercises, sessions }: ProgressViewProps) {

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { ExercisesList } from "@/components/exercise/exercises-list/exercises-list";
 import { ExercisesSkeleton } from "@/components/exercise/exercises-skeleton/exercises-skeleton";
-import { getExercises, getExercisesWithPrograms } from "@/lib/exercise/actions";
+import { getExercisesWithPrograms } from "@/lib/exercise/actions";
 
 export default function ExercisesPage() {
 	return (

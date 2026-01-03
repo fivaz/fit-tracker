@@ -1,4 +1,4 @@
-import { StatCard } from "./stat-card";
+import { StatCard } from "../stat-card/stat-card";
 
 type ProgressData = {
 	date: string;
