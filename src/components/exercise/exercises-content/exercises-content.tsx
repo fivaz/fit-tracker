@@ -2,10 +2,10 @@ import { AnimatePresence } from "motion/react";
 
 import { ExerciseEmptyState } from "@/components/exercise/exercise-empty-state/exercise-empty-state";
 import { ExerciseRow } from "@/components/exercise/exercise-row/exercise-row";
-import { getExercises } from "@/lib/exercise/actions";
+import { getExercises, getExercisesWithPrograms } from "@/lib/exercise/actions";
 
 export async function ExercisesContent() {
-	const exercises = await getExercises();
+	const exercises = await getExercisesWithPrograms();
 
 	if (exercises.length === 0) {
 		return <ExerciseEmptyState />;

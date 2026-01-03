@@ -3,13 +3,13 @@ import { revalidatePath } from "next/cache";
 
 import { ROUTES } from "@/lib/consts";
 import { parseExerciseFormData } from "@/lib/exercise/exercise-form-data";
-import { ExerciseWithPrograms } from "@/lib/exercise/types";
+import { ExerciseUI, ExerciseWithPrograms } from "@/lib/exercise/types";
 import { uploadImage } from "@/lib/image-upload";
 import { prisma } from "@/lib/prisma";
 import { devDelay } from "@/lib/utils";
 import { getUserId } from "@/lib/utils-server";
 
-export async function getExercises(): Promise<ExerciseWithPrograms[]> {
+export async function getExercisesWithPrograms(): Promise<ExerciseWithPrograms[]> {
 	await devDelay();
 
 	const userId = await getUserId();
@@ -29,7 +29,23 @@ export async function getExercises(): Promise<ExerciseWithPrograms[]> {
 				select: { programId: true },
 			},
 		},
-		orderBy: { createdAt: "desc" },
+	});
+}
+
+export async function getExercises(): Promise<Pick<ExerciseUI, "id" | "name">[]> {
+	await devDelay();
+
+	const userId = await getUserId();
+
+	return prisma.exercise.findMany({
+		where: {
+			userId,
+			deletedAt: null,
+		},
+		select: {
+			id: true,
+			name: true,
+		},
 	});
 }
 

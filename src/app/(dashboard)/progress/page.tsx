@@ -1,19 +1,13 @@
 import { ProgressView } from "@/components/progress-view/progress-view";
+import { getExercises } from "@/lib/exercise/actions";
 import { prisma } from "@/lib/prisma";
+import { getSessionsWithSetLogs } from "@/lib/set-logs/actions";
 import { getUserId } from "@/lib/utils-server";
 
 export default async function ProgressPage() {
-	const userId = await getUserId();
+	const sessions = await getSessionsWithSetLogs();
 
-	const sessions = await prisma.workoutSession.findMany({
-		where: { userId },
-		include: { setLogs: true },
-		orderBy: { startedAt: "asc" },
-	});
-
-	const exercises = await prisma.exercise.findMany({
-		where: { userId },
-	});
+	const exercises = await getExercises();
 
 	return <ProgressView exercises={exercises} sessions={sessions} />;
 }

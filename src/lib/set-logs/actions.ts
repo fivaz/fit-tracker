@@ -2,10 +2,22 @@
 
 import { revalidatePath } from "next/cache";
 
+import { ProgressView } from "@/components/progress-view/progress-view";
 import { ROUTES } from "@/lib/consts";
+import { getExercises } from "@/lib/exercise/actions";
 import { prisma } from "@/lib/prisma";
 import { SetLogUI } from "@/lib/set-logs/types";
 import { getUserId } from "@/lib/utils-server";
+
+export async function getSessionsWithSetLogs() {
+	const userId = await getUserId();
+
+	return prisma.workoutSession.findMany({
+		where: { userId },
+		include: { setLogs: true },
+		orderBy: { startedAt: "asc" },
+	});
+}
 
 export async function upsertSetAction(
 	id: string,
