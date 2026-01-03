@@ -1,3 +1,26 @@
+## [1.2.0](https://github.com/fivaz/fit-tracker/compare/v1.1.0...v1.2.0) (2026-01-03)
+
+### ✨ Features
+
+* new workouts will have the same sets as previous workouts ([93003d8](https://github.com/fivaz/fit-tracker/commit/93003d8d91624337997b319dc44263b27e8728ed))
+
+### ♻️ Refactoring
+
+* split progress page into multiple components ([decd068](https://github.com/fivaz/fit-tracker/commit/decd068dec5a6d0063819e3a95864610f079f1f5))
+
+### ⚡ Performance
+
+* add indexes to the table to accelerate queries ([2327273](https://github.com/fivaz/fit-tracker/commit/2327273d17a1e9980a1e21f5572ae60c698c4638))
+* improve progress page first load by calling requests in parallel ([e6cbbc8](https://github.com/fivaz/fit-tracker/commit/e6cbbc8452e17f059056277d56dedb1b338d3b4a))
+
+### 👷 CI
+
+* update my package json version in the releases ([73a1f37](https://github.com/fivaz/fit-tracker/commit/73a1f379af65d27b273cfb3ece52cfa1217a0037))
+
+### 🧹 Chores
+
+* add stories to progress-view components ([224f613](https://github.com/fivaz/fit-tracker/commit/224f6133bc6851dadeb8b34f4193f71cb0999f0b))
+
 ## [1.1.0](https://github.com/fivaz/fit-tracker/compare/v1.0.2...v1.1.0) (2026-01-02)
 
 ### ✨ Features
