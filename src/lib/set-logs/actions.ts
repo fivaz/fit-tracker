@@ -2,23 +2,34 @@
 
 import { revalidatePath } from "next/cache";
 
-import { ProgressView } from "@/components/progress-view/progress-view";
 import { ROUTES } from "@/lib/consts";
-import { getExercises } from "@/lib/exercise/actions";
 import { prisma } from "@/lib/prisma";
 import { SetLogUI } from "@/lib/set-logs/types";
 import { getUserId } from "@/lib/utils-server";
+import { ProgressWorkoutSession } from "@/lib/workout/type";
 
-export async function getSessionsWithSetLogs() {
+export async function getSessionsWithSetLogsForProgress(): Promise<ProgressWorkoutSession[]> {
 	const userId = await getUserId();
 
 	return prisma.workoutSession.findMany({
 		where: { userId },
-		include: { setLogs: true },
+		select: {
+			id: true,
+			startedAt: true,
+			completedAt: true,
+			setLogs: {
+				select: {
+					id: true,
+					weight: true,
+					reps: true,
+					completedAt: true,
+					exerciseId: true,
+				},
+			},
+		},
 		orderBy: { startedAt: "asc" },
 	});
 }
-
 export async function upsertSetAction(
 	id: string,
 	sessionId: string,
