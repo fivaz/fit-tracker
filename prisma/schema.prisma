@@ -36,6 +36,7 @@ model User {
   workoutSessions WorkoutSession[]
 
   @@map("user")
+  @@index([activeSessionId])
 }
 
 model WorkoutSession {
@@ -51,6 +52,10 @@ model WorkoutSession {
 
   createdAt DateTime @default(now())
   setLogs   SetLog[]
+
+  @@index([userId])
+  @@index([userId, completedAt])
+  @@index([programId])
 }
 
 model Program {
@@ -100,6 +105,9 @@ model Exercise {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  @@index([deletedAt])
+  @@index([userId])
 }
 
 model ProgramHasExercise {
@@ -112,6 +120,7 @@ model ProgramHasExercise {
   order Int @default(0) // Order is now specific to the program!
 
   @@id([programId, exerciseId]) // Composite primary key
+  @@index([exerciseId])
 }
 
 model SetLog {
@@ -136,6 +145,10 @@ model SetLog {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  @@index([sessionId])
+  @@index([exerciseId])
+  @@index([userId])
 }
 
 model Session {
